@@ -1,5 +1,6 @@
 import BlogPostPage from '@/components/pages/BlogPostPage'
 
 export default function BlogPostRoute({ params }) {
-  return <BlogPostPage slug={params.slug} />
+  const decodedSlug = decodeURIComponent(params.slug)
+  return <BlogPostPage slug={decodedSlug} />
 }
