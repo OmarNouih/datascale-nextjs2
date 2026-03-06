@@ -8,12 +8,12 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/sections/Footer';
 import { C } from '@/lib/tokens';
 
-const QUERY = `*[_type == "post"] | order(publishedAt desc)[0...3] {
+const QUERY = `*[_type == "post"] | order(publishedAt desc) {
   _id,
   title,
   slug,
   publishedAt,
-  "excerpt": pt::text(body)[0...200],
+  "excerpt": coalesce(excerpt, pt::text(body)[0...200]),
   "category": categories[0]->title,
   "authorName": author->name,
   "imageUrl": mainImage.asset->url
