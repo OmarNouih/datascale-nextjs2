@@ -4,7 +4,7 @@ export const metadata = {
   // ── Basic SEO ──
   title: {
     default: 'Data Scale Business | Data. AI. BI. — Casablanca, Maroc',
-    template: '%s | Data Scale Business'
+    template: '%s'
   },
   description: 'Spécialistes en Business Intelligence, Data Engineering et IA à Casablanca. Nous accompagnons les entreprises au Maroc et en Afrique dans la valorisation de leurs données.',
   keywords: [
@@ -97,9 +97,10 @@ export default function RootLayout({ children }) {
               },
               "contactPoint": {
                 "@type": "ContactPoint",
+                "telephone": "+212-671-370-001", 
                 "contactType": "customer service",
                 "availableLanguage": ["French", "Arabic", "English"]
-              },
+                },
               "sameAs": [
                 "https://www.linkedin.com/company/datascalebusiness",
                 "https://twitter.com/datascalebusiness"
