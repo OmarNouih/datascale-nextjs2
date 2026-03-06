@@ -1,10 +1,11 @@
 import BlogPostPage from '@/components/pages/BlogPostPage'
 import { client } from '@/lib/sanity/client'
+import { serverClient } from '@/lib/sanity/client'
 
 async function getPost(slug) {
   const decodedSlug = decodeURIComponent(slug)
   console.log('Fetching slug:', decodedSlug)  // ← add this to debug
-  return client.fetch(
+  return serverClient.fetch(
     `*[_type == "post" && slug.current == $slug][0] {
       title,
       slug,
