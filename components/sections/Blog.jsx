@@ -6,7 +6,7 @@ import { client } from '@/lib/sanity/client';
 import Reveal from '@/components/Reveal';
 import { C } from '@/lib/tokens';
 
-const QUERY = `*[_type == "post"] | order(publishedAt desc)[0...3] {
+const QUERY = `*[_type == "post"] | order(publishedAt asc)[-3..-1] {
   _id,
   title,
   slug,

@@ -75,9 +75,10 @@ const CAT_COLORS = {
   'Conseil Data':          C.gold,
   'Synapse Real Estate':   '#7c5cbf',
   'Marketing Digital':     '#2196f3',
+  'Data Engineering' : '#6a0155',
 };
 
-const ALL_CATS = ['Tous', 'Business Intelligence', 'Conseil Data', 'Synapse Real Estate', 'Marketing Digital'];
+const ALL_CATS = ['Tous', 'Business Intelligence', 'Conseil Data', 'Synapse Real Estate', 'Marketing Digital', 'Data Engineering'];
 
 function formatDate(dateStr) {
   if (!dateStr) return '';

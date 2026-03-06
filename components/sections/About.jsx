@@ -153,9 +153,9 @@ export default function About() {
         <Reveal>
           <div style={{ textAlign: 'center', marginBottom: 28 }}>
             <div className="sl" style={{ justifyContent: 'center' }}>Nos Trois Piliers</div>
-            <h3 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: 'clamp(1.3rem,2.5vw,1.9rem)', color: C.ink, margin: '6px 0 0' }}>
+            <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: 'clamp(1.3rem,2.5vw,1.9rem)', color: C.ink, margin: '6px 0 0' }}>
               Une synergie stratégique unique
-            </h3>
+            </h2>
           </div>
         </Reveal>
 
@@ -190,9 +190,9 @@ export default function About() {
                   Stack Technique
                 </span>
               </div>
-              <h3 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 800, fontSize: 'clamp(1.4rem,2.5vw,2rem)', color: C.ink, lineHeight: 1.15, marginBottom: 10 }}>
+              <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 800, fontSize: 'clamp(1.4rem,2.5vw,2rem)', color: C.ink, lineHeight: 1.15, marginBottom: 10 }}>
                 Notre Expertise <span style={{ color: C.gold }}>Data</span>
-              </h3>
+              </h2>
               <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.02rem', color: C.inkMid, lineHeight: 1.75, margin: 0 }}>
                 Une architecture moderne pour transformer la donnée brute en actif stratégique.
               </p>
