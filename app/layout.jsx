@@ -108,6 +108,13 @@ export default function RootLayout({ children }) {
             })
           }}
         />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-JHRK820N2P" />
+        <script dangerouslySetInnerHTML={{ __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-JHRK820N2P');
+        `}} />
       </head>
       <body>{children}</body>
     </html>

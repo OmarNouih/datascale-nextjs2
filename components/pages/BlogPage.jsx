@@ -117,7 +117,7 @@ export default function BlogPage() {
             </span>
           </div>
           <h1 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 900, fontSize: 'clamp(2rem,5vw,3.6rem)', color: '#fff', lineHeight: 1.05, marginBottom: 16 }}>
-            Le Blog <span style={{ color: C.gold }}>Data Scale</span>
+            Le Blog <span style={{ color: C.gold }}>Data Scale Business</span>
           </h1>
           <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.12rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.78, maxWidth: 520, marginBottom: 32 }}>
             Conseils data, cas clients et tendances BI pour les décideurs marocains et africains.

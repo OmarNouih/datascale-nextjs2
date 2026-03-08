@@ -75,7 +75,7 @@ export default function Blog() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', alignItems: 'flex-end', gap: 32, marginBottom: 48 }}>
             <div>
               <div className="sl">Insights & Expertise</div>
-              <h2 className="st">Le Blog Data Scale</h2>
+              <h2 className="st">Le Blog Data Scale Business</h2>
               <div className="dl" />
               <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.06rem', color: C.inkMid, maxWidth: 480, lineHeight: 1.75, margin: 0 }}>
                 Conseils data, cas clients et tendances BI pour les décideurs marocains et africains.
