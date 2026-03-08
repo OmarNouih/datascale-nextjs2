@@ -102,7 +102,7 @@ export default function BlogPostPage() {
         <div style={{ maxWidth: 780, margin: '0 auto', position: 'relative' }}>
 
           {/* Back */}
-          <button onClick={() => navigate('/blog')} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontFamily: "'DM Sans',sans-serif", fontSize: '0.72rem', fontWeight: 700, color: 'rgba(255,255,255,0.4)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 24, padding: 0, letterSpacing: '0.06em' }}>
+          <button onClick={() => router.push('/blog')}  style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontFamily: "'DM Sans',sans-serif", fontSize: '0.72rem', fontWeight: 700, color: 'rgba(255,255,255,0.4)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 24, padding: 0, letterSpacing: '0.06em' }}>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
             Retour au blog
           </button>
@@ -149,7 +149,7 @@ export default function BlogPostPage() {
 
         {/* Bottom nav */}
         <div style={{ marginTop: 56, paddingTop: 32, borderTop: `1px solid ${C.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
-          <button className="cta-btn-outline" onClick={() => navigate('/blog')}>
+        <button className="cta-btn-outline" onClick={() => router.push('/blog')}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
             Tous les articles
           </button>

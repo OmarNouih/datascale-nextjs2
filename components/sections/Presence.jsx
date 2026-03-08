@@ -123,7 +123,6 @@ export default function Presence() {
                 <div style={{ fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: 10 }}>Sites web</div>
                 {[
                   { label: 'International', url: 'www.datascalebusiness.io' },
-                  { label: 'Maroc', url: 'morocco.datascalebusiness.io' },
                 ].map((site) => (
                   <a key={site.label} href={`https://${site.url}`} target="_blank" rel="noopener noreferrer"
                     style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 0', borderBottom: '1px solid rgba(255,255,255,0.05)', textDecoration: 'none' }}>

@@ -117,12 +117,6 @@ export default function Footer() {
           onMouseLeave={(e) => (e.target.style.color = 'rgba(255,255,255,0.4)')}>
           datascalebusiness.io
         </a>
-        <a href="https://www.morocco.datascalebusiness.io" target="_blank" rel="noopener noreferrer"
-          style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', textDecoration: 'none', transition: 'color 0.2s' }}
-          onMouseEnter={(e) => (e.target.style.color = C.goldLight)}
-          onMouseLeave={(e) => (e.target.style.color = 'rgba(255,255,255,0.4)')}>
-          morocco.datascalebusiness.io
-        </a>
       </div>
     </div>
 
