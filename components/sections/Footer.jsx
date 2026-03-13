@@ -105,12 +105,18 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Bottom bar */}
+    {/* Bottom bar */}
     <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
       <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)' }}>
-        © 2025 Data Scale Business Group — Casablanca · Sheridan WY · datascalebusiness.io
+        © 2026 Data Scale Business Group — Casablanca · Sheridan WY · datascalebusiness.io
       </div>
       <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+        <a href="/privacy-policy"
+          style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', textDecoration: 'none', transition: 'color 0.2s' }}
+          onMouseEnter={(e) => (e.target.style.color = C.goldLight)}
+          onMouseLeave={(e) => (e.target.style.color = 'rgba(255,255,255,0.4)')}>
+          Politique de Confidentialité
+        </a>
         <a href="https://www.datascalebusiness.io" target="_blank" rel="noopener noreferrer"
           style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', textDecoration: 'none', transition: 'color 0.2s' }}
           onMouseEnter={(e) => (e.target.style.color = C.goldLight)}
@@ -119,7 +125,7 @@ export default function Footer() {
         </a>
       </div>
     </div>
-
+    
       </div>
     </footer>
   );
