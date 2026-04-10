@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accueil | CHAABANE IMMOBILIER</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#000;overflow-x:hidden}
+
+header{position:fixed;top:0;left:0;right:0;z-index:50;color:#fff;padding:24px 0;background:transparent;font-weight:300;transition:all .3s}
+.app-container{max-width:1340px;padding:0 32px;margin:0 auto}
+.nav-inner{display:flex;justify-content:space-between;align-items:center}
+.nav-logo svg{height:40px;width:auto}
+.nav-links{display:flex;align-items:center;gap:28px;list-style:none}
+.nav-links a{color:#fff;text-decoration:none;font-size:13px;font-weight:300;letter-spacing:.08em;text-transform:uppercase;transition:color .3s;position:relative}
+.nav-links a:hover{color:#d7a100}
+.nav-links a.active::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:2px;background:#d7a100}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-phone{display:flex;align-items:center;gap:8px;color:#fff;font-size:13px}
+.nav-phone img{width:22px;height:22px}
+.nav-socials{display:flex;gap:8px;align-items:center}
+.nav-socials a{display:flex}
+.nav-socials img{width:22px;height:22px;transition:opacity .2s}
+.nav-socials a:hover img{opacity:.7}
+
+.hero{width:100vw;height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background-image:url('Accueil _ CHAABANE IMMOBILIER_files/bg.jpg');background-size:cover;background-position:center;background-repeat:no-repeat}
+.hero-overlay{position:absolute;inset:0;background:rgba(0,0,0,.40)}
+.hero-content{position:relative;z-index:1;text-align:center;padding:0 24px;max-width:860px}
+.hero-content h1{color:#fff;font-size:clamp(26px,4vw,60px);font-weight:300;letter-spacing:.05em;line-height:1.2;margin-bottom:20px;font-family:Georgia,serif}
+.hero-content p{color:rgba(255,255,255,.80);font-size:clamp(13px,1.6vw,18px);font-weight:300;letter-spacing:.06em;line-height:1.6}
+
+/* ── REVA Button ── */
+#reva-btn{position:fixed;right:28px;bottom:28px;z-index:9999;display:inline-flex;align-items:center;gap:12px;border:none;border-radius:999px;background:linear-gradient(135deg,#0f2a44 0%,#1a3d62 100%);color:#fff;padding:12px 22px 12px 12px;box-shadow:0 8px 32px rgba(15,42,68,.55),0 2px 8px rgba(0,0,0,.3);font-size:14px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:transform .2s,box-shadow .2s}
+#reva-btn:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(15,42,68,.65),0 4px 12px rgba(0,0,0,.3)}
+#reva-btn:active{transform:translateY(0)}
+.reva-icon{width:40px;height:40px;border-radius:999px;background:rgba(215,161,0,.18);border:1.5px solid rgba(215,161,0,.35);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.reva-icon svg{width:19px;height:19px;stroke:#d7a100;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@keyframes reva-pulse{0%,100%{box-shadow:0 8px 32px rgba(15,42,68,.55),0 0 0 0 rgba(215,161,0,.35)}70%{box-shadow:0 8px 32px rgba(15,42,68,.55),0 0 0 10px rgba(215,161,0,0)}}
+#reva-btn.pulse{animation:reva-pulse 2.5s ease-out 3}
+
+/* ── Greeting bubble ── */
+#reva-bubble{position:fixed;right:28px;bottom:96px;z-index:9998;max-width:260px;background:#fff;border-radius:16px 16px 4px 16px;padding:14px 16px;box-shadow:0 8px 32px rgba(0,0,0,.18);display:none;flex-direction:column;gap:6px;animation:bubble-in .35s cubic-bezier(.34,1.56,.64,1)}
+#reva-bubble.show{display:flex}
+@keyframes bubble-in{from{opacity:0;transform:translateY(12px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+.bubble-top{display:flex;align-items:center;gap:8px}
+.bubble-avatar{width:30px;height:30px;border-radius:999px;background:linear-gradient(135deg,#0f2a44,#1a3d62);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bubble-avatar svg{width:14px;height:14px;stroke:#d7a100;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.bubble-name{font-size:11px;font-weight:700;color:#0f2a44;letter-spacing:.04em}
+#reva-bubble p{font-size:13px;color:#333;line-height:1.5;margin:0}
+#reva-bubble-close{position:absolute;top:8px;right:10px;background:none;border:none;color:#999;font-size:16px;cursor:pointer;line-height:1;padding:0}
+#reva-bubble-close:hover{color:#333}
+.bubble-cta{display:inline-flex;align-items:center;gap:7px;margin-top:8px;font-size:12px;font-weight:700;color:#fff;cursor:pointer;background:linear-gradient(135deg,#0f2a44,#1a3d62);border:none;padding:9px 14px;border-radius:999px;letter-spacing:.04em;transition:all .2s;box-shadow:0 4px 14px rgba(15,42,68,.35)}
+.bubble-cta:hover{background:linear-gradient(135deg,#1a3d62,#225080);box-shadow:0 6px 18px rgba(15,42,68,.5);transform:translateY(-1px)}
+.bubble-cta svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── Modal ── */
+#reva-modal{display:none;position:fixed;inset:0;z-index:99999;background:rgba(5,10,20,.65);backdrop-filter:blur(6px);align-items:flex-end;justify-content:flex-end;padding:28px}
+#reva-modal.open{display:flex}
+#reva-panel{width:min(460px,calc(100vw - 32px));height:min(760px,calc(100vh - 48px));background:#07090f;border-radius:20px;overflow:hidden;border:1px solid rgba(215,161,0,.2);box-shadow:0 40px 100px rgba(0,0,0,.75),0 0 0 1px rgba(215,161,0,.04) inset;display:flex;flex-direction:column;animation:panel-in .3s cubic-bezier(.34,1.4,.64,1)}
+@keyframes panel-in{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+#reva-header{display:flex;align-items:center;gap:12px;padding:16px 20px;background:linear-gradient(135deg,#0b0f1a 0%,#0d1220 100%);border-bottom:1px solid rgba(215,161,0,.14)}
+.reva-h-avatar{width:38px;height:38px;border-radius:999px;background:linear-gradient(135deg,#0f2a44,#1e4a78);border:1.5px solid rgba(215,161,0,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+.reva-h-avatar svg{width:17px;height:17px;stroke:#d7a100;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.reva-h-dot{position:absolute;bottom:1px;right:1px;width:9px;height:9px;border-radius:999px;background:#22c55e;border:2px solid #0b0f1a}
+.reva-h-info{flex:1}
+.reva-h-info strong{color:#fff;font-size:14px;font-weight:700;display:block;line-height:1.2;letter-spacing:.02em}
+.reva-h-info span{color:rgba(255,255,255,.45);font-size:10.5px;letter-spacing:.04em}
+.reva-close{width:34px;height:34px;background:transparent;border:1px solid rgba(238,242,255,.07);border-radius:4px;color:rgba(238,242,255,.4);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.18s;flex-shrink:0}
+.reva-close:hover{background:rgba(238,242,255,.06);color:rgba(238,242,255,.8)}
+.reva-frame-wrap{position:relative;flex:1;overflow:hidden}
+#reva-frame{width:calc(100% + 64px);height:100%;border:none;background:#07090f;display:block}
+
+@media(max-width:768px){.nav-links,.nav-right{display:none}#reva-panel{border-radius:16px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="app-container">
+    <div class="nav-inner">
+
+      <a class="nav-logo" href="#">
+        <svg viewBox="0 0 153 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M52.08 11.5501V10.8801C51.71 10.9801 51.19 11.2601 50.84 11.4101L47.12 13.0701L51.81 11.7401C52.08 11.6401 51.98 11.7401 52.08 11.5501Z" fill="#D7A100"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M73.94 11.5501V10.8801C73.57 10.9801 73.05 11.2601 72.7 11.4101L68.98 13.0701L73.67 11.7401C73.94 11.6401 73.84 11.7401 73.94 11.5501Z" fill="#D7A100"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M110.33 11.5501V10.8801C109.96 10.9801 109.44 11.2601 109.09 11.4101L105.37 13.0701L110.06 11.7401C110.34 11.6401 110.23 11.7401 110.33 11.5501Z" fill="#D7A100"/>
+          <path d="M20.32 13.2301C19.71 15.4501 18.53 17.2301 16.79 18.5701C15.02 19.9301 13.02 20.6101 10.79 20.6101C8.07997 20.6101 5.76997 19.6501 3.84997 17.7301C1.92997 15.8101 0.969971 13.4901 0.969971 10.7801C0.969971 8.0801 1.92997 5.7701 3.84997 3.8401C5.76997 1.9201 8.08997 0.960098 10.8 0.960098C13.07 0.960098 15.09 1.6601 16.87 3.0601C18.64 4.4301 19.81 6.2501 20.39 8.5301H18.53C18 6.8001 17.04 5.4001 15.63 4.3301C14.21 3.2601 12.6 2.7201 10.8 2.7201C8.56997 2.7201 6.65997 3.5001 5.07997 5.0701C3.50997 6.6501 2.72997 8.5501 2.72997 10.7701C2.72997 13.0001 3.50997 14.9101 5.07997 16.4901C6.65997 18.0601 8.55997 18.8401 10.8 18.8401C12.56 18.8401 14.14 18.3201 15.56 17.2801C16.95 16.2701 17.92 14.9201 18.5 13.2301H20.32Z" fill="currentColor"/>
+          <path d="M37.7499 1.2101V20.3701H35.8699V15.0701H23.5699V20.3701H21.6899V1.2101H23.5699V13.2001H35.8699V1.2101H37.7499Z" fill="currentColor"/>
+          <path d="M59.52 20.4001H57.42L49.3 5.0201L41.1 20.4001H39.05L48.11 3.1601V3.1501L49.31 0.920097L50.43 3.0501L59.52 20.4001Z" fill="currentColor"/>
+          <path d="M81.15 20.4001H79.05L70.93 5.0201L62.73 20.4001H60.68L69.74 3.1601V3.1501L70.94 0.920097L72.06 3.0501L81.15 20.4001Z" fill="currentColor"/>
+          <path d="M93.4799 7.2801C95.9299 8.2601 97.1599 10.3001 97.1599 13.4001C97.1599 16.2901 95.9499 18.3101 93.5399 19.4801C92.3099 20.0801 91.0899 20.3801 89.8899 20.3801H82.3199V1.2101H90.3599C91.3199 1.2101 92.1799 1.4501 92.9299 1.9201C93.9899 2.5601 94.5199 3.5101 94.5199 4.7801C94.5099 5.9901 94.1699 6.8201 93.4799 7.2801ZM84.1799 18.5101H89.8799C90.8299 18.5001 91.7599 18.2801 92.6499 17.8301C94.3699 16.9701 95.2399 15.4901 95.2399 13.3701C95.4299 10.9801 93.6699 8.9801 89.9499 7.3801C91.0899 6.7701 91.8599 6.1901 92.2499 5.6701C92.4599 5.4001 92.5699 5.1001 92.5699 4.7701C92.5699 4.1001 92.2399 3.6301 91.5799 3.3501C91.1999 3.1901 90.7899 3.1201 90.3499 3.1201H84.1799V18.5101Z" fill="currentColor"/>
+          <path d="M116.88 20.4001H114.78L106.66 5.0201L98.46 20.4001H96.41L105.47 3.1601V3.1501L106.67 0.920097L107.79 3.0501L116.88 20.4001Z" fill="currentColor"/>
+          <path d="M135.39 1.2101V20.5201L119.92 5.3901V20.3801H118.04V0.850098L133.51 16.2301V1.2101H135.39Z" fill="currentColor"/>
+          <path d="M152.89 3.1201H140.07V18.4801H152.89V20.3801H138.13V1.2101H152.89V3.1201ZM152.84 15.0701H141.69V13.1901H152.84V15.0701Z" fill="currentColor"/>
+          <path d="M21.2 30.3101H20.11V29.2801H21.2V30.3101ZM21.2 42.7101H20.11V31.5801H21.2V42.7101Z" fill="#D7A100"/>
+          <path d="M42.15 42.7101H41.09V35.6201C41.08 34.7601 40.76 34.0301 40.14 33.4201C39.52 32.8101 38.77 32.5101 37.9 32.5101C37.03 32.5101 36.28 32.8101 35.66 33.4201C35.04 34.0301 34.72 34.7601 34.71 35.6201V42.7101H33.65V35.6201C33.64 34.7601 33.32 34.0301 32.7 33.4201C32.08 32.8101 31.33 32.5101 30.46 32.5101C29.59 32.5101 28.84 32.8101 28.23 33.4201C27.61 34.0301 27.29 34.7601 27.28 35.6201V42.7101H26.22V35.6201C26.23 34.4601 26.66 33.4801 27.49 32.6801C28.32 31.8701 29.31 31.4701 30.47 31.4701C31.32 31.4701 32.09 31.7001 32.79 32.1501C33.47 32.5901 33.94 33.0901 34.19 33.6301C34.44 33.0901 34.9 32.5901 35.59 32.1501C36.29 31.7001 37.07 31.4701 37.91 31.4701C39.08 31.4701 40.08 31.8701 40.91 32.6801C41.74 33.5001 42.16 34.4901 42.16 35.6501V42.7101H42.15Z" fill="#D7A100"/>
+          <path d="M63.09 42.7101H62.03V35.6201C62.02 34.7601 61.7 34.0301 61.08 33.4201C60.46 32.8101 59.71 32.5101 58.84 32.5101C57.97 32.5101 57.22 32.8101 56.6 33.4201C55.98 34.0301 55.66 34.7601 55.65 35.6201V42.7101H54.59V35.6201C54.58 34.7601 54.26 34.0301 53.64 33.4201C53.02 32.8101 52.27 32.5101 51.4 32.5101C50.53 32.5101 49.78 32.8101 49.17 33.4201C48.55 34.0301 48.23 34.7601 48.22 35.6201V42.7101H47.16V35.6201C47.17 34.4601 47.6 33.4801 48.43 32.6801C49.26 31.8701 50.25 31.4701 51.41 31.4701C52.26 31.4701 53.03 31.7001 53.73 32.1501C54.41 32.5901 54.88 33.0901 55.13 33.6301C55.38 33.0901 55.84 32.5901 56.53 32.1501C57.23 31.7001 58.01 31.4701 58.85 31.4701C60.02 31.4701 61.02 31.8701 61.85 32.6801C62.68 33.5001 63.1 34.4901 63.1 35.6501V42.7101H63.09Z" fill="#D7A100"/>
+          <path d="M72.97 31.4101C74.54 31.4101 75.89 31.9701 77.01 33.0901C78.13 34.2101 78.68 35.5501 78.68 37.1301C78.68 38.7001 78.12 40.0501 77 41.1701C75.88 42.2901 74.54 42.8501 72.96 42.8501C71.39 42.8501 70.04 42.2901 68.92 41.1701C67.8 40.0501 67.24 38.7101 67.24 37.1301C67.24 35.5601 67.81 34.2101 68.92 33.0901C70.03 31.9701 71.39 31.4101 72.97 31.4101ZM72.96 41.7501C74.24 41.7501 75.33 41.3001 76.24 40.4001C77.14 39.4901 77.59 38.4001 77.59 37.1201C77.59 35.8401 77.14 34.7501 76.24 33.8401C75.33 32.9401 74.24 32.4901 72.96 32.4901C71.68 32.4901 70.59 32.9401 69.68 33.8401C68.78 34.7501 68.33 35.8401 68.33 37.1201C68.33 38.4001 68.78 39.4901 69.68 40.4001C70.59 41.3001 71.68 41.7501 72.96 41.7501Z" fill="#D7A100"/>
+          <path d="M83.93 33.7201C83.98 33.6401 84.18 33.4301 84.52 33.0901C85.64 31.9701 86.98 31.4101 88.56 31.4101C90.13 31.4101 91.48 31.9701 92.6 33.0901C93.72 34.2101 94.28 35.5501 94.28 37.1301C94.27 38.7001 93.71 40.0501 92.6 41.1701C91.48 42.2901 90.14 42.8501 88.56 42.8501C86.99 42.8501 85.64 42.2901 84.52 41.1701C83.4 40.0501 82.85 38.7101 82.85 37.1301V29.2601H83.94V33.7201H83.93ZM88.56 32.5001C87.28 32.5001 86.19 32.9501 85.28 33.8501C84.38 34.7601 83.93 35.8501 83.93 37.1301C83.93 38.4101 84.38 39.5001 85.28 40.4101C86.19 41.3101 87.28 41.7601 88.56 41.7601C89.84 41.7601 90.93 41.3101 91.84 40.4101C92.74 39.5001 93.19 38.4101 93.19 37.1301C93.19 35.8501 92.74 34.7601 91.84 33.8501C90.93 32.9501 89.83 32.5001 88.56 32.5001Z" fill="#D7A100"/>
+          <path d="M99.52 30.3101H98.43V29.2801H99.52V30.3101ZM99.52 42.7101H98.43V31.5801H99.52V42.7101Z" fill="#D7A100"/>
+          <path d="M105.61 42.7101H104.52V29.2701H105.61V42.7101Z" fill="#D7A100"/>
+          <path d="M111.69 30.3101H110.6V29.2801H111.69V30.3101ZM111.69 42.7101H110.6V31.5801H111.69V42.7101Z" fill="#D7A100"/>
+          <path d="M117.1 35.8401C116.99 36.2001 116.93 36.6301 116.93 37.1201C116.93 38.4001 117.38 39.4901 118.28 40.4001C119.19 41.3001 120.28 41.7501 121.56 41.7501C122.84 41.7501 123.93 41.3001 124.84 40.4001C125.36 39.8801 125.74 39.2701 125.98 38.5701H127.11C126.81 39.6001 126.31 40.4601 125.6 41.1701C124.48 42.2901 123.14 42.8501 121.56 42.8501C119.99 42.8501 118.64 42.2901 117.52 41.1701C116.4 40.0501 115.84 38.7101 115.84 37.1301C115.84 35.5601 116.41 34.2101 117.52 33.0901C118.64 31.9701 119.98 31.4101 121.56 31.4101C123.13 31.4101 124.48 31.9701 125.6 33.0901C126.36 33.8501 126.87 34.7601 127.15 35.8301L117.1 35.8401ZM125.58 34.7901C125.44 34.5201 125.2 34.2101 124.84 33.8501C123.93 32.9501 122.84 32.5001 121.56 32.5001C120.28 32.5001 119.19 32.9501 118.28 33.8501C117.92 34.2101 117.68 34.5301 117.54 34.7901H125.58Z" fill="#D7A100"/>
+          <path d="M138.14 32.7601C137.83 32.6801 137.51 32.6401 137.18 32.6401C136.08 32.6401 135.14 33.0801 134.36 33.9501C133.57 34.8401 133.17 35.9001 133.15 37.1601V42.7201H132.09V37.1601C132.11 35.5901 132.61 34.2501 133.6 33.1401C134.59 32.0201 135.78 31.4601 137.18 31.4601C137.51 31.4601 137.83 31.4901 138.15 31.5601V32.7601H138.14Z" fill="#D7A100"/>
+        </svg>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#" class="active">ACCUEIL</a>
+        <a href="#">&#192; PROPOS</a>
+        <a href="#">NOS PROJETS</a>
+        <a href="#">ACTUALIT&#201;S</a>
+        <a href="#">CARRI&#200;RE</a>
+        <a href="#">CONTACT</a>
+      </nav>
+
+      <div class="nav-right">
+        <div class="nav-phone">
+          <img src="Accueil _ CHAABANE IMMOBILIER_files/phone.svg" alt="phone">
+          <span>+212 522 21 17 17</span>
+        </div>
+        <nav class="nav-socials">
+          <a href="https://fr-fr.facebook.com/Chaabaneimmobilier/" target="_blank"><img src="Accueil _ CHAABANE IMMOBILIER_files/facebook.svg" alt="Facebook"></a>
+          <a href="https://www.instagram.com/chaabane.immobilier/" target="_blank"><img src="Accueil _ CHAABANE IMMOBILIER_files/instagram.svg" alt="Instagram"></a>
+          <a href="https://www.youtube.com/channel/UCUFlcKD70nQZj4s4Ky0yHHQ" target="_blank"><img src="Accueil _ CHAABANE IMMOBILIER_files/youtube.svg" alt="YouTube"></a>
+          <a href="https://www.linkedin.com/company/chaabane-immobilier" target="_blank"><img src="Accueil _ CHAABANE IMMOBILIER_files/linkedin.svg" alt="LinkedIn"></a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>Trouvez ce qu'il y a de mieux pour vous</h1>
+    <p>Bien plus qu'un logement, une qualit&#233; de vie</p>
+  </div>
+</section>
+
+<!-- Greeting bubble -->
+<div id="reva-bubble">
+  <button id="reva-bubble-close" onclick="closeBubble()" aria-label="Fermer">&times;</button>
+  <div class="bubble-top">
+    <div class="bubble-avatar">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </div>
+    <span class="bubble-name">REVA</span>
+  </div>
+  <p>Bonjour&nbsp;! Je suis REVA, votre assistant immobilier.<br>Puis-je vous aider dans votre recherche ?</p>
+  <button class="bubble-cta" onclick="openReva()">
+    Démarrer la conversation
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </button>
+</div>
+
+<!-- Launch button -->
+<button id="reva-btn" class="pulse" onclick="openReva()">
+  <span class="reva-icon">
+    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </span>
+  REVA
+</button>
+
+<!-- Chat modal -->
+<div id="reva-modal" onclick="if(event.target===this)closeReva()">
+  <div id="reva-panel">
+    <div id="reva-header">
+      <div class="reva-h-avatar">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="reva-h-dot"></span>
+      </div>
+      <div class="reva-h-info">
+        <strong>REVA by CHAABANE</strong>
+        <span>Assistant immobilier &bull; En ligne</span>
+      </div>
+      <button class="reva-close" onclick="closeReva()" title="Retour au site">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="reva-frame-wrap">
+      <iframe id="reva-frame" src="https://corvya.datascalebusiness.io/#/chat" title="REVA by CHAABANE"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openReva(){
+    document.getElementById('reva-modal').classList.add('open');
+    closeBubble();
+  }
+  function closeReva(){
+    document.getElementById('reva-modal').classList.remove('open');
+  }
+  function closeBubble(){
+    document.getElementById('reva-bubble').classList.remove('show');
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(function(){
+      document.getElementById('reva-bubble').classList.add('show');
+    },1500);
+  });
+</script>
+
+</body>
+</html>
