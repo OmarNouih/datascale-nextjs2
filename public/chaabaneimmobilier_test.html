@@ -31,49 +31,125 @@ header{position:fixed;top:0;left:0;right:0;z-index:50;color:#fff;padding:24px 0;
 .hero-content h1{color:#fff;font-size:clamp(26px,4vw,60px);font-weight:300;letter-spacing:.05em;line-height:1.2;margin-bottom:20px;font-family:Georgia,serif}
 .hero-content p{color:rgba(255,255,255,.80);font-size:clamp(13px,1.6vw,18px);font-weight:300;letter-spacing:.06em;line-height:1.6}
 
-/* ── REVA Button ── */
-#reva-btn{position:fixed;right:28px;bottom:28px;z-index:9999;display:inline-flex;align-items:center;gap:12px;border:none;border-radius:999px;background:linear-gradient(135deg,#0f2a44 0%,#1a3d62 100%);color:#fff;padding:12px 22px 12px 12px;box-shadow:0 8px 32px rgba(15,42,68,.55),0 2px 8px rgba(0,0,0,.3);font-size:14px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:transform .2s,box-shadow .2s}
-#reva-btn:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(15,42,68,.65),0 4px 12px rgba(0,0,0,.3)}
-#reva-btn:active{transform:translateY(0)}
-.reva-icon{width:40px;height:40px;border-radius:999px;background:rgba(215,161,0,.18);border:1.5px solid rgba(215,161,0,.35);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.reva-icon svg{width:19px;height:19px;stroke:#d7a100;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-@keyframes reva-pulse{0%,100%{box-shadow:0 8px 32px rgba(15,42,68,.55),0 0 0 0 rgba(215,161,0,.35)}70%{box-shadow:0 8px 32px rgba(15,42,68,.55),0 0 0 10px rgba(215,161,0,0)}}
-#reva-btn.pulse{animation:reva-pulse 2.5s ease-out 3}
+/* ── Floating button ───────────────────────────────── */
+#reva-btn{
+  position:fixed;right:28px;bottom:28px;z-index:9999;
+  display:inline-flex;align-items:center;gap:13px;
+  border:none;border-radius:999px;
+  background:linear-gradient(135deg,#0f2a44,#1a4a72);
+  color:#fff;padding:10px 22px 10px 10px;
+  box-shadow:0 8px 32px rgba(0,0,0,.55),0 0 0 1px rgba(215,161,0,.25);
+  font-size:14px;font-weight:700;letter-spacing:.03em;
+  cursor:pointer;transition:all .25s ease;
+}
+#reva-btn:hover{
+  background:linear-gradient(135deg,#1a3d62,#235a8a);
+  box-shadow:0 12px 40px rgba(0,0,0,.65),0 0 0 1px rgba(215,161,0,.45);
+  transform:translateY(-2px);
+}
+.reva-avatar{
+  position:relative;width:42px;height:42px;border-radius:999px;
+  background:linear-gradient(135deg,#d7a100,#f0c040);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:900;color:#0f2a44;letter-spacing:.02em;
+  flex-shrink:0;
+}
+.reva-online{
+  position:absolute;bottom:1px;right:1px;
+  width:11px;height:11px;border-radius:50%;
+  background:#22c55e;border:2px solid #0f2a44;
+  animation:pulse-dot 2s ease infinite;
+}
+.reva-btn-text{display:flex;flex-direction:column;align-items:flex-start;gap:1px}
+.reva-btn-name{font-size:14px;font-weight:700;color:#fff;line-height:1.2}
+.reva-btn-sub{font-size:10px;font-weight:400;color:rgba(255,255,255,.55);letter-spacing:.06em;text-transform:uppercase}
 
-/* ── Greeting bubble ── */
-#reva-bubble{position:fixed;right:28px;bottom:96px;z-index:9998;max-width:260px;background:#fff;border-radius:16px 16px 4px 16px;padding:14px 16px;box-shadow:0 8px 32px rgba(0,0,0,.18);display:none;flex-direction:column;gap:6px;animation:bubble-in .35s cubic-bezier(.34,1.56,.64,1)}
-#reva-bubble.show{display:flex}
-@keyframes bubble-in{from{opacity:0;transform:translateY(12px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-.bubble-top{display:flex;align-items:center;gap:8px}
-.bubble-avatar{width:30px;height:30px;border-radius:999px;background:linear-gradient(135deg,#0f2a44,#1a3d62);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.bubble-avatar svg{width:14px;height:14px;stroke:#d7a100;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.bubble-name{font-size:11px;font-weight:700;color:#0f2a44;letter-spacing:.04em}
-#reva-bubble p{font-size:13px;color:#333;line-height:1.5;margin:0}
-#reva-bubble-close{position:absolute;top:8px;right:10px;background:none;border:none;color:#999;font-size:16px;cursor:pointer;line-height:1;padding:0}
-#reva-bubble-close:hover{color:#333}
-.bubble-cta{display:inline-flex;align-items:center;gap:7px;margin-top:8px;font-size:12px;font-weight:700;color:#fff;cursor:pointer;background:linear-gradient(135deg,#0f2a44,#1a3d62);border:none;padding:9px 14px;border-radius:999px;letter-spacing:.04em;transition:all .2s;box-shadow:0 4px 14px rgba(15,42,68,.35)}
-.bubble-cta:hover{background:linear-gradient(135deg,#1a3d62,#225080);box-shadow:0 6px 18px rgba(15,42,68,.5);transform:translateY(-1px)}
+/* ── Modal overlay ─────────────────────────────────── */
+#reva-modal{
+  display:none;position:fixed;inset:0;z-index:99999;
+  background:rgba(0,0,0,.45);backdrop-filter:blur(6px);
+  align-items:flex-end;justify-content:flex-end;padding:28px;
+}
+#reva-modal.open{display:flex;animation:fadeIn .2s ease both}
+
+/* ── Chat panel ────────────────────────────────────── */
+#reva-panel{
+  width:min(480px,calc(100vw - 32px));
+  height:min(720px,calc(100vh - 56px));
+  background:#06080d;
+  border-radius:20px;overflow:hidden;
+  border:1px solid rgba(215,161,0,.18);
+  box-shadow:0 32px 80px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.05);
+  display:flex;flex-direction:column;
+  animation:slideUp .28s cubic-bezier(.22,.68,0,1.2) both;
+}
+#reva-frame{width:100%;height:100%;border:none;display:block;background:#06080d}
+
+/* ── Welcome bubble ────────────────────────────────── */
+#welcome-bubble{
+  position:fixed;right:28px;bottom:102px;z-index:9998;
+  width:min(290px,calc(100vw - 56px));
+  background:#0f1f38;
+  border:1px solid rgba(215,161,0,.25);
+  border-radius:16px 16px 4px 16px;
+  padding:16px 18px 14px;
+  box-shadow:0 12px 40px rgba(0,0,0,.6);
+  display:none;flex-direction:column;gap:10px;
+  animation:bubbleIn .35s cubic-bezier(.34,1.56,.64,1) both;
+}
+#welcome-bubble.show{display:flex}
+@keyframes bubbleIn{from{opacity:0;transform:translateY(10px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+.bubble-head{display:flex;align-items:center;gap:10px}
+.bubble-av{
+  width:34px;height:34px;border-radius:999px;flex-shrink:0;
+  background:linear-gradient(135deg,#d7a100,#f0c040);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:900;color:#0f2a44;letter-spacing:.02em;
+  position:relative;
+}
+.bubble-av-dot{
+  position:absolute;bottom:1px;right:1px;
+  width:9px;height:9px;border-radius:50%;
+  background:#22c55e;border:2px solid #0f1f38;
+}
+.bubble-who{display:flex;flex-direction:column;gap:1px}
+.bubble-who strong{font-size:12px;font-weight:700;color:#fff;line-height:1.2}
+.bubble-who span{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:.05em;text-transform:uppercase}
+
+#welcome-bubble p{
+  font-size:13px;color:rgba(255,255,255,.82);line-height:1.6;margin:0;
+}
+
+.bubble-cta{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  background:linear-gradient(135deg,#d7a100,#f0c040);
+  color:#0f2a44;border:none;border-radius:999px;
+  padding:9px 16px;font-size:12px;font-weight:800;letter-spacing:.04em;
+  cursor:pointer;transition:all .2s;
+  box-shadow:0 4px 14px rgba(215,161,0,.3);
+}
+.bubble-cta:hover{filter:brightness(1.08);transform:translateY(-1px)}
 .bubble-cta svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 
-/* ── Modal ── */
-#reva-modal{display:none;position:fixed;inset:0;z-index:99999;background:rgba(5,10,20,.65);backdrop-filter:blur(6px);align-items:flex-end;justify-content:flex-end;padding:28px}
-#reva-modal.open{display:flex}
-#reva-panel{width:min(460px,calc(100vw - 32px));height:min(760px,calc(100vh - 48px));background:#07090f;border-radius:20px;overflow:hidden;border:1px solid rgba(215,161,0,.2);box-shadow:0 40px 100px rgba(0,0,0,.75),0 0 0 1px rgba(215,161,0,.04) inset;display:flex;flex-direction:column;animation:panel-in .3s cubic-bezier(.34,1.4,.64,1)}
-@keyframes panel-in{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+#bubble-close{
+  position:absolute;top:10px;right:12px;
+  background:none;border:none;color:rgba(255,255,255,.35);
+  font-size:17px;line-height:1;cursor:pointer;padding:0;
+}
+#bubble-close:hover{color:rgba(255,255,255,.8)}
 
-#reva-header{display:flex;align-items:center;gap:12px;padding:16px 20px;background:linear-gradient(135deg,#0b0f1a 0%,#0d1220 100%);border-bottom:1px solid rgba(215,161,0,.14)}
-.reva-h-avatar{width:38px;height:38px;border-radius:999px;background:linear-gradient(135deg,#0f2a44,#1e4a78);border:1.5px solid rgba(215,161,0,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
-.reva-h-avatar svg{width:17px;height:17px;stroke:#d7a100;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.reva-h-dot{position:absolute;bottom:1px;right:1px;width:9px;height:9px;border-radius:999px;background:#22c55e;border:2px solid #0b0f1a}
-.reva-h-info{flex:1}
-.reva-h-info strong{color:#fff;font-size:14px;font-weight:700;display:block;line-height:1.2;letter-spacing:.02em}
-.reva-h-info span{color:rgba(255,255,255,.45);font-size:10.5px;letter-spacing:.04em}
-.reva-close{width:34px;height:34px;background:transparent;border:1px solid rgba(238,242,255,.07);border-radius:4px;color:rgba(238,242,255,.4);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.18s;flex-shrink:0}
-.reva-close:hover{background:rgba(238,242,255,.06);color:rgba(238,242,255,.8)}
-.reva-frame-wrap{position:relative;flex:1;overflow:hidden}
-#reva-frame{width:calc(100% + 64px);height:100%;border:none;background:#07090f;display:block}
+/* ── Animations ────────────────────────────────────── */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}70%{box-shadow:0 0 0 5px rgba(34,197,94,0)}}
 
-@media(max-width:768px){.nav-links,.nav-right{display:none}#reva-panel{border-radius:16px}}
+@media(max-width:768px){
+  .nav-links,.nav-right{display:none}
+  #reva-panel{width:calc(100vw - 16px);height:calc(100vh - 80px);border-radius:16px}
+  #reva-modal{padding:8px}
+  #welcome-bubble{right:16px;bottom:102px;width:calc(100vw - 32px)}
+}
 </style>
 </head>
 <body>
@@ -142,69 +218,77 @@ header{position:fixed;top:0;left:0;right:0;z-index:50;color:#fff;padding:24px 0;
   </div>
 </section>
 
-<!-- Greeting bubble -->
-<div id="reva-bubble">
-  <button id="reva-bubble-close" onclick="closeBubble()" aria-label="Fermer">&times;</button>
-  <div class="bubble-top">
-    <div class="bubble-avatar">
-      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+<!-- Welcome bubble -->
+<div id="welcome-bubble">
+  <button id="bubble-close" aria-label="Fermer">&times;</button>
+  <div class="bubble-head">
+    <div class="bubble-av">
+      HB
+      <span class="bubble-av-dot"></span>
     </div>
-    <span class="bubble-name">REVA</span>
+    <div class="bubble-who">
+      <strong>Hamza Boutaibi</strong>
+      <span>Conseiller immobilier</span>
+    </div>
   </div>
-  <p>Bonjour&nbsp;! Je suis REVA, votre assistant immobilier.<br>Puis-je vous aider dans votre recherche ?</p>
-  <button class="bubble-cta" onclick="openReva()">
+  <p>Bonjour&nbsp;! Je suis disponible pour vous accompagner dans votre projet immobilier. N'hésitez pas à me poser vos questions&nbsp;!</p>
+  <button class="bubble-cta" onclick="openChat()">
     Démarrer la conversation
     <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
   </button>
 </div>
 
-<!-- Launch button -->
-<button id="reva-btn" class="pulse" onclick="openReva()">
-  <span class="reva-icon">
-    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+<button id="reva-btn">
+  <span class="reva-avatar">
+    HB
+    <span class="reva-online"></span>
   </span>
-  REVA
+  <span class="reva-btn-text">
+    <span class="reva-btn-name">Hamza Boutaibi</span>
+    <span class="reva-btn-sub">Conseiller immobilier</span>
+  </span>
 </button>
 
-<!-- Chat modal -->
-<div id="reva-modal" onclick="if(event.target===this)closeReva()">
+<div id="reva-modal" onclick="if(event.target===this)this.classList.remove('open')">
   <div id="reva-panel">
-    <div id="reva-header">
-      <div class="reva-h-avatar">
-        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        <span class="reva-h-dot"></span>
-      </div>
-      <div class="reva-h-info">
-        <strong>REVA by CHAABANE</strong>
-        <span>Assistant immobilier &bull; En ligne</span>
-      </div>
-      <button class="reva-close" onclick="closeReva()" title="Retour au site">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <div class="reva-frame-wrap">
-      <iframe id="reva-frame" src="https://corvya.datascalebusiness.io/#/chat" title="REVA by CHAABANE"></iframe>
-    </div>
+    <iframe
+      id="reva-frame"
+      title="Hamza Boutaibi - Chat immobilier"
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      allow="clipboard-write"
+    ></iframe>
   </div>
 </div>
 
 <script>
-  function openReva(){
-    document.getElementById('reva-modal').classList.add('open');
-    closeBubble();
-  }
-  function closeReva(){
-    document.getElementById('reva-modal').classList.remove('open');
-  }
-  function closeBubble(){
-    document.getElementById('reva-bubble').classList.remove('show');
-  }
-  document.addEventListener('DOMContentLoaded',function(){
-    setTimeout(function(){
-      document.getElementById('reva-bubble').classList.add('show');
-    },1500);
-  });
-</script>
+  const chatUrl = 'https://corvya.datascalebusiness.io/#/embed?hideClose=1'
+  const modal = document.getElementById('reva-modal')
+  const frame = document.getElementById('reva-frame')
+  const bubble = document.getElementById('welcome-bubble')
 
+  function openChat() {
+    if (!frame.src) frame.src = chatUrl
+    modal.classList.add('open')
+    bubble.classList.remove('show')
+  }
+
+  function closeBubble() {
+    bubble.classList.remove('show')
+  }
+
+  document.getElementById('reva-btn').onclick = openChat
+  document.getElementById('bubble-close').onclick = closeBubble
+
+  window.addEventListener('reva-close', function() { modal.classList.remove('open') })
+  window.addEventListener('message', function(event) {
+    if (event.data === 'reva-close') modal.classList.remove('open')
+  })
+
+  // Show bubble after 1.5s
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() { bubble.classList.add('show') }, 1500)
+  })
+</script>
 </body>
 </html>
