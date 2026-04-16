@@ -67,7 +67,7 @@ export default function Modal({ service, onClose }) {
         <div style={{ color: C.teal, marginBottom: 14 }}>{service.icon}</div>
 
         <div style={{
-          fontFamily: "'Playfair Display', serif",
+          fontFamily: "'Raleway', sans-serif",
           fontWeight: 700, fontSize: '1.55rem',
           color: C.ink, marginBottom: 5,
         }}>
@@ -88,7 +88,7 @@ export default function Modal({ service, onClose }) {
         }} />
 
         <p style={{
-          fontFamily: "'Cormorant Garamond', serif",
+          fontFamily: "'Manrope', sans-serif",
           fontSize: '1.1rem', color: C.inkMid, lineHeight: 1.82, marginBottom: 14,
         }}>
           {service.desc}

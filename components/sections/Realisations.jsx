@@ -9,10 +9,10 @@ export default function Realisations() {
       <div style={{ maxWidth: 1240, margin: '0 auto' }}>
         <Reveal>
           <div style={{ marginBottom: 52 }}>
-            <div className="sl">Nos Réalisations</div>
+            <div className="sl" style={{ color: '#0a8c6a' }}>Nos Réalisations</div>
             <h2 className="st">Projets livrés, résultats mesurés</h2>
             <div className="dl" />
-            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.08rem', color: C.inkMid, maxWidth: 520, lineHeight: 1.78 }}>
+            <p style={{ fontFamily: "'Manrope', sans-serif", fontSize: '1.08rem', color: C.inkMid, maxWidth: 520, lineHeight: 1.78 }}>
               En 2 ans, nous avons transformé les données de nos clients en leviers de croissance concrets.
             </p>
           </div>
@@ -34,7 +34,7 @@ export default function Realisations() {
                     {r.sector}
                   </div>
                 </div>
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.05rem', color: C.ink, marginBottom: 5, lineHeight: 1.4 }}>{r.title}</h3>
+                <h3 style={{ fontFamily: "'Deltha', sans-serif", fontWeight: 400, fontSize: '1.12rem', color: C.ink, marginBottom: 5, lineHeight: 1.3 }}>{r.title}</h3>
                 <div style={{ fontSize: '0.7rem', color: C.inkLight, marginBottom: 10 }}>{r.client}</div>
                 <p style={{ fontSize: '0.82rem', color: C.inkLight, lineHeight: 1.72, marginBottom: 20 }}>{r.desc}</p>
 
@@ -42,7 +42,7 @@ export default function Realisations() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8, padding: '12px 0', borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, marginBottom: 16 }}>
                   {r.metrics.map((m) => (
                     <div key={m.label} style={{ textAlign: 'center' }}>
-                      <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.2rem', color: r.accentColor, lineHeight: 1 }}>{m.val}</div>
+                      <div style={{ fontFamily: "'Raleway', sans-serif", fontWeight: 700, fontSize: '1.2rem', color: r.accentColor, lineHeight: 1 }}>{m.val}</div>
                       <div style={{ fontSize: '0.62rem', color: C.inkLight, marginTop: 3, lineHeight: 1.3 }}>{m.label}</div>
                     </div>
                   ))}

@@ -1,21 +1,17 @@
 'use client'
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation'; // ← was useNavigate from react-router-dom
-import { client } from '@/lib/sanity/client';
-import Reveal from '@/components/Reveal';
-import { C } from '@/lib/tokens';
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { client } from '@/lib/sanity/client'
+import Reveal from '@/components/Reveal'
 
-const QUERY = `*[_type == "post"] | order(publishedAt asc)[-3..-1] {
-  _id,
-  title,
-  slug,
-  publishedAt,
-  "excerpt": pt::text(body)[0...200],
+const QUERY = `*[_type == "post"] | order(publishedAt desc)[0..2] {
+  _id, title, slug, publishedAt,
+  "excerpt": coalesce(excerpt, pt::text(body)[0...200]),
   "category": categories[0]->title,
   "authorName": author->name,
   "imageUrl": mainImage.asset->url
-}`;
+}`
 
 const PLACEHOLDER_POSTS = [
   {
@@ -39,120 +35,299 @@ const PLACEHOLDER_POSTS = [
     title: "Immobilier au Maroc : comment l'IA capture vos leads 24h/24",
     category: 'Synapse Real Estate',
     publishedAt: '2025-02-01',
-    excerpt: "Reva AI et Synapse Real Estate transforment la conversion de leads immobiliers au Maroc grâce à l'IA conversationnelle.",
+    excerpt: "Reva AI et Synapse Real Estate transforment la conversion de leads immobiliers grâce à l'IA conversationnelle.",
     authorName: 'Data Scale Business',
   },
-];
+]
 
-const CAT_COLORS = {
-  'Business Intelligence': C.teal,
-  'Conseil Data':          C.gold,
-  'Synapse Real Estate':   '#7c5cbf',
-  'Marketing Digital':     '#2196f3',
-};
+function formatDate(d) {
+  if (!d) return ''
+  return new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
+}
 
-function formatDate(dateStr) {
-  if (!dateStr) return '';
-  return new Date(dateStr).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+function Card({ post, index, featured, onClick }) {
+  const [hov, setHov] = useState(false)
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onClick}
+      onKeyDown={(e) => e.key === 'Enter' && onClick()}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        position: 'relative',
+        overflow: 'hidden',
+        cursor: 'pointer',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: featured ? '36px 36px 28px' : '24px 24px 20px',
+        background: hov
+          ? 'linear-gradient(145deg, rgba(14,22,19,0.98), rgba(9,15,13,0.94))'
+          : 'linear-gradient(145deg, rgba(11,18,16,0.96), rgba(7,12,10,0.88))',
+        border: `1px solid ${hov ? 'rgba(34,244,189,0.22)' : 'rgba(112,235,179,0.1)'}`,
+        boxShadow: hov ? '0 20px 52px rgba(0,0,0,0.22)' : 'none',
+        transform: hov ? 'translateY(-3px)' : 'none',
+        transition: 'all 0.22s ease',
+      }}
+    >
+      {/* Number watermark */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          bottom: -12,
+          right: 10,
+          fontFamily: 'var(--font-display), sans-serif',
+          fontWeight: 800,
+          fontSize: featured ? '9rem' : '5.5rem',
+          lineHeight: 1,
+          color: 'rgba(34,244,189,0.042)',
+          userSelect: 'none',
+          pointerEvents: 'none',
+          letterSpacing: '-0.06em',
+        }}
+      >
+        {String(index + 1).padStart(2, '0')}
+      </div>
+
+      {/* Category + date */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: featured ? 36 : 14 }}>
+        <span
+          style={{
+            fontSize: '0.56rem',
+            fontWeight: 800,
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            color: '#22f4bd',
+            background: 'rgba(34,244,189,0.08)',
+            border: '1px solid rgba(34,244,189,0.16)',
+            padding: '3px 9px',
+          }}
+        >
+          {post.category || 'Data'}
+        </span>
+        <span style={{ fontSize: '0.59rem', color: 'rgba(180,195,188,0.4)' }}>
+          {formatDate(post.publishedAt)}
+        </span>
+      </div>
+
+      {/* Title */}
+      <h3
+        style={{
+          fontFamily: 'var(--font-display), sans-serif',
+          fontWeight: 700,
+          fontSize: featured ? 'clamp(1.5rem, 2.5vw, 2.2rem)' : '1.06rem',
+          color: hov ? '#d8dfdb' : 'rgba(216,223,219,0.88)',
+          margin: '0 0 12px',
+          lineHeight: 1.08,
+          letterSpacing: '-0.03em',
+          transition: 'color 0.2s',
+          maxWidth: featured ? '88%' : '100%',
+        }}
+      >
+        {post.title}
+      </h3>
+
+      {/* Excerpt */}
+      <p
+        style={{
+          fontSize: '0.84rem',
+          lineHeight: 1.74,
+          color: 'rgba(188,201,195,0.58)',
+          margin: 0,
+          flex: 1,
+          display: '-webkit-box',
+          WebkitLineClamp: featured ? 3 : 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+        }}
+      >
+        {post.excerpt}
+      </p>
+
+      {/* Footer */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: featured ? 28 : 18,
+          paddingTop: 14,
+          borderTop: '1px solid rgba(112,235,179,0.08)',
+        }}
+      >
+        <span style={{ fontSize: '0.6rem', color: 'rgba(180,195,188,0.36)', letterSpacing: '0.06em' }}>
+          {post.authorName}
+        </span>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 5,
+            fontSize: '0.66rem',
+            fontWeight: 800,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: hov ? '#22f4bd' : 'rgba(180,195,188,0.44)',
+            transition: 'color 0.2s',
+          }}
+        >
+          Lire
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default function Blog() {
-  const [posts, setPosts] = useState(PLACEHOLDER_POSTS);
-  const router = useRouter(); // ← was useNavigate
+  const [posts, setPosts] = useState(PLACEHOLDER_POSTS)
+  const router = useRouter()
 
   useEffect(() => {
-    client.fetch(QUERY)
-      .then(data => { if (data?.length) setPosts(data); })
-      .catch(() => {});
-  }, []);
+    client.fetch(QUERY).then((d) => { if (d?.length) setPosts(d) }).catch(() => {})
+  }, [])
+
+  const [featured, ...rest] = posts
+
+  const goTo = (post) => {
+    if (post?.slug?.current) router.push(`/blog/${post.slug.current}`)
+    else router.push('/blog')
+  }
 
   return (
-    <section id="blog" style={{ padding: '90px 28px', background: C.offWhite }}>
-      <div style={{ maxWidth: 1240, margin: '0 auto' }}>
+    <section
+      id="blog"
+      style={{
+        padding: '120px 28px 130px',
+        background: '#050908',
+        borderTop: '1px solid rgba(34,244,189,0.08)',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* bg decoration */}
+      <div
+        style={{
+          position: 'absolute',
+          top: -160,
+          left: -160,
+          width: 480,
+          height: 480,
+          border: '1px solid rgba(34,244,189,0.04)',
+          transform: 'rotate(45deg)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      <div style={{ maxWidth: 1240, margin: '0 auto', position: 'relative' }}>
 
         {/* Header */}
         <Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', alignItems: 'flex-end', gap: 32, marginBottom: 48 }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              flexWrap: 'wrap',
+              gap: 24,
+              marginBottom: 56,
+            }}
+          >
             <div>
-              <div className="sl">Insights & Expertise</div>
-              <h2 className="st">Le Blog Data Scale Business</h2>
-              <div className="dl" />
-              <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.06rem', color: C.inkMid, maxWidth: 480, lineHeight: 1.75, margin: 0 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
+                <div style={{ width: 24, height: 1.5, background: '#22f4bd' }} />
+                <span
+                  style={{
+                    fontSize: '0.68rem',
+                    fontWeight: 800,
+                    letterSpacing: '0.24em',
+                    textTransform: 'uppercase',
+                    color: '#22f4bd',
+                  }}
+                >
+                  Insights & Expertise
+                </span>
+              </div>
+              <h2
+                style={{
+                  margin: 0,
+                  fontFamily: 'var(--font-display), sans-serif',
+                  fontWeight: 800,
+                  fontSize: 'clamp(2.6rem, 5vw, 4.4rem)',
+                  lineHeight: 0.88,
+                  letterSpacing: '-0.04em',
+                  color: '#d8dfdb',
+                }}
+              >
+                Le Blog<br />
+                <span
+                  style={{
+                    background: 'linear-gradient(110deg, #22f4bd 0%, #5bcabc 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Data Scale.
+                </span>
+              </h2>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>
+              <p
+                style={{
+                  fontSize: '0.9rem',
+                  lineHeight: 1.74,
+                  color: 'rgba(188,201,195,0.56)',
+                  margin: 0,
+                  textAlign: 'right',
+                  maxWidth: 320,
+                }}
+              >
                 Conseils data, cas clients et tendances BI pour les décideurs marocains et africains.
               </p>
+              <button
+                className="cta-btn-outline"
+                style={{ fontSize: '0.7rem', padding: '0 18px', minHeight: '40px' }}
+                onClick={() => router.push('/blog')}
+              >
+                Tous les articles
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
             </div>
-            <button className="cta-btn-outline" onClick={() => router.push('/blog')}> {/* ← was navigate('/blog') */}
-              Tous les articles
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </button>
           </div>
         </Reveal>
 
-        {/* Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20 }} className="grid-3">
-          {posts.map((post, i) => {
-            const catColor = CAT_COLORS[post.category] || C.teal;
-            return (
-              <Reveal key={post._id} delay={i * 70}>
-                <div
-                  style={{ background: C.white, border: `1.5px solid ${C.border}`, display: 'flex', flexDirection: 'column', height: '100%', transition: 'transform 0.25s, box-shadow 0.25s, border-color 0.25s', overflow: 'hidden', cursor: 'pointer' }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 12px 36px rgba(0,0,0,0.07)'; e.currentTarget.style.borderColor = catColor + '44'; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.borderColor = C.border; }}
-                  onClick={() => router.push('/blog')} // ← was navigate('/blog')
-                >
-                  <div style={{ height: 3, background: catColor, flexShrink: 0 }} />
+        {/* Cards: 1 featured left + 2 stacked right */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1.15fr 0.85fr',
+            gap: 10,
+          }}
+        >
+          {featured && (
+            <Reveal delay={60}>
+              <Card post={featured} index={0} featured onClick={() => goTo(featured)} />
+            </Reveal>
+          )}
 
-                  {post.imageUrl ? (
-                    <img src={post.imageUrl} alt={post.title} style={{ width: '100%', height: 160, objectFit: 'cover' }} />
-                  ) : (
-                    <div style={{ height: 130, background: `${catColor}07`, display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: `1px solid ${C.border}` }}>
-                      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke={catColor} strokeWidth="1.5" opacity="0.35">
-                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="16" y1="13" x2="8" y2="13"/>
-                        <line x1="16" y1="17" x2="8" y2="17"/>
-                      </svg>
-                    </div>
-                  )}
-
-                  <div style={{ padding: '18px', display: 'flex', flexDirection: 'column', flex: 1, gap: 9 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: catColor, background: `${catColor}10`, border: `1px solid ${catColor}25`, padding: '2px 7px' }}>
-                        {post.category || 'Data'}
-                      </span>
-                      <span style={{ fontSize: '0.6rem', color: C.inkLight }}>{formatDate(post.publishedAt)}</span>
-                    </div>
-                    <h3 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: '0.98rem', color: C.ink, lineHeight: 1.4, margin: 0 }}>{post.title}</h3>
-                    <p style={{ fontSize: '0.77rem', color: C.inkLight, lineHeight: 1.7, margin: 0, flex: 1 }}>{post.excerpt}</p>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10, borderTop: `1px solid ${C.border}`, marginTop: 'auto' }}>
-                      <span style={{ fontSize: '0.66rem', color: C.inkLight, fontWeight: 600 }}>{post.authorName}</span>
-                      <span style={{ fontSize: '0.66rem', fontWeight: 700, color: catColor, display: 'flex', alignItems: 'center', gap: 4 }}>
-                        Lire
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                      </span>
-                    </div>
-                  </div>
-                </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {rest.slice(0, 2).map((post, i) => (
+              <Reveal key={post._id} delay={130 + i * 70}>
+                <Card post={post} index={i + 1} onClick={() => goTo(post)} />
               </Reveal>
-            );
-          })}
-        </div>
-
-        {/* SEO keywords */}
-        <Reveal delay={200}>
-          <div style={{ marginTop: 32, padding: '16px 24px', background: C.white, border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.inkLight, flexShrink: 0 }}>Thématiques</span>
-            {['Business Intelligence Maroc', 'Data Engineering Casablanca', 'CRM Analytique', 'Transformation Digitale', 'Power BI Maroc', 'Gouvernance Data Afrique', 'IA Immobilier'].map(tag => (
-              <span key={tag} style={{ fontSize: '0.62rem', fontWeight: 600, color: C.teal, background: C.tealBg, border: `1px solid ${C.tealBorder}`, padding: '3px 9px' }}>
-                {tag}
-              </span>
             ))}
           </div>
-        </Reveal>
-
+        </div>
       </div>
     </section>
-  );
+  )
 }

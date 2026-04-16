@@ -92,7 +92,7 @@ function SocialCard({ s }) {
             {s.icon}
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: '1.15rem', color: C.ink }}>{s.name}</div>
+            <div style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 700, fontSize: '1.15rem', color: C.ink }}>{s.name}</div>
             <div style={{ fontSize: '0.72rem', color: C.inkLight, marginTop: 2 }}>{s.handle}</div>
             {/* Follower pill */}
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, marginTop: 8, background: isInsta ? 'rgba(193,53,132,0.08)' : `${s.brand}12`, border: `1px solid ${isInsta ? 'rgba(193,53,132,0.2)' : s.brand + '30'}`, padding: '3px 10px', borderRadius: 20 }}>
@@ -111,7 +111,7 @@ function SocialCard({ s }) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', borderBottom: `1px solid ${C.border}` }}>
           {s.stats.map((st, i) => (
             <div key={i} style={{ padding: '14px 12px', textAlign: 'center', borderRight: i < 2 ? `1px solid ${C.border}` : 'none' }}>
-              <div style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: '1.1rem', color: isInsta ? s.brand : s.brand }}>{st.val}</div>
+              <div style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 700, fontSize: '1.1rem', color: isInsta ? s.brand : s.brand }}>{st.val}</div>
               <div style={{ fontSize: '0.62rem', color: C.inkLight, marginTop: 2 }}>{st.label}</div>
             </div>
           ))}
@@ -137,7 +137,7 @@ function SocialCard({ s }) {
             href={s.url}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: bg, color: '#fff', fontFamily: "'DM Sans',sans-serif", fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.09em', textTransform: 'uppercase', padding: '13px', textDecoration: 'none', transition: 'opacity 0.2s, transform 0.15s', clipPath: 'polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))' }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: bg, color: '#fff', fontFamily: "'Manrope',sans-serif", fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.09em', textTransform: 'uppercase', padding: '13px', textDecoration: 'none', transition: 'opacity 0.2s, transform 0.15s', clipPath: 'polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))' }}
             onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
             onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = ''; }}
           >
@@ -161,10 +161,10 @@ export default function Social() {
 
         <Reveal>
           <div style={{ marginBottom: 56 }}>
-            <div className="sl">Communauté</div>
+            <div className="sl" style={{ color: '#0a8c6a' }}>Communauté</div>
             <h2 className="st">Suivez-nous sur les réseaux</h2>
             <div className="dl" />
-            <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.08rem', color: C.inkMid, maxWidth: 520, lineHeight: 1.78 }}>
+            <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: '1.08rem', color: C.inkMid, maxWidth: 520, lineHeight: 1.78 }}>
               Conseils data, cas clients et coulisses projets — rejoignez notre communauté sur LinkedIn, Instagram et Facebook.
             </p>
           </div>
@@ -178,7 +178,7 @@ export default function Social() {
         {/* Bottom strip */}
         <Reveal delay={200}>
           <div style={{ marginTop: 48, padding: '22px 32px', background: C.white, border: `1.5px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 36, flexWrap: 'wrap' }}>
-            <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.05rem', color: C.inkMid }}>
+            <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: '1.05rem', color: C.inkMid }}>
               Rejoignez notre communauté — contenu data & BI chaque semaine
             </p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -188,7 +188,7 @@ export default function Social() {
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: s.brandGradient || s.brand, color: '#fff', fontFamily: "'DM Sans',sans-serif", fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.08em', textTransform: 'uppercase', padding: '9px 16px', textDecoration: 'none', transition: 'opacity 0.2s', clipPath: 'polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))' }}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: s.brandGradient || s.brand, color: '#fff', fontFamily: "'Manrope',sans-serif", fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.08em', textTransform: 'uppercase', padding: '9px 16px', textDecoration: 'none', transition: 'opacity 0.2s', clipPath: 'polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))' }}
                   onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.82')}
                   onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
                 >

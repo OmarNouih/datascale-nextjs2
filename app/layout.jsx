@@ -1,64 +1,66 @@
+import { Manrope, Space_Grotesk } from 'next/font/google'
+
 import './globals.css'
 
+const sans = Manrope({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  weight: ['400', '500', '600', '700', '800'],
+})
+
+const display = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-display',
+  weight: ['500', '600', '700'],
+})
+
 export const metadata = {
-  // ── Basic SEO ──
   title: {
-    default: 'Data Scale Business | Data. AI. BI. — Casablanca, Maroc',
-    template: '%s'
+    default: 'Data Scale Business | Performance systems from data to action',
+    template: '%s',
   },
-  description: 'Spécialistes en Business Intelligence, Data Engineering et IA à Casablanca. Nous accompagnons les entreprises au Maroc et en Afrique dans la valorisation de leurs données.',
+  description:
+    "Data Scale Business conçoit des systèmes de performance qui relient donnée, attention et exécution pour les entreprises au Maroc et en Afrique.",
   keywords: [
+    'Data Scale Business',
     'Business Intelligence Maroc',
     'Data Engineering Casablanca',
-    'Power BI Maroc',
-    'Tableau Maroc',
-    'IA Immobilier Maroc',
-    'Data Analytics Maroc',
-    'Transformation Digitale Maroc',
-    'CFO Immobilier Maroc',
-    'Gouvernance Data Afrique',
-    'Data Scale Business'
+    'Marketing data-driven Maroc',
+    'Transformation digitale Maroc',
+    'Performance systems',
   ],
-
-  // ── Canonical URL ──
   metadataBase: new URL('https://datascalebusiness.io'),
   alternates: {
     canonical: '/',
   },
-
-  // ── Open Graph (Facebook, LinkedIn) ──
   openGraph: {
-    title: 'Data Scale Business | Data. AI. BI.',
-    description: 'Spécialistes en Business Intelligence, Data Engineering et IA au Maroc et en Afrique.',
+    title: 'Data Scale Business | Performance systems from data to action',
+    description:
+      'Stratégie data, analyse, BI et activation marketing réunies dans un seul système de performance.',
     url: 'https://datascalebusiness.io',
     siteName: 'Data Scale Business',
     locale: 'fr_MA',
     type: 'website',
     images: [
       {
-        url: '/og-image.png', // add a 1200x630 image in /public
+        url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Data Scale Business Morocco',
-      }
+        alt: 'Data Scale Business',
+      },
     ],
   },
-
-  // ── Twitter Card ──
   twitter: {
     card: 'summary_large_image',
-    title: 'Data Scale Business | Data. AI. BI.',
-    description: 'Spécialistes en Business Intelligence, Data Engineering et IA au Maroc.',
+    title: 'Data Scale Business | Performance systems from data to action',
+    description:
+      'Stratégie data, analyse, BI et activation marketing réunies dans un seul système de performance.',
     images: ['/og-image.png'],
   },
-
-  // ── Favicon ──
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: '/favicon.png',
+    apple: '/favicon.png',
   },
-
-  // ── Robots ──
   robots: {
     index: true,
     follow: true,
@@ -76,47 +78,51 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;600;700;800;900&family=Playfair+Display:wght@700;800;900&family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;700&display=swap"
           rel="stylesheet"
         />
-        {/* Schema.org JSON-LD */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "Data Scale Business",
-              "url": "https://datascalebusiness.io",
-              "logo": "https://datascalebusiness.io/logo.png",
-              "description": "Spécialistes en Business Intelligence, Data Engineering et IA au Maroc et en Afrique.",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Casablanca",
-                "addressCountry": "MA"
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'Data Scale Business',
+              url: 'https://datascalebusiness.io',
+              logo: 'https://datascalebusiness.io/logo.png',
+              description:
+                'Business Intelligence, data engineering, analytics et activation marketing pour les entreprises au Maroc et en Afrique.',
+              address: {
+                '@type': 'PostalAddress',
+                addressLocality: 'Casablanca',
+                addressCountry: 'MA',
               },
-              "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": "+212-671-370-001", 
-                "contactType": "customer service",
-                "availableLanguage": ["French", "Arabic", "English"]
-                },
-              "sameAs": [
-                "https://www.linkedin.com/company/datascalebusiness",
-                "https://twitter.com/datascalebusiness"
-              ]
-            })
+              contactPoint: {
+                '@type': 'ContactPoint',
+                telephone: '+212-671-370-001',
+                contactType: 'customer service',
+                availableLanguage: ['French', 'Arabic', 'English'],
+              },
+              sameAs: [
+                'https://www.linkedin.com/company/datascalebusiness',
+                'https://twitter.com/datascalebusiness',
+              ],
+            }),
           }}
         />
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-JHRK820N2P" />
-        <script dangerouslySetInnerHTML={{ __html: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-JHRK820N2P');
-        `}} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-JHRK820N2P');
+            `,
+          }}
+        />
       </head>
-      <body>{children}</body>
+      <body className={`${sans.variable} ${display.variable}`}>{children}</body>
     </html>
   )
 }

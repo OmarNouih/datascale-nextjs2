@@ -66,7 +66,7 @@ export default function Footer() {
           {/* Brand col */}
           <div>
             <Logo size={26} dark />
-            <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '0.95rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.82, marginTop: 14, maxWidth: 260 }}>
+            <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: '0.95rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.82, marginTop: 14, maxWidth: 260 }}>
             Partenaire stratégique en Data, Business Intelligence et Intelligence Artificielle au Maroc, en Afrique et sur quatre continents. Fondé par des experts cumulant plus de 18 ans d’expérience.            </p>
             <div style={{ display: 'flex', gap: 8, marginTop: 18 }}>
               {SOCIAL.map((s) => (
@@ -94,7 +94,7 @@ export default function Footer() {
                 <button
                   key={label}
                   onClick={() => navTo(href)}
-                  style={{ display: 'block', fontSize: '0.8rem', color: 'rgba(255,255,255,0.45)', marginBottom: 8, cursor: 'pointer', background: 'none', border: 'none', textAlign: 'left', padding: 0, transition: 'color 0.2s', fontFamily: "'DM Sans', sans-serif" }}
+                  style={{ display: 'block', fontSize: '0.8rem', color: 'rgba(255,255,255,0.45)', marginBottom: 8, cursor: 'pointer', background: 'none', border: 'none', textAlign: 'left', padding: 0, transition: 'color 0.2s', fontFamily: "'Manrope', sans-serif" }}
                   onMouseEnter={(e) => (e.target.style.color = '#fff')}
                   onMouseLeave={(e) => (e.target.style.color = 'rgba(255,255,255,0.45)')}
                 >

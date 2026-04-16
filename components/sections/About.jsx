@@ -13,13 +13,13 @@ const DNA = [
     num: '2',
     title: 'Pragmatisme',
     desc: "Un engagement résolu envers l'optimisation du ROI et la création de valeur tangible, avec un focus constant sur les résultats mesurables pour chaque client.",
-    color: C.gold,
+    color: C.teal,
   },
   {
     num: '3',
     title: 'Partenariat',
     desc: "Une collaboration étroite et transparente avec nos clients, basée sur la co-construction, la confiance mutuelle et le partage d'un succès durable.",
-    color: '#7c5cbf',
+    color: C.tealDark,
   },
 ];
 
@@ -68,7 +68,7 @@ const LAYERS = [
     tools: 'Semantic models, OLAP, ML',
     desc: 'Modèles sémantiques et analyses avancées pour transformer les données en insights actionnables.',
     icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>,
-    color: '#7c5cbf',
+    color: C.tealDark,
   },
   {
     num: '03',
@@ -76,7 +76,7 @@ const LAYERS = [
     tools: 'Cloud data lake, Warehouse, On-prem',
     desc: 'Architectures résilientes Lakehouse et Data Warehouse pour un stockage sécurisé et scalable.',
     icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>,
-    color: C.gold,
+    color: C.teal,
   },
   {
     num: '02',
@@ -100,20 +100,20 @@ const TOOLS = ['Power BI','QlikSense','Cognos','Microsoft Azure','Lakehouse','Da
 
 export default function About() {
   return (
-    <section id="about" style={{ padding: '90px 28px', background: C.white }}>
+    <section id="about" style={{ padding: '90px 28px', background: C.dark }}>
       <div style={{ maxWidth: 1240, margin: '0 auto' }}>
 
         {/* ── BLOCK 1 : Vision + DNA ── */}
         <div className="grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center', marginBottom: 72 }}>
           <Reveal>
             <div>
-              <div className="sl">Notre ADN</div>
+              <div className="sl" style={{ color: '#0a8c6a' }}>Notre ADN</div>
               <h2 className="st">Partenaire stratégique au Maroc et en Afrique</h2>
               <div className="dl" />
-              <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.08rem', color: C.inkMid, lineHeight: 1.82, marginBottom: 14 }}>
+              <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: '1.08rem', color: 'rgba(255,255,255,0.65)', lineHeight: 1.82, marginBottom: 14 }}>
                 Notre ambition est de devenir le partenaire stratégique de référence au Maroc et en Afrique, en accompagnant les entreprises vers une culture fondée sur l'exploitation intelligente des données.
               </p>
-              <p style={{ fontSize: '0.84rem', color: C.inkLight, lineHeight: 1.78, marginBottom: 24 }}>
+              <p style={{ fontSize: '0.84rem', color: 'rgba(255,255,255,0.40)', lineHeight: 1.78, marginBottom: 24 }}>
                 Fondée par des experts forts de <strong>plus de 18 ans d'expérience exécutive</strong> auprès des plus grands groupes au Maroc, Data Scale Business Group fusionne stratégie de données, marketing digital et innovation produit en une approche cohérente et mesurable.
               </p>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -131,14 +131,14 @@ export default function About() {
           <Reveal delay={100}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {DNA.map(d => (
-                <div key={d.num} style={{ display: 'flex', gap: 16, padding: '18px 20px', background: C.offWhite, border: `1.5px solid ${C.border}`, position: 'relative', overflow: 'hidden' }}>
+                <div key={d.num} style={{ display: 'flex', gap: 16, padding: '18px 20px', background: C.darkCard, border: `1px solid rgba(34,244,189,0.12)`, position: 'relative', overflow: 'hidden' }}>
                   <div style={{ position: 'absolute', top: 0, left: 0, width: 3, height: '100%', background: d.color }} />
                   <div style={{ width: 34, height: 34, borderRadius: '50%', background: d.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <span style={{ fontFamily: "'Playfair Display',serif", fontWeight: 800, fontSize: '0.95rem', color: '#fff' }}>{d.num}</span>
+                    <span style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 800, fontSize: '0.95rem', color: '#fff' }}>{d.num}</span>
                   </div>
                   <div>
-                    <div style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: '0.97rem', color: C.ink, marginBottom: 3 }}>{d.title}</div>
-                    <p style={{ fontSize: '0.78rem', color: C.inkLight, lineHeight: 1.62, margin: 0 }}>{d.desc}</p>
+                    <div style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 700, fontSize: '0.97rem', color: '#ffffff', marginBottom: 3 }}>{d.title}</div>
+                    <p style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.40)', lineHeight: 1.62, margin: 0 }}>{d.desc}</p>
                   </div>
                 </div>
               ))}
@@ -152,8 +152,8 @@ export default function About() {
         {/* ── BLOCK 2 : 3 Pillars ── */}
         <Reveal>
           <div style={{ textAlign: 'center', marginBottom: 28 }}>
-            <div className="sl" style={{ justifyContent: 'center' }}>Nos Trois Piliers</div>
-            <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: 'clamp(1.3rem,2.5vw,1.9rem)', color: C.ink, margin: '6px 0 0' }}>
+            <div className="sl" style={{ justifyContent: 'center', color: '#0a8c6a' }}>Nos Trois Piliers</div>
+            <h2 style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 700, fontSize: 'clamp(1.3rem,2.5vw,1.9rem)', color: '#ffffff', margin: '6px 0 0' }}>
               Une synergie stratégique unique
             </h2>
           </div>
@@ -163,15 +163,15 @@ export default function About() {
           {PILLARS.map((p, i) => (
             <Reveal key={p.title} delay={i * 70}>
               <div
-                style={{ padding: '24px 22px', background: C.offWhite, border: `1.5px solid ${C.border}`, textAlign: 'center', transition: 'all 0.25s', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                style={{ padding: '24px 22px', background: C.darkCard, border: `1px solid rgba(34,244,189,0.12)`, textAlign: 'center', transition: 'all 0.25s', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 10px 32px rgba(46,125,110,0.09)'; e.currentTarget.style.borderColor = C.tealBorder; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.borderColor = C.border; }}
               >
                 <div style={{ width: 48, height: 48, borderRadius: '50%', background: C.tealBg, border: `1.5px solid ${C.tealBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14, color: C.teal, flexShrink: 0 }}>
                   {p.icon}
                 </div>
-                <div style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: '1rem', color: C.ink, marginBottom: 7 }}>{p.title}</div>
-                <p style={{ fontSize: '0.78rem', color: C.inkLight, lineHeight: 1.68, margin: 0 }}>{p.desc}</p>
+                <div style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 700, fontSize: '1rem', color: '#ffffff', marginBottom: 7 }}>{p.title}</div>
+                <p style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.40)', lineHeight: 1.68, margin: 0 }}>{p.desc}</p>
               </div>
             </Reveal>
           ))}
@@ -185,25 +185,25 @@ export default function About() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 52, alignItems: 'flex-end', marginBottom: 36 }} className="grid-2">
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-                <div style={{ width: 22, height: 2, background: C.teal, flexShrink: 0 }} />
-                <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '0.67rem', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.teal }}>
+                <div style={{ width: 22, height: 2, background: '#0a8c6a', flexShrink: 0 }} />
+                <span style={{ fontFamily: "'Manrope',sans-serif", fontSize: '0.67rem', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#0a8c6a' }}>
                   Stack Technique
                 </span>
               </div>
-              <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 800, fontSize: 'clamp(1.4rem,2.5vw,2rem)', color: C.ink, lineHeight: 1.15, marginBottom: 10 }}>
-                Notre Expertise <span style={{ color: C.gold }}>Data</span>
+              <h2 style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 800, fontSize: 'clamp(1.4rem,2.5vw,2rem)', color: '#ffffff', lineHeight: 1.15, marginBottom: 10 }}>
+                Notre Expertise <span style={{ color: C.teal }}>Data</span>
               </h2>
-              <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.02rem', color: C.inkMid, lineHeight: 1.75, margin: 0 }}>
+              <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: '1.02rem', color: 'rgba(255,255,255,0.65)', lineHeight: 1.75, margin: 0 }}>
                 Une architecture moderne pour transformer la donnée brute en actif stratégique.
               </p>
             </div>
             <div>
-              <div style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: C.inkLight, marginBottom: 10 }}>
+              <div style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.40)', marginBottom: 10 }}>
                 Technologies maîtrisées
               </div>
               <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
                 {TOOLS.map(t => (
-                  <span key={t} style={{ fontSize: '0.64rem', fontWeight: 600, color: C.teal, background: C.tealBg, border: `1px solid ${C.tealBorder}`, padding: '3px 9px' }}>
+                  <span key={t} style={{ fontSize: '0.64rem', fontWeight: 600, color: '#0a8c6a', background: 'rgba(34,244,189,0.07)', border: '1px solid rgba(34,244,189,0.22)', padding: '3px 9px' }}>
                     {t}
                   </span>
                 ))}
@@ -216,18 +216,18 @@ export default function About() {
           {LAYERS.map((layer, i) => (
             <Reveal key={layer.num} delay={i * 50}>
               <div
-                style={{ display: 'grid', gridTemplateColumns: '36px 44px 1fr auto', alignItems: 'center', gap: '0 18px', padding: '16px 18px', background: C.offWhite, border: `1px solid ${C.border}`, borderBottom: i < LAYERS.length - 1 ? 'none' : `1px solid ${C.border}`, transition: 'background 0.2s', position: 'relative', overflow: 'hidden' }}
+                style={{ display: 'grid', gridTemplateColumns: '36px 44px 1fr auto', alignItems: 'center', gap: '0 18px', padding: '16px 18px', background: C.darkCard, border: `1px solid ${C.border}`, borderBottom: i < LAYERS.length - 1 ? 'none' : `1px solid ${C.border}`, transition: 'background 0.2s', position: 'relative', overflow: 'hidden' }}
                 onMouseEnter={e => { e.currentTarget.style.background = `${layer.color}07`; e.currentTarget.style.borderColor = `${layer.color}30`; }}
                 onMouseLeave={e => { e.currentTarget.style.background = C.offWhite; e.currentTarget.style.borderColor = C.border; }}
               >
                 <div style={{ position: 'absolute', top: 0, left: 0, width: 3, height: '100%', background: layer.color, opacity: 0.55 }} />
-                <div style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: '0.65rem', color: C.border, paddingLeft: 8 }}>{layer.num}</div>
+                <div style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 700, fontSize: '0.65rem', color: C.border, paddingLeft: 8 }}>{layer.num}</div>
                 <div style={{ width: 36, height: 36, borderRadius: 7, background: `${layer.color}12`, border: `1px solid ${layer.color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: layer.color, flexShrink: 0 }}>
                   {layer.icon}
                 </div>
                 <div>
-                  <div style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: '0.9rem', color: C.ink, marginBottom: 2 }}>{layer.title}</div>
-                  <div style={{ fontSize: '0.74rem', color: C.inkLight, lineHeight: 1.55 }}>{layer.desc}</div>
+                  <div style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 700, fontSize: '0.9rem', color: '#ffffff', marginBottom: 2 }}>{layer.title}</div>
+                  <div style={{ fontSize: '0.74rem', color: 'rgba(255,255,255,0.40)', lineHeight: 1.55 }}>{layer.desc}</div>
                 </div>
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
                   <span style={{ fontSize: '0.62rem', fontWeight: 600, color: layer.color, background: `${layer.color}10`, border: `1px solid ${layer.color}22`, padding: '3px 9px', whiteSpace: 'nowrap' }}>

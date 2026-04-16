@@ -4,15 +4,15 @@ import { STEPS } from '@/lib/data/services';
 
 export default function Methodology() {
   return (
-    <section id="methodology" style={{ padding: '100px 28px', background: C.dark }}>
+    <section id="methodology" style={{ padding: '100px 28px', background: C.darkMid }}>
       <div style={{ maxWidth: 1240, margin: '0 auto' }}>
         <Reveal>
-          <div style={{ textAlign: 'center', marginBottom: 52 }}>
-            <div className="sl" style={{ justifyContent: 'center', color: C.gold }}>Notre Approche</div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 800, fontSize: 'clamp(1.6rem,3.5vw,2.85rem)', lineHeight: 1.15, color: '#fff' }}>
+          <div style={{ textAlign: 'center', marginBottom: 56 }}>
+            <div className="sl" style={{ justifyContent: 'center' }}>Notre Approche</div>
+            <h2 style={{ fontFamily: "'Raleway', sans-serif", fontWeight: 800, fontSize: 'clamp(1.6rem,3.5vw,2.75rem)', lineHeight: 1.12, color: '#fff' }}>
               Méthodologie en 4 étapes
             </h2>
-            <div style={{ width: 52, height: 2.5, background: `linear-gradient(90deg,${C.teal},${C.gold})`, margin: '16px auto 0' }} />
+            <div style={{ width: 40, height: 2, background: `linear-gradient(90deg,${C.teal},${C.tealAlt})`, margin: '16px auto 0' }} />
           </div>
         </Reveal>
 
@@ -20,14 +20,18 @@ export default function Methodology() {
           {STEPS.map((s, i) => (
             <Reveal key={s.num} delay={i * 80}>
               <div style={{
-                padding: '28px 22px',
-                borderTop: `1px solid rgba(232,146,42,0.25)`,
-                borderRight: i < 3 ? '1px solid rgba(255,255,255,0.07)' : 'none',
-              }}>
-                <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: '3rem', color: 'rgba(232,146,42,0.1)', lineHeight: 1, marginBottom: -4 }}>{s.num}</div>
-                <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.1rem', color: '#fff', margin: '16px 0 8px' }}>{s.title}</div>
-                <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.72 }}>{s.desc}</p>
-                <div style={{ width: 22, height: 2, background: C.gold, marginTop: 14 }} />
+                padding: '32px 24px',
+                borderTop: `2px solid rgba(34,244,189,${i === 0 ? '0.6' : i === 1 ? '0.45' : i === 2 ? '0.30' : '0.15'})`,
+                borderRight: i < 3 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                transition: 'background 0.25s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(34,244,189,0.03)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+              >
+                <div style={{ fontFamily: "'Raleway', sans-serif", fontWeight: 900, fontSize: '3.2rem', color: 'rgba(34,244,189,0.08)', lineHeight: 1, marginBottom: -4 }}>{s.num}</div>
+                <div style={{ fontFamily: "'Raleway', sans-serif", fontWeight: 700, fontSize: '1.05rem', color: '#fff', margin: '16px 0 8px' }}>{s.title}</div>
+                <p style={{ fontSize: '0.81rem', fontFamily: "'Manrope',sans-serif", color: 'rgba(255,255,255,0.45)', lineHeight: 1.75 }}>{s.desc}</p>
+                <div style={{ width: 18, height: 2, background: C.teal, marginTop: 16, opacity: 0.7 }} />
               </div>
             </Reveal>
           ))}

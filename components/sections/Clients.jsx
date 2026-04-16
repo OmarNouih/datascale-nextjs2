@@ -176,7 +176,7 @@ export default function Clients() {
                     <img
                       src={cl.logo}
                       alt={cl.name}
-                      style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', filter: 'brightness(0)', opacity: 0.75 }}
+                      style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', opacity: 0.9 }}
                       onError={e => {
                         e.target.style.display = 'none';
                         e.target.parentNode.innerHTML = `<span style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.4rem;color:${cl.brandColor}">${cl.name[0]}</span>`;
