@@ -80,52 +80,66 @@ export function SiteHeader() {
             />
           </div>
 
-          {/* Desktop links */}
-          <div className="desktop-nav" style={{ display: 'flex', gap: 22, alignItems: 'center' }}>
+          {/* Desktop: pill nav group */}
+          <div className="desktop-nav" style={{
+            display: 'flex', alignItems: 'center',
+            background: 'rgba(8,16,13,0.88)',
+            border: '1px solid rgba(112,235,179,0.13)',
+            backdropFilter: 'blur(14px)',
+            borderRadius: 999,
+            padding: '5px 6px',
+            gap: 2,
+          }}>
             {NAV_LINKS.map((l) => (
-              <button
-                key={l.label}
-                onClick={() => go(l.href)}
-                style={{
-                  fontFamily: "'Manrope', sans-serif",
-                  fontSize: '0.73rem',
-                  fontWeight: 700,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(216,223,219,0.72)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: '4px 0',
-                  transition: 'color 0.2s',
-                }}
-                onMouseEnter={(e) => (e.target.style.color = C.teal)}
-                onMouseLeave={(e) => (e.target.style.color = 'rgba(216,223,219,0.72)')}
-              >
+              <button key={l.label} onClick={() => go(l.href)} style={{
+                fontFamily: "'Manrope', sans-serif",
+                fontSize: '0.69rem', fontWeight: 700,
+                letterSpacing: '0.1em', textTransform: 'uppercase',
+                color: 'rgba(200,215,208,0.6)',
+                background: 'transparent',
+                border: 'none', borderRadius: 999,
+                padding: '8px 15px', cursor: 'pointer',
+                transition: 'all 0.2s', whiteSpace: 'nowrap',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = '#d8dfdb' }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(200,215,208,0.6)' }}>
                 {l.label}
               </button>
             ))}
-            <button
-              className="cta-btn cta-btn-gold"
-              style={{ fontSize: '0.71rem', padding: '6px 14px' }}
-              onClick={() => go('contact')}
-            >
-              Nous contacter
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
+          </div>
+
+          {/* Desktop: Contact pill outline */}
+          <div className="desktop-nav" style={{ display: 'flex', flexShrink: 0 }}>
+            <button onClick={() => go('contact')} style={{
+              fontFamily: "'Manrope', sans-serif",
+              fontSize: '0.71rem', fontWeight: 700,
+              letterSpacing: '0.12em', textTransform: 'uppercase',
+              color: '#22f4bd', background: 'transparent',
+              border: '1.5px solid rgba(34,244,189,0.55)',
+              borderRadius: 999, padding: '10px 26px',
+              cursor: 'pointer', transition: 'all 0.2s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(34,244,189,0.09)'
+              e.currentTarget.style.borderColor = '#22f4bd'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.borderColor = 'rgba(34,244,189,0.55)'
+            }}>
+              Contact
             </button>
           </div>
 
           {/* Mobile right side */}
           <div className="mobile-nav" style={{ display: 'none', alignItems: 'center', gap: 10 }}>
-            <button
-              className="cta-btn cta-btn-gold"
-              style={{ fontSize: '0.67rem', padding: '7px 13px' }}
-              onClick={() => go('contact')}
-            >
-              Contact
-            </button>
+            <button onClick={() => go('contact')} style={{
+              fontFamily: "'Manrope', sans-serif", fontSize: '0.67rem', fontWeight: 700,
+              letterSpacing: '0.1em', textTransform: 'uppercase',
+              color: '#22f4bd', background: 'transparent',
+              border: '1.5px solid rgba(34,244,189,0.5)',
+              borderRadius: 999, padding: '8px 16px', cursor: 'pointer',
+            }}>Contact</button>
 
             <button
               className="hamburger-btn"
