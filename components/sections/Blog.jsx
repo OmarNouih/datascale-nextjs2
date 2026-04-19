@@ -6,7 +6,8 @@ import { client } from '@/lib/sanity/client'
 import Reveal from '@/components/Reveal'
 
 const QUERY = `*[_type == "post"] | order(publishedAt desc)[0..2] {
-  _id, title, slug, publishedAt,
+  _id, title, slug,
+  "publishedAt": coalesce(publishedAt, _updatedAt, _createdAt),
   "excerpt": coalesce(excerpt, pt::text(body)[0...200]),
   "category": categories[0]->title,
   "authorName": author->name,
@@ -45,8 +46,9 @@ function formatDate(d) {
   return new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
 }
 
-function Card({ post, index, featured, onClick }) {
+function Card({ post, index, onClick }) {
   const [hov, setHov] = useState(false)
+
   return (
     <div
       role="button"
@@ -56,129 +58,119 @@ function Card({ post, index, featured, onClick }) {
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        position: 'relative',
-        overflow: 'hidden',
         cursor: 'pointer',
-        height: '100%',
+        minHeight: 260,
         display: 'flex',
         flexDirection: 'column',
-        padding: featured ? '36px 36px 28px' : '24px 24px 20px',
+        padding: '22px 20px 18px',
         background: hov
-          ? 'linear-gradient(145deg, rgba(14,22,19,0.98), rgba(9,15,13,0.94))'
-          : 'linear-gradient(145deg, rgba(11,18,16,0.96), rgba(7,12,10,0.88))',
-        border: `1px solid ${hov ? 'rgba(34,244,189,0.22)' : 'rgba(112,235,179,0.1)'}`,
-        boxShadow: hov ? '0 20px 52px rgba(0,0,0,0.22)' : 'none',
-        transform: hov ? 'translateY(-3px)' : 'none',
-        transition: 'all 0.22s ease',
+          ? '#22f4bd'
+          : 'linear-gradient(to right, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 25%, #0d0d0d 55%, #060606 100%)',
+        border: '1px solid rgba(255,255,255,0.15)',
+        borderRadius: 20,
+        transform: hov ? 'translateY(-12px)' : 'translateY(0)',
+        zIndex: hov ? 2 : 1,
+        transition: 'all 0.3s cubic-bezier(0.4,0,0.2,1)',
+        boxShadow: hov
+          ? '0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(34,244,189,0.4)'
+          : '0 2px 12px rgba(0,0,0,0.3)',
+        overflow: 'hidden',
       }}
     >
-      {/* Number watermark */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          bottom: -12,
-          right: 10,
-          fontFamily: 'var(--font-display), sans-serif',
-          fontWeight: 800,
-          fontSize: featured ? '9rem' : '5.5rem',
-          lineHeight: 1,
-          color: 'rgba(34,244,189,0.042)',
-          userSelect: 'none',
-          pointerEvents: 'none',
-          letterSpacing: '-0.06em',
-        }}
-      >
-        {String(index + 1).padStart(2, '0')}
+      {/* Number */}
+      <div style={{
+        fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
+        fontSize: '2.2rem',
+        fontWeight: 700,
+        lineHeight: 1,
+        color: hov ? 'rgba(4,20,15,0.4)' : '#22f4bd',
+        marginBottom: 16,
+        transition: 'color 0.28s',
+        letterSpacing: '-0.02em',
+      }}>
+        {String(index + 1).padStart(2, '0')}.
       </div>
 
-      {/* Category + date */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: featured ? 36 : 14 }}>
-        <span
-          style={{
-            fontSize: '0.56rem',
-            fontWeight: 800,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: '#22f4bd',
-            background: 'rgba(34,244,189,0.08)',
-            border: '1px solid rgba(34,244,189,0.16)',
-            padding: '3px 9px',
-          }}
-        >
-          {post.category || 'Data'}
-        </span>
-        <span style={{ fontSize: '0.59rem', color: 'rgba(180,195,188,0.4)' }}>
-          {formatDate(post.publishedAt)}
-        </span>
-      </div>
-
-      {/* Title */}
-      <h3
-        style={{
-          fontFamily: 'var(--font-display), sans-serif',
-          fontWeight: 700,
-          fontSize: featured ? 'clamp(1.5rem, 2.5vw, 2.2rem)' : '1.06rem',
-          color: hov ? '#d8dfdb' : 'rgba(216,223,219,0.88)',
-          margin: '0 0 12px',
-          lineHeight: 1.08,
-          letterSpacing: '-0.03em',
-          transition: 'color 0.2s',
-          maxWidth: featured ? '88%' : '100%',
-        }}
-      >
+      {/* Title — always 3 lines height */}
+      <h3 style={{
+        fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
+        fontWeight: 700,
+        fontSize: '1.05rem',
+        lineHeight: 1.28,
+        color: hov ? '#040e0a' : '#d8dfdb',
+        margin: '0 0 12px',
+        letterSpacing: '-0.01em',
+        transition: 'color 0.28s',
+        display: '-webkit-box',
+        WebkitLineClamp: 3,
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden',
+        minHeight: 'calc(1.05rem * 1.28 * 3)',
+      }}>
         {post.title}
       </h3>
 
-      {/* Excerpt */}
-      <p
-        style={{
-          fontSize: '0.84rem',
-          lineHeight: 1.74,
-          color: 'rgba(188,201,195,0.58)',
-          margin: 0,
-          flex: 1,
-          display: '-webkit-box',
-          WebkitLineClamp: featured ? 3 : 2,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden',
-        }}
-      >
+      {/* Excerpt — 2 lines */}
+      <p style={{
+        fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
+        fontSize: '0.82rem',
+        lineHeight: 1.65,
+        color: hov ? 'rgba(4,20,15,0.62)' : 'rgba(188,201,195,0.52)',
+        margin: '0 0 14px',
+        display: '-webkit-box',
+        WebkitLineClamp: 3,
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden',
+        transition: 'color 0.28s',
+      }}>
         {post.excerpt}
       </p>
 
+      {/* Always in DOM — space reserved, visibility toggled to prevent layout shift */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        gap: 6, marginBottom: 14,
+        fontSize: '0.67rem', fontWeight: 800,
+        letterSpacing: '0.14em', textTransform: 'uppercase',
+        color: '#040e0a',
+        visibility: hov ? 'visible' : 'hidden',
+      }}>
+        Lire plus
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </div>
+
       {/* Footer */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginTop: featured ? 28 : 18,
-          paddingTop: 14,
-          borderTop: '1px solid rgba(112,235,179,0.08)',
-        }}
-      >
-        <span style={{ fontSize: '0.6rem', color: 'rgba(180,195,188,0.36)', letterSpacing: '0.06em' }}>
-          {post.authorName}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingTop: 14,
+        marginTop: 'auto',
+        borderTop: `1px solid ${hov ? 'rgba(4,20,15,0.15)' : 'rgba(112,235,179,0.09)'}`,
+        transition: 'border-color 0.28s',
+      }}>
+        <span style={{
+          fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
+          fontSize: '0.6rem',
+          fontWeight: 700,
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: hov ? '#040e0a' : '#22f4bd',
+          transition: 'color 0.28s',
+        }}>
+          {post.category || 'Data'}
         </span>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 5,
-            fontSize: '0.66rem',
-            fontWeight: 800,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: hov ? '#22f4bd' : 'rgba(180,195,188,0.44)',
-            transition: 'color 0.2s',
-          }}
-        >
-          Lire
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-        </div>
+        <span style={{
+          fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
+          fontSize: '0.6rem',
+          fontWeight: 600,
+          color: hov ? 'rgba(4,20,15,0.6)' : '#eef4f1',
+          transition: 'color 0.28s',
+        }}>
+          {formatDate(post.publishedAt)}
+        </span>
       </div>
     </div>
   )
@@ -192,8 +184,6 @@ export default function Blog() {
     client.fetch(QUERY).then((d) => { if (d?.length) setPosts(d) }).catch(() => {})
   }, [])
 
-  const [featured, ...rest] = posts
-
   const goTo = (post) => {
     if (post?.slug?.current) router.push(`/blog/${post.slug.current}`)
     else router.push('/blog')
@@ -203,92 +193,82 @@ export default function Blog() {
     <section
       id="blog"
       style={{
-        padding: '120px 28px 130px',
-        background: '#050908',
-        borderTop: '1px solid rgba(34,244,189,0.08)',
+        padding: '120px 28px 90px',
+        background: 'linear-gradient(160deg, #060d0b 0%, #050908 55%, #040b09 100%)',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      {/* bg decoration */}
-      <div
-        style={{
-          position: 'absolute',
-          top: -160,
-          left: -160,
-          width: 480,
-          height: 480,
-          border: '1px solid rgba(34,244,189,0.04)',
-          transform: 'rotate(45deg)',
-          pointerEvents: 'none',
-        }}
-      />
+      {/* subtle corner decoration */}
+      <div style={{
+        position: 'absolute',
+        top: -160, left: -160,
+        width: 480, height: 480,
+        border: '1px solid rgba(34,244,189,0.04)',
+        transform: 'rotate(45deg)',
+        pointerEvents: 'none',
+      }} />
+      {/* ambient glow top-right */}
+      <div style={{
+        position: 'absolute',
+        top: -80, right: -80,
+        width: 400, height: 400,
+        background: 'radial-gradient(ellipse, rgba(34,244,189,0.05) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
 
       <div style={{ maxWidth: 1240, margin: '0 auto', position: 'relative' }}>
 
         {/* Header */}
         <Reveal>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-end',
-              flexWrap: 'wrap',
-              gap: 24,
-              marginBottom: 56,
-            }}
-          >
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+            flexWrap: 'wrap',
+            gap: 24,
+            marginBottom: 56,
+          }}>
             <div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
                 <div style={{ width: 24, height: 1.5, background: '#22f4bd' }} />
-                <span
-                  style={{
-                    fontSize: '0.68rem',
-                    fontWeight: 800,
-                    letterSpacing: '0.24em',
-                    textTransform: 'uppercase',
-                    color: '#22f4bd',
-                  }}
-                >
+                <span style={{
+                  fontSize: '0.68rem', fontWeight: 800,
+                  letterSpacing: '0.24em', textTransform: 'uppercase',
+                  color: '#22f4bd',
+                }}>
                   Insights & Expertise
                 </span>
               </div>
-              <h2
-                style={{
-                  margin: 0,
-                  fontFamily: 'var(--font-display), sans-serif',
-                  fontWeight: 800,
-                  fontSize: 'clamp(2.6rem, 5vw, 4.4rem)',
-                  lineHeight: 0.88,
-                  letterSpacing: '-0.04em',
-                  color: '#d8dfdb',
-                }}
-              >
-                Le Blog<br />
-                <span
-                  style={{
-                    background: 'linear-gradient(110deg, #22f4bd 0%, #5bcabc 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                >
-                  Data Scale.
+              <h2 style={{
+                margin: 0,
+                fontFamily: "'Artonex Trial', sans-serif",
+                fontWeight: 400,
+                fontSize: 'clamp(2.6rem, 5vw, 4.4rem)',
+                lineHeight: 1,
+                letterSpacing: '0.01em',
+                color: '#d8dfdb',
+              }}>
+                <span style={{ display: 'block', marginBottom: '0.22em' }}>Le Blog</span>
+                <span style={{
+                  display: 'block',
+                  background: 'linear-gradient(110deg, #22f4bd 0%, #5bcabc 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}>
+                  Data Scale
                 </span>
               </h2>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>
-              <p
-                style={{
-                  fontSize: '0.9rem',
-                  lineHeight: 1.74,
-                  color: 'rgba(188,201,195,0.56)',
-                  margin: 0,
-                  textAlign: 'right',
-                  maxWidth: 320,
-                }}
-              >
+              <p style={{
+                fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
+                fontSize: '0.9rem', lineHeight: 2.0,
+                color: 'rgba(188,201,195,0.56)',
+                margin: 0, textAlign: 'right', maxWidth: 320,
+              }}>
                 Conseils data, cas clients et tendances BI pour les décideurs marocains et africains.
               </p>
               <button
@@ -305,27 +285,19 @@ export default function Blog() {
           </div>
         </Reveal>
 
-        {/* Cards: 1 featured left + 2 stacked right */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1.15fr 0.85fr',
-            gap: 10,
-          }}
-        >
-          {featured && (
-            <Reveal delay={60}>
-              <Card post={featured} index={0} featured onClick={() => goTo(featured)} />
+        {/* 3 equal cards */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 24,
+          alignItems: 'start',
+          paddingBottom: 20,
+        }}>
+          {posts.slice(0, 3).map((post, i) => (
+            <Reveal key={post._id} delay={i * 80}>
+              <Card post={post} index={i} onClick={() => goTo(post)} />
             </Reveal>
-          )}
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {rest.slice(0, 2).map((post, i) => (
-              <Reveal key={post._id} delay={130 + i * 70}>
-                <Card post={post} index={i + 1} onClick={() => goTo(post)} />
-              </Reveal>
-            ))}
-          </div>
+          ))}
         </div>
       </div>
     </section>

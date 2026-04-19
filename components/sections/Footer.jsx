@@ -108,7 +108,7 @@ export default function Footer() {
     {/* Bottom bar */}
     <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
       <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)' }}>
-        © 2026 Data Scale Business Group — Casablanca · Sheridan WY · datascalebusiness.io
+        © 2026 Data Scale Business Group · Casablanca · Sheridan WY · datascalebusiness.io
       </div>
       <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
         <a href="/privacy-policy"

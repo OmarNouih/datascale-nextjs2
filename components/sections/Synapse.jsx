@@ -1,213 +1,319 @@
-import Reveal from '@/components/Reveal';
-import { C } from '@/lib/tokens';
-import { navTo } from '@/lib/utils/nav';
+'use client'
 
-const METRICS = [
-  { val: '42%',  label: 'Augmentation des RDV',       desc: 'Réservations clients améliorées'  },
-  { val: '85%',  label: 'Réduction Temps de Réponse', desc: 'Délai aux leads minimisé'         },
-  { val: '10+',  label: 'Heures Économisées/Semaine', desc: 'Sur les suivis manuels'           },
-  { val: '28%',  label: 'Récupération des Leads',     desc: 'Potentiels froids ou manqués'     },
-];
+import Reveal from '@/components/Reveal'
+import { C } from '@/lib/tokens'
+import { navTo } from '@/lib/utils/nav'
+
+const STATS = [
+  { val: '40%', label: 'des leads immobiliers', sub: 'ne recoivent jamais de reponse' },
+  { val: '<5s',  label: 'Reva repond',           sub: 'en moyenne, 24h/24 7j/7'       },
+  { val: '22x',  label: 'ROI potentiel',          sub: 'sur 90 jours'                  },
+]
 
 const FEATURES = [
   {
-    num: '1',
-    title: 'Plateforme Intégrée Révolutionnaire',
-    desc: 'Solution complète de conversion de leads, optimisée par Reva, notre assistant IA conversationnel.',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      </svg>
+    ),
+    title: 'Disponible 24h/24, 7j/7',
+    desc: 'Aucun lead ne reste sans réponse, quelle que soit l\'heure ou le canal.',
   },
   {
-    num: '2',
-    title: 'Moteur de Croissance 24/7',
-    desc: 'Capturez, qualifiez et convertissez 100% des leads numériques sans interruption.',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+      </svg>
+    ),
+    title: 'FR · Darija · AR · EN',
+    desc: 'Reva comprend et répond dans la langue naturelle de votre prospect.',
   },
   {
-    num: '3',
-    title: 'Visibilité Commerciale 360°',
-    desc: "Gestion centralisée des opportunités et suivi complet de toutes les conversations.",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+    ),
+    title: 'Qualification et prise de RDV',
+    desc: 'Détecte l\'intention d\'achat et planifie automatiquement les rendez-vous.',
   },
-];
+  {
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+    ),
+    title: 'Analytics temps réel',
+    desc: 'Dashboard complet: leads, conversations, conversions et performance.',
+  },
+]
 
 const INTEGRATIONS = [
-  { label: 'CRM',           desc: 'Dynamics, Salesforce', icon: '⚙️' },
-  { label: 'WhatsApp',      desc: 'Leads instantanés',    icon: '💬' },
-  { label: 'Meta & Google', desc: 'Acquisition sociale',  icon: '📣' },
-  { label: 'Calendriers',   desc: 'Outlook, Google Cal.', icon: '📅' },
-];
+  { label: 'WhatsApp',    color: '#25D366', desc: 'Leads instantanés'   },
+  { label: 'Meta Ads',   color: '#1877F2', desc: 'Facebook & Instagram' },
+  { label: 'Google',     color: '#4285F4', desc: 'Search & GBP'        },
+  { label: 'Salesforce', color: '#00A1E0', desc: 'CRM natif'           },
+  { label: 'Calendriers',color: '#0078D4', desc: 'Outlook, Google Cal' },
+]
+
+const CHAT_MSGS = [
+  { from: 'user', text: 'Bonjour, je cherche un appartement 3 pièces à Casablanca' },
+  { from: 'reva', text: 'Bonjour! Je suis Reva 👋 Nous avons plusieurs biens correspondant à vos critères. Quel est votre budget approximatif?' },
+  { from: 'user', text: 'Entre 1.5M et 2M DH' },
+  { from: 'reva', text: 'Parfait. J\'ai 4 biens disponibles dans cette fourchette. Souhaitez-vous planifier une visite? J\'ai des créneaux dès demain matin.' },
+]
+
+const LANG_PILLS = ['FR', 'دارجة', 'AR', 'EN']
 
 export default function Synapse() {
   return (
-    <section id="synapse" style={{ background: C.dark, position: 'relative', overflow: 'hidden' }}>
+    <section id="synapse" style={{ background: '#040807', position: 'relative', overflow: 'hidden' }}>
 
-      {/* Background */}
-      <div style={{ position: 'absolute', inset: 0, backgroundImage: `linear-gradient(rgba(34,244,189,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(34,244,189,0.03) 1px,transparent 1px)`, backgroundSize: '60px 60px', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle,rgba(112,235,179,0.06) 0%,transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg,${C.teal},${C.tealAlt})` }} />
+      {/* ── Ambient atmosphere ── */}
+      <div style={{ position: 'absolute', top: '-20%', right: '-10%', width: 700, height: 700, borderRadius: '50%', background: 'radial-gradient(circle,rgba(34,244,189,0.07) 0%,transparent 60%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: '-15%', left: '-8%', width: 550, height: 550, borderRadius: '50%', background: 'radial-gradient(circle,rgba(34,244,189,0.04) 0%,transparent 65%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(34,244,189,0.055) 1px, transparent 1px)', backgroundSize: '36px 36px', pointerEvents: 'none', opacity: 0.55 }} />
 
-      <div style={{ maxWidth: 1240, margin: '0 auto', position: 'relative', padding: '80px 28px' }}>
+      <div style={{ maxWidth: 1240, margin: '0 auto', position: 'relative', padding: '96px 28px 80px' }}>
 
-        {/* ── BLOCK 1 : HEADER ── */}
+        {/* ── HEADER ── */}
         <Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 32, alignItems: 'flex-start', marginBottom: 48, paddingBottom: 48, borderBottom: `1px solid rgba(34,244,189,0.10)` }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-                <div style={{ width: 20, height: 2, background: C.tealLight }} />
-                <span style={{ fontFamily: "'Manrope',sans-serif", fontSize: '0.67rem', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.tealLight }}>
-                  Produit Phare
-                </span>
-              </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: 64 }}>
 
-              <h2 style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 900, fontSize: 'clamp(2rem,4.5vw,3.4rem)', color: '#fff', lineHeight: 1.05, marginBottom: 16, letterSpacing: '-0.01em' }}>
-                Synapse <span style={{ color: C.teal }}>Real Estate</span>
-              </h2>
-
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(34,244,189,0.07)', border: `1px solid rgba(34,244,189,0.18)`, padding: '7px 14px', marginBottom: 16 }}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2.5">
-                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-                </svg>
-                <span style={{ fontSize: '0.71rem', fontWeight: 600, color: C.tealLight, fontFamily: "'Manrope',sans-serif" }}>
-                  Plateforme CRM et IA dédiée aux professionnels de l'immobilier
-                </span>
-              </div>
-
-              <p style={{ fontFamily: "'Manrope',sans-serif", fontWeight: 400, fontSize: '1.02rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.85, maxWidth: 540, marginBottom: 6 }}>
-                Synapse centralise vos leads WhatsApp, Meta, Google et CRM en une seule plateforme, pilotée par{' '}
-                <strong style={{ color: C.teal, fontStyle: 'normal' }}>Reva</strong>, notre IA conversationnelle spécialisée immobilier.
-              </p>
-              <p style={{ fontSize: '0.76rem', fontFamily: "'Manrope',sans-serif", color: 'rgba(255,255,255,0.28)', lineHeight: 1.6 }}>
-                100% des leads capturés · Qualification automatique · RDV planifiés 24/7
-              </p>
+            {/* Eyebrow pill */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(34,244,189,0.07)', border: '1px solid rgba(34,244,189,0.18)', padding: '5px 16px', marginBottom: 32 }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: C.teal, boxShadow: `0 0 8px ${C.teal}` }} />
+              <span style={{ fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif", fontSize: '0.63rem', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.teal }}>
+                Produit exclusif · By Data Scale Business
+              </span>
             </div>
 
-            {/* Badges */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, flexShrink: 0 }}>
-              <div style={{ background: 'rgba(34,244,189,0.07)', border: `1.5px solid rgba(34,244,189,0.20)`, padding: '16px 22px', textAlign: 'center', minWidth: 110 }}>
-                <div style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 900, fontSize: '2.2rem', color: C.teal, lineHeight: 1 }}>10</div>
-                <div style={{ fontSize: '0.6rem', fontFamily: "'Manrope',sans-serif", color: 'rgba(255,255,255,0.35)', marginTop: 4, lineHeight: 1.5 }}>jours ouvrés<br />déploiement</div>
-              </div>
-              <div style={{ background: 'rgba(34,244,189,0.07)', border: `1px solid rgba(34,244,189,0.18)`, padding: '9px 14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: C.teal, animation: 'pulse 2s infinite' }} />
-                <span style={{ fontSize: '0.65rem', fontWeight: 700, fontFamily: "'Manrope',sans-serif", color: C.teal, letterSpacing: '0.12em' }}>LIVE 24/7</span>
-              </div>
+            {/* Full logo */}
+            <h2 style={{ margin: '0 0 4px' }}>
+              <img
+                src="/corvia logo.png"
+                alt="Corvya"
+                style={{ height: 56, width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 0 18px rgba(34,244,189,0.30))' }}
+              />
+            </h2>
+
+            {/* Tagline */}
+            <div style={{
+              fontFamily: "'Artonex Trial', 'Avenir Next', 'Century Gothic', sans-serif",
+              fontSize: 'clamp(0.85rem,2vw,1.35rem)',
+              fontWeight: 400,
+              letterSpacing: '0.22em',
+              color: C.tealLight,
+              textTransform: 'uppercase',
+              marginBottom: 20,
+            }}>
+              Intelligence Immobiliere
             </div>
+
+            <p style={{ fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif", fontSize: '1.05rem', color: 'rgba(216,223,219,0.55)', lineHeight: 1.82, maxWidth: 560 }}>
+              CORVYA convertit automatiquement 100% de vos leads immobiliers en
+              rendez-vous qualifiés, grâce à{' '}
+              <strong style={{ color: C.ink, fontWeight: 600 }}>Reva</strong>,
+              notre agent IA conversationnel multilingue.
+            </p>
           </div>
         </Reveal>
 
-        {/* ── BLOCK 2 : HOW IT WORKS + RESULTS ── */}
-        <div className="grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, marginBottom: 10, paddingBottom: 10, borderBottom: `1px solid rgba(34,244,189,0.08)` }}>
-
-          {/* Features */}
-          <div>
-            <div style={{ fontSize: '0.61rem', fontWeight: 700, fontFamily: "'Manrope',sans-serif", letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.22)', marginBottom: 22 }}>Comment ça fonctionne</div>
-            {FEATURES.map((f, i) => (
-              <Reveal key={f.num} delay={i * 70}>
-                <div style={{ display: 'flex', gap: 16, marginBottom: 20, paddingBottom: 20, borderBottom: i < 2 ? `1px solid rgba(34,244,189,0.07)` : 'none' }}>
-                  <div style={{ width: 34, height: 34, borderRadius: '50%', background: C.teal, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: `0 4px 14px rgba(34,244,189,0.20)` }}>
-                    <span style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 900, fontSize: '0.88rem', color: '#050a07' }}>{f.num}</span>
+        {/* ── STATS BAND ── */}
+        <Reveal delay={50}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3,1fr)',
+            marginBottom: 68,
+            background: 'rgba(34,244,189,0.04)',
+            border: '1px solid rgba(34,244,189,0.12)',
+          }}>
+            {STATS.map((s, i) => (
+              <div
+                key={i}
+                style={{
+                  padding: '18px 24px',
+                  textAlign: 'center',
+                  borderRight: i < 2 ? '1px solid rgba(34,244,189,0.09)' : 'none',
+                  transition: 'background 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 14,
+                  justifyContent: 'center',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(34,244,189,0.05)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+              >
+                <div style={{ fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif", fontWeight: 800, fontSize: '1.7rem', color: C.teal, lineHeight: 1, letterSpacing: '-0.02em', flexShrink: 0 }}>
+                  {s.val}
+                </div>
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif", fontSize: '0.78rem', fontWeight: 600, color: 'rgba(255,255,255,0.8)', lineHeight: 1.3 }}>
+                    {s.label}
                   </div>
-                  <div>
-                    <div style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 700, fontSize: '0.96rem', color: '#fff', marginBottom: 5 }}>{f.title}</div>
-                    <p style={{ fontSize: '0.78rem', fontFamily: "'Manrope',sans-serif", color: 'rgba(255,255,255,0.38)', lineHeight: 1.7, margin: 0 }}>{f.desc}</p>
+                  <div style={{ fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif", fontSize: '0.63rem', color: 'rgba(216,223,219,0.3)', marginTop: 2 }}>
+                    {s.sub}
                   </div>
                 </div>
-              </Reveal>
+              </div>
             ))}
           </div>
+        </Reveal>
 
-          {/* Metrics */}
-          <Reveal delay={80}>
-            <div>
-              <div style={{ fontSize: '0.61rem', fontWeight: 700, fontFamily: "'Manrope',sans-serif", letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.22)', marginBottom: 22 }}>Résultats mesurés</div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                {METRICS.map((m, i) => {
-                  const colors = [C.teal, C.tealLight, C.tealDark, C.tealAlt];
-                  const mc = colors[i];
-                  return (
-                    <div
-                      key={m.label}
-                      style={{ padding: '18px 16px', background: `${mc}08`, border: `1px solid ${mc}20`, transition: 'transform 0.2s' }}
-                      onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-3px)')}
-                      onMouseLeave={e => (e.currentTarget.style.transform = '')}
-                    >
-                      <div style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 900, fontSize: '1.8rem', color: mc, lineHeight: 1, marginBottom: 6 }}>{m.val}</div>
-                      <div style={{ fontSize: '0.71rem', fontWeight: 600, fontFamily: "'Manrope',sans-serif", color: '#fff', marginBottom: 3 }}>{m.label}</div>
-                      <div style={{ fontSize: '0.63rem', fontFamily: "'Manrope',sans-serif", color: 'rgba(255,255,255,0.28)' }}>{m.desc}</div>
+        {/* ── MAIN TWO COLUMNS ── */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 44, marginBottom: 56, alignItems: 'start' }}>
+
+          {/* LEFT: feature list + CTAs */}
+          <div>
+            <Reveal>
+              <div style={{ fontSize: '0.6rem', fontFamily: "'Avenir Next', 'Avenir', sans-serif", fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', marginBottom: 22 }}>
+                Comment Reva travaille pour vous
+              </div>
+            </Reveal>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {FEATURES.map((f, i) => (
+                <Reveal key={i} delay={i * 55}>
+                  <div
+                    style={{ display: 'flex', gap: 14, padding: '16px 18px', background: 'rgba(13,21,19,0.55)', border: '1px solid rgba(34,244,189,0.07)', transition: 'border-color 0.2s, background 0.2s', cursor: 'default' }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(34,244,189,0.22)'; e.currentTarget.style.background = 'rgba(34,244,189,0.04)' }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(34,244,189,0.07)'; e.currentTarget.style.background = 'rgba(13,21,19,0.55)' }}
+                  >
+                    <div style={{ width: 34, height: 34, background: 'rgba(34,244,189,0.09)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: C.teal }}>
+                      {f.icon}
                     </div>
-                  );
-                })}
+                    <div>
+                      <div style={{ fontFamily: "'Avenir Next', 'Avenir', sans-serif", fontWeight: 600, fontSize: '0.88rem', color: '#fff', marginBottom: 3 }}>{f.title}</div>
+                      <p style={{ fontFamily: "'Avenir Next', 'Avenir', sans-serif", fontSize: '0.74rem', color: 'rgba(216,223,219,0.4)', lineHeight: 1.6, margin: 0 }}>{f.desc}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+
+            <Reveal delay={300}>
+              <div style={{ marginTop: 30, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <a
+                  href="https://corvya.datascalebusiness.io"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 9, background: C.teal, color: '#040807', padding: '12px 22px', fontFamily: "'Avenir Next', 'Avenir', sans-serif", fontWeight: 700, fontSize: '0.84rem', letterSpacing: '0.04em', textDecoration: 'none', transition: 'opacity 0.2s' }}
+                  onMouseEnter={e => (e.currentTarget.style.opacity = '0.88')}
+                  onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+                >
+                  Découvrir CORVYA
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <button
+                  onClick={() => navTo('contact')}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 9, background: 'transparent', color: C.tealLight, padding: '12px 22px', fontFamily: "'Avenir Next', 'Avenir', sans-serif", fontWeight: 600, fontSize: '0.84rem', border: '1px solid rgba(34,244,189,0.22)', cursor: 'pointer', transition: 'border-color 0.2s, color 0.2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = C.teal; e.currentTarget.style.color = '#fff' }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(34,244,189,0.22)'; e.currentTarget.style.color = C.tealLight }}
+                >
+                  Nous contacter
+                </button>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* RIGHT: Reva chat mockup */}
+          <Reveal delay={120}>
+            <div style={{ background: '#091210', border: '1px solid rgba(34,244,189,0.15)', overflow: 'hidden', boxShadow: '0 28px 70px rgba(0,0,0,0.55), 0 0 0 1px rgba(34,244,189,0.05)' }}>
+
+              {/* Chat topbar */}
+              <div style={{ padding: '14px 18px', background: '#0d1513', borderBottom: '1px solid rgba(34,244,189,0.09)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div style={{ width: 36, height: 36, background: 'rgba(34,244,189,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(34,244,189,0.2)' }}>
+                    <img src="/corvya_picto.png" alt="Reva" style={{ width: 22, height: 22, objectFit: 'contain' }} />
+                  </div>
+                  <div>
+                    <div style={{ fontFamily: "'Avenir Next', 'Avenir', sans-serif", fontWeight: 700, fontSize: '0.87rem', color: '#fff' }}>Reva · CORVYA</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                      <div style={{ width: 5, height: 5, borderRadius: '50%', background: C.teal, boxShadow: `0 0 6px ${C.teal}` }} />
+                      <span style={{ fontFamily: "'Avenir Next', 'Avenir', sans-serif", fontSize: '0.6rem', color: C.tealLight }}>
+                        En ligne · Répond en moins de 5s
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', gap: 3 }}>
+                  {LANG_PILLS.map((l, i) => (
+                    <span
+                      key={i}
+                      style={{ padding: '2px 7px', background: i === 0 ? 'rgba(34,244,189,0.14)' : 'rgba(255,255,255,0.04)', border: `1px solid ${i === 0 ? 'rgba(34,244,189,0.28)' : 'rgba(255,255,255,0.07)'}`, fontSize: '0.58rem', fontFamily: "'Avenir Next', 'Avenir', sans-serif", color: i === 0 ? C.teal : 'rgba(255,255,255,0.3)' }}
+                    >
+                      {l}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Messages */}
+              <div style={{ padding: '20px 18px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {CHAT_MSGS.map((msg, i) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: msg.from === 'user' ? 'flex-end' : 'flex-start' }}>
+                    <div style={{
+                      maxWidth: '80%',
+                      padding: '10px 14px',
+                      background: msg.from === 'user' ? 'rgba(34,244,189,0.10)' : 'rgba(255,255,255,0.055)',
+                      border: `1px solid ${msg.from === 'user' ? 'rgba(34,244,189,0.18)' : 'rgba(255,255,255,0.07)'}`,
+                      borderRadius: msg.from === 'user' ? '6px 2px 6px 6px' : '2px 6px 6px 6px',
+                    }}>
+                      <p style={{ fontFamily: "'Avenir Next', 'Avenir', sans-serif", fontSize: '0.77rem', color: msg.from === 'user' ? 'rgba(216,223,219,0.82)' : 'rgba(216,223,219,0.68)', lineHeight: 1.55, margin: 0 }}>
+                        {msg.text}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Quick reply chips */}
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 4 }}>
+                  {['Oui, cette semaine', 'Voir les biens', 'Rappeler plus tard'].map((opt, i) => (
+                    <span key={i} style={{ padding: '5px 10px', border: '1px solid rgba(34,244,189,0.22)', fontSize: '0.67rem', fontFamily: "'Avenir Next', 'Avenir', sans-serif", color: C.tealLight, cursor: 'default' }}>
+                      {opt}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Input row */}
+              <div style={{ padding: '12px 18px', borderTop: '1px solid rgba(34,244,189,0.07)', background: '#0d1513', display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ flex: 1, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', padding: '8px 12px' }}>
+                  <span style={{ fontFamily: "'Avenir Next', 'Avenir', sans-serif", fontSize: '0.72rem', color: 'rgba(255,255,255,0.18)' }}>Écrire un message...</span>
+                </div>
+                <div style={{ width: 34, height: 34, background: C.teal, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#040807" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
               </div>
             </div>
           </Reveal>
         </div>
 
-        {/* ── BLOCK 3 : REVA + INTEGRATIONS ── */}
-        <Reveal delay={100}>
-          <div className="grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 48, marginTop: 40 }}>
-
-            {/* Reva card */}
-            <div style={{ padding: '24px', background: C.darkCard, border: `1px solid rgba(34,244,189,0.12)`, display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-              <div style={{ width: 46, height: 46, borderRadius: '50%', background: `linear-gradient(135deg,${C.teal},${C.tealAlt})`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: `0 6px 20px rgba(34,244,189,0.20)` }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#050a07" strokeWidth="2.2">
-                  <circle cx="12" cy="12" r="5"/>
-                  <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
-                </svg>
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-                  <div style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 700, fontSize: '1.05rem', color: '#fff' }}>Reva AI</div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: C.teal, animation: 'pulse 2s infinite' }} />
-                    <span style={{ fontSize: '0.6rem', fontFamily: "'Manrope',sans-serif", color: C.teal, fontWeight: 700, letterSpacing: '0.1em' }}>ACTIF</span>
-                  </div>
+        {/* ── INTEGRATIONS ── */}
+        <Reveal delay={180}>
+          <div>
+            <div style={{ fontSize: '0.6rem', fontFamily: "'Avenir Next', 'Avenir', sans-serif", fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', marginBottom: 14, textAlign: 'center' }}>
+              Intégrations natives
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 8, flexWrap: 'wrap' }}>
+              {INTEGRATIONS.map((int, i) => (
+                <div
+                  key={i}
+                  style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 16px', background: 'rgba(13,21,19,0.7)', border: '1px solid rgba(34,244,189,0.09)', transition: 'border-color 0.2s, background 0.2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(34,244,189,0.25)'; e.currentTarget.style.background = 'rgba(34,244,189,0.04)' }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(34,244,189,0.09)'; e.currentTarget.style.background = 'rgba(13,21,19,0.7)' }}
+                >
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: int.color, boxShadow: `0 0 6px ${int.color}60` }} />
+                  <span style={{ fontFamily: "'Avenir Next', 'Avenir', sans-serif", fontSize: '0.76rem', fontWeight: 600, color: 'rgba(255,255,255,0.55)' }}>{int.label}</span>
+                  <span style={{ fontFamily: "'Avenir Next', 'Avenir', sans-serif", fontSize: '0.64rem', color: 'rgba(255,255,255,0.25)' }}>{int.desc}</span>
                 </div>
-                <div style={{ fontSize: '0.7rem', fontFamily: "'Manrope',sans-serif", color: 'rgba(255,255,255,0.3)', marginBottom: 8 }}>Your intelligent real estate partner</div>
-                <p style={{ fontSize: '0.77rem', fontFamily: "'Manrope',sans-serif", color: 'rgba(255,255,255,0.42)', lineHeight: 1.65, margin: 0 }}>
-                  IA entraînée pour les conversations immobilières en français, arabe et anglais.
-                </p>
-              </div>
+              ))}
             </div>
-
-            {/* Integrations */}
-            <div style={{ padding: '24px', background: C.darkCard, border: `1px solid rgba(34,244,189,0.12)` }}>
-              <div style={{ fontSize: '0.61rem', fontWeight: 700, fontFamily: "'Manrope',sans-serif", letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.22)', marginBottom: 16 }}>Intégrations natives</div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                {INTEGRATIONS.map(int => (
-                  <div
-                    key={int.label}
-                    style={{ background: 'rgba(34,244,189,0.04)', border: `1px solid rgba(34,244,189,0.10)`, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 9, transition: 'background 0.2s' }}
-                    onMouseEnter={e => (e.currentTarget.style.background = 'rgba(34,244,189,0.08)')}
-                    onMouseLeave={e => (e.currentTarget.style.background = 'rgba(34,244,189,0.04)')}
-                  >
-                    <span style={{ fontSize: '0.9rem' }}>{int.icon}</span>
-                    <div>
-                      <div style={{ fontSize: '0.72rem', fontWeight: 600, fontFamily: "'Manrope',sans-serif", color: C.tealLight }}>{int.label}</div>
-                      <div style={{ fontSize: '0.6rem', fontFamily: "'Manrope',sans-serif", color: 'rgba(255,255,255,0.28)', marginTop: 1 }}>{int.desc}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* ── CTA ── */}
-        <Reveal delay={140}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 20, padding: '28px 36px', background: 'rgba(34,244,189,0.05)', border: `1px solid rgba(34,244,189,0.15)` }}>
-            <div>
-              <div style={{ fontFamily: "'Raleway',sans-serif", fontWeight: 700, fontSize: '1.15rem', color: '#fff', marginBottom: 4 }}>
-                Prêt à ne plus manquer aucun lead ?
-              </div>
-              <div style={{ fontSize: '0.76rem', fontFamily: "'Manrope',sans-serif", color: 'rgba(255,255,255,0.35)' }}>
-                Déploiement clé en main en 10 jours · Support certifié inclus
-              </div>
-            </div>
-            <button className="cta-btn" onClick={() => navTo('contact')}>
-              Découvrir Synapse
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
           </div>
         </Reveal>
 
       </div>
     </section>
-  );
+  )
 }

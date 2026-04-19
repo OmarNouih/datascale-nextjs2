@@ -43,7 +43,7 @@ export default function Services({ onOpenModal }) {
       style={{
         padding: '120px 28px 130px',
         background: '#050908',
-        borderTop: '1px solid rgba(34,244,189,0.1)',
+        borderTop: 'none',
         position: 'relative',
         overflow: 'hidden',
       }}

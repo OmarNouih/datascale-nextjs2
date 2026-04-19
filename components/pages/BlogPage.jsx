@@ -84,7 +84,7 @@ export default function BlogPage() {
               </h1>
               <div className={styles.heroDivider} />
               <p className={styles.heroLead}>
-                Moins de bruit, plus de structure — des articles qui aident à décider,
+                Moins de bruit, plus de structure. Des articles qui aident à décider,
                 cadrer et activer la donnée dans votre organisation.
               </p>
             </div>

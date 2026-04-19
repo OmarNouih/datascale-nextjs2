@@ -181,6 +181,22 @@ export default function Hero() {
         </Reveal>
       </div>
 
+      {/* bottom LED glow */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: '50%',
+        transform: 'translateX(-50%)',
+        width: '90%', height: 3,
+        background: 'linear-gradient(90deg, transparent 0%, rgba(34,244,189,0.15) 15%, rgba(34,244,189,0.9) 50%, rgba(34,244,189,0.15) 85%, transparent 100%)',
+        pointerEvents: 'none', zIndex: 2,
+      }} />
+      <div style={{
+        position: 'absolute', bottom: 0, left: '50%',
+        transform: 'translateX(-50%)',
+        width: '60%', height: 120,
+        background: 'radial-gradient(ellipse at 50% 100%, rgba(34,244,189,0.22) 0%, rgba(34,244,189,0.08) 45%, transparent 70%)',
+        pointerEvents: 'none', zIndex: 1,
+      }} />
+
       {/* ══ RIGHT — image shows through overlay ══ */}
       <div style={{
         position: 'relative',

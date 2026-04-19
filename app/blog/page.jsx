@@ -1,7 +1,7 @@
 import BlogPage from '@/components/pages/BlogPage'
 
 export const metadata = {
-  title: 'Blog — Insights BI & Data',
+  title: 'Blog · Insights BI et Data',
   description: 'Conseils data, cas clients et tendances Business Intelligence pour les décideurs marocains et africains.',
   alternates: { canonical: '/blog' },
   openGraph: {

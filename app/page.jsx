@@ -11,12 +11,10 @@ import Synapse from '@/components/sections/Synapse'
 import Clients from '@/components/sections/Clients'
 import Methodology from '@/components/sections/Methodology'
 import About from '@/components/sections/About'
-import Presence from '@/components/sections/Presence'
-import Social from '@/components/sections/Social'
-import CtaBanner from '@/components/sections/CtaBanner'
-import Contact from '@/components/sections/Contact'
+import ContactPresence from '@/components/sections/ContactPresence'
 import Footer from '@/components/sections/Footer'
 
+import SectionDivider from '@/components/SectionDivider'
 import { SERVICES } from '@/lib/data/services'
 
 export default function HomePage() {
@@ -37,16 +35,20 @@ export default function HomePage() {
       <Navbar scrolled={scrolled} />
       <main>
         <Hero />
+        <SectionDivider />
         <Services onOpenModal={(id) => setModal(id)} />
+        <SectionDivider />
         <Blog />
+        <SectionDivider />
         <Synapse />
+        <SectionDivider />
         <Clients />
+        <SectionDivider />
         <Methodology />
+        <SectionDivider />
         <About />
-        <Presence />
-        <Social />
-        <CtaBanner />
-        <Contact />
+        <SectionDivider />
+        <ContactPresence />
       </main>
       <Footer />
     </>
