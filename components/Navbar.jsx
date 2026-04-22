@@ -3,17 +3,47 @@ import { useState, useEffect } from 'react'
 import Logo from './logo'
 import { C } from '@/lib/tokens'
 import { navTo } from '@/lib/utils/nav'
-import { NAV_LINKS } from '@/lib/data/services'
+import { useLang } from '@/lib/i18n/LanguageContext'
+
+const NAV_HREFS = ['home', 'services', 'blog', 'synapse', 'realisations', 'about', 'contact']
+
+function LangToggle({ lang, toggle }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(112,235,179,0.18)', borderRadius: 999, padding: '3px 4px', gap: 2, flexShrink: 0 }}>
+      {['fr', 'en'].map((l) => (
+        <button
+          key={l}
+          onClick={() => toggle(l)}
+          style={{
+            fontFamily: "'Avenir Next', sans-serif",
+            fontSize: '0.62rem', fontWeight: 800,
+            letterSpacing: '0.1em', textTransform: 'uppercase',
+            color: lang === l ? '#050908' : 'rgba(200,215,208,0.5)',
+            background: lang === l ? C.teal : 'transparent',
+            border: 'none', borderRadius: 999,
+            padding: '5px 11px', cursor: 'pointer',
+            transition: 'all 0.2s',
+            boxShadow: lang === l ? `0 0 10px rgba(34,244,189,0.4)` : 'none',
+          }}
+        >
+          {l.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  )
+}
 
 export default function Navbar({ scrolled }) {
+  const { lang, toggle, t } = useLang()
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState('home')
 
-  /* track active section on scroll */
+  const navLabels = [t.nav.home, t.nav.services, t.nav.blog, t.nav.synapse, t.nav.realisations, t.nav.about, t.nav.contact]
+
   useEffect(() => {
     const fn = () => {
       if (window.scrollY < 80) { setActive('home'); return }
-      const ids = NAV_LINKS.map((l) => l.href).filter((h) => h !== 'blog')
+      const ids = NAV_HREFS.filter((h) => h !== 'blog')
       for (let i = ids.length - 1; i >= 0; i--) {
         const el = document.getElementById(ids[i])
         if (el && el.getBoundingClientRect().top <= 100) { setActive(ids[i]); return }
@@ -77,10 +107,10 @@ export default function Navbar({ scrolled }) {
             padding: '5px 6px',
             gap: 2,
           }}>
-            {NAV_LINKS.map((l) => {
-              const on = active === l.href
+            {NAV_HREFS.map((href, i) => {
+              const on = active === href
               return (
-                <button key={l.label} onClick={() => handleNav(l.href)} style={{
+                <button key={href} onClick={() => handleNav(href)} style={{
                   fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
                   fontSize: '0.69rem', fontWeight: 700,
                   letterSpacing: '0.1em', textTransform: 'uppercase',
@@ -93,14 +123,15 @@ export default function Navbar({ scrolled }) {
                 }}
                 onMouseEnter={(e) => { if (!on) e.currentTarget.style.color = '#d8dfdb' }}
                 onMouseLeave={(e) => { if (!on) e.currentTarget.style.color = 'rgba(200,215,208,0.6)' }}>
-                  {l.label}
+                  {navLabels[i]}
                 </button>
               )
             })}
           </div>
 
-          {/* ── Desktop: Contact pill outline ── */}
-          <div className="desktop-nav" style={{ display: 'flex', flexShrink: 0 }}>
+          {/* ── Desktop right: lang toggle + contact ── */}
+          <div className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+            <LangToggle lang={lang} toggle={toggle} />
             <button onClick={() => handleNav('contact')} style={{
               fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
               fontSize: '0.71rem', fontWeight: 700,
@@ -121,21 +152,22 @@ export default function Navbar({ scrolled }) {
               e.currentTarget.style.boxShadow = '0 0 18px rgba(34,244,189,0.35)'
               e.currentTarget.style.transform = 'translateY(0)'
             }}>
-              Contact
+              {t.nav.contact}
             </button>
           </div>
 
           {/* ── Mobile right ── */}
-          <div className="mobile-nav" style={{ display: 'none', alignItems: 'center', gap: 10 }}>
+          <div className="mobile-nav" style={{ display: 'none', alignItems: 'center', gap: 8 }}>
+            <LangToggle lang={lang} toggle={toggle} />
             <button onClick={() => handleNav('contact')} style={{
               fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
               fontSize: '0.67rem', fontWeight: 700,
               letterSpacing: '0.1em', textTransform: 'uppercase',
               color: '#050908', background: '#22f4bd',
               border: 'none', borderRadius: 999, padding: '9px 18px', cursor: 'pointer',
-            }}>Contact</button>
+            }}>{t.nav.contact}</button>
 
-            <button className="hamburger-btn" aria-label={open ? 'Fermer' : 'Menu'} onClick={() => setOpen((o) => !o)} style={{
+            <button className="hamburger-btn" aria-label={open ? 'Close' : 'Menu'} onClick={() => setOpen((o) => !o)} style={{
               background: 'none', border: '1.5px solid rgba(34,244,189,0.35)',
               color: '#fff', cursor: 'pointer', width: 40, height: 40,
               display: 'flex', flexDirection: 'column', alignItems: 'center',
@@ -167,18 +199,18 @@ export default function Navbar({ scrolled }) {
         overflowY: 'auto', display: 'flex', flexDirection: 'column',
       }}>
         <div style={{ flex: 1, padding: '12px 0' }}>
-          {NAV_LINKS.map((l) => (
-            <button key={l.label} onClick={() => handleNav(l.href)} style={{
+          {NAV_HREFS.map((href, i) => (
+            <button key={href} onClick={() => handleNav(href)} style={{
               display: 'flex', alignItems: 'center', width: '100%',
               padding: '16px 28px', background: 'none', border: 'none',
               borderBottom: '1px solid rgba(255,255,255,0.05)',
-              color: active === l.href ? '#22f4bd' : 'rgba(255,255,255,0.7)',
+              color: active === href ? '#22f4bd' : 'rgba(255,255,255,0.7)',
               fontFamily: "'Manrope', sans-serif", fontSize: '0.85rem', fontWeight: 600,
               letterSpacing: '0.1em', textTransform: 'uppercase',
               cursor: 'pointer', textAlign: 'left', gap: 12, transition: 'all 0.2s',
             }}>
-              <span style={{ width: 4, height: 4, borderRadius: '50%', background: C.teal, flexShrink: 0, opacity: active === l.href ? 1 : 0.4 }} />
-              {l.label}
+              <span style={{ width: 4, height: 4, borderRadius: '50%', background: C.teal, flexShrink: 0, opacity: active === href ? 1 : 0.4 }} />
+              {navLabels[i]}
             </button>
           ))}
         </div>
@@ -188,7 +220,7 @@ export default function Navbar({ scrolled }) {
             fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
             color: '#050908', background: '#22f4bd', border: 'none',
             borderRadius: 999, padding: '14px 24px', cursor: 'pointer',
-          }}>Démarrer votre projet</button>
+          }}>{t.nav.cta}</button>
         </div>
       </div>
     </>

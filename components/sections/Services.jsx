@@ -1,9 +1,20 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import Reveal from '@/components/Reveal';
 import { C } from '@/lib/tokens';
-import { SERVICES } from '@/lib/data/services';
+import { useLang } from '@/lib/i18n/LanguageContext';
+import { getLocalizedServices } from '@/lib/data/serviceCatalog';
+
+/* KPI value data per service (labels come from translations) */
+const KPI_VALS = {
+  bi:        ['+ 340%', '− 80%', 'Live'],
+  immo:      ['100%', 'J+0', '3x'],
+  cashflow:  ['4', '0', 'J+0'],
+  data:      ['12+', '99%', 'Auto'],
+  ai:        ['− 18%', '3.8x', 'Live'],
+  marketing: ['+ 120%', '4.2x', '− 30%'],
+}
 
 /* mini bar data per service */
 const BARS = {
@@ -15,22 +26,17 @@ const BARS = {
   marketing: [52, 70, 46, 84, 60, 78, 54, 90, 68, 82],
 };
 
-/* key metrics per service */
-const KPI = {
-  bi:        [{ v: '+340%', l: 'Visibilité data' }, { v: '−80%', l: 'Temps reporting' }, { v: 'Live', l: 'Actualisation' }],
-  immo:      [{ v: '100%', l: 'Taux absorption' }, { v: 'J+0', l: 'Données stock' }, { v: '3x', l: 'Projets suivis' }],
-  cashflow:  [{ v: '4', l: 'Entités consolidées' }, { v: '0', l: 'Saisies manuelles' }, { v: 'J+0', l: 'Visibilité cash' }],
-  data:      [{ v: '12+', l: 'Sources connectées' }, { v: '99%', l: 'Fiabilité données' }, { v: 'Auto', l: 'Pipelines ETL' }],
-  ai:        [{ v: '−18%', l: 'Coût par lead' }, { v: '3.8x', l: 'ROAS mesuré' }, { v: 'Live', l: 'Scoring actif' }],
-  marketing: [{ v: '+120%', l: 'Leads qualifiés' }, { v: '4.2x', l: 'ROAS moyen' }, { v: '−30%', l: 'CPL optimisé' }],
-};
-
 export default function Services({ onOpenModal }) {
+  const { t } = useLang()
+  const sv = t.services
+  const services = getLocalizedServices(sv.items)
   const [active, setActive] = useState(0);
   const [animKey, setAnimKey] = useState(0);
-  const s = SERVICES[active];
+  const s = services[active];
   const bars = BARS[s.id] || BARS.bi;
-  const kpis = KPI[s.id] || KPI.bi;
+  const kpiLabels = sv.kpis[s.id] || sv.kpis.bi;
+  const kpiVals = KPI_VALS[s.id] || KPI_VALS.bi;
+  const kpis = kpiLabels.map((k, i) => ({ v: kpiVals[i], l: k.l }));
 
   const handleSelect = (i) => {
     setActive(i);
@@ -109,7 +115,7 @@ export default function Services({ onOpenModal }) {
                     color: C.teal,
                   }}
                 >
-                  Expertises
+                  {sv.eyebrow}
                 </span>
               </div>
               <h2
@@ -123,7 +129,7 @@ export default function Services({ onOpenModal }) {
                   color: '#d8dfdb',
                 }}
               >
-                Ce que nous
+                {sv.headline1}
                 <br />
                 <span
                   style={{
@@ -134,7 +140,7 @@ export default function Services({ onOpenModal }) {
                     backgroundClip: 'text',
                   }}
                 >
-                  construisons
+                  {sv.headline2}
                 </span>
               </h2>
             </div>
@@ -148,8 +154,7 @@ export default function Services({ onOpenModal }) {
                 margin: 0,
               }}
             >
-              Sélectionnez une expertise pour découvrir notre approche, nos
-              outils et des cas d'usage concrets.
+              {sv.sectionDesc}
             </p>
           </div>
         </Reveal>
@@ -173,7 +178,7 @@ export default function Services({ onOpenModal }) {
                 flexDirection: 'column',
               }}
             >
-              {SERVICES.map((svc, i) => (
+              {services.map((svc, i) => (
                 <ServiceRow
                   key={svc.id}
                   svc={svc}
@@ -188,9 +193,11 @@ export default function Services({ onOpenModal }) {
             <DetailPanel
               key={animKey}
               s={s}
+              services={services}
               bars={bars}
               kpis={kpis}
               onOpenModal={onOpenModal}
+              discover={sv.discover}
             />
           </div>
         </Reveal>
@@ -301,7 +308,7 @@ function ServiceRow({ svc, i, active, onClick }) {
 }
 
 /* ── Detail panel (remounts on key change for CSS entry animation) ── */
-function DetailPanel({ s, bars, kpis, onOpenModal }) {
+function DetailPanel({ s, services, bars, kpis, onOpenModal, discover }) {
   return (
     <div
       style={{
@@ -329,7 +336,7 @@ function DetailPanel({ s, bars, kpis, onOpenModal }) {
           letterSpacing: '-0.06em',
         }}
       >
-        {String(SERVICES.findIndex((x) => x.id === s.id) + 1).padStart(2, '0')}
+        {String(services.findIndex((x) => x.id === s.id) + 1).padStart(2, '0')}
       </div>
 
       {/* Top glow */}
@@ -541,7 +548,7 @@ function DetailPanel({ s, bars, kpis, onOpenModal }) {
             onClick={() => onOpenModal(s.id)}
             style={{ fontSize: '0.72rem', padding: '0 22px' }}
           >
-            Découvrir l'approche complète
+            {discover}
             <svg
               width="12"
               height="12"

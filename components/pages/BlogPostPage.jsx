@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { client, urlFor } from '@/lib/sanity/client'
 import { SiteFooter, SiteHeader } from '@/components/site/SiteChrome'
 import { C } from '@/lib/tokens'
+import { useLang } from '@/lib/i18n/LanguageContext'
 
 const QUERY = `*[_type == "post" && slug.current == $slug][0] {
   _id, title, publishedAt,
@@ -33,9 +34,9 @@ const BACK_BTN = {
   transition: 'all 0.18s',
 }
 
-function formatDate(d) {
+function formatDate(d, locale) {
   if (!d) return ''
-  return new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+  return new Date(d).toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })
 }
 
 function Dot() {
@@ -91,6 +92,9 @@ function renderBody(body) {
 }
 
 export default function BlogPostPage() {
+  const { t, lang } = useLang()
+  const bp = t.blog_page
+  const locale = lang === 'fr' ? 'fr-FR' : 'en-US'
   const { slug } = useParams()
   const router = useRouter()
   const [post, setPost] = useState(null)
@@ -128,7 +132,7 @@ export default function BlogPostPage() {
         <SiteHeader />
         <div style={{ textAlign: 'center', padding: '48px 24px' }}>
           <h1 style={{ fontFamily: FD, fontWeight: 800, fontSize: 'clamp(2rem,5vw,3.5rem)', letterSpacing: '-0.04em', color: '#d8dfdb', margin: '0 0 20px' }}>
-            Introuvable
+            {bp.notFound}
           </h1>
           <button
             type="button"
@@ -138,7 +142,7 @@ export default function BlogPostPage() {
             onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(112,235,179,0.14)'; e.currentTarget.style.color = 'rgba(188,201,195,0.64)' }}
           >
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-            Retour au blog
+            {bp.back}
           </button>
         </div>
       </div>
@@ -168,7 +172,7 @@ export default function BlogPostPage() {
               onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(112,235,179,0.14)'; e.currentTarget.style.color = 'rgba(188,201,195,0.64)' }}
             >
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-              Retour au blog
+              {bp.back}
             </button>
 
             {/* Meta row */}
@@ -178,7 +182,7 @@ export default function BlogPostPage() {
               </span>
               <Dot />
               <span style={{ fontFamily: FB, fontSize: '0.64rem', color: 'rgba(180,195,188,0.44)', letterSpacing: '0.08em' }}>
-                {formatDate(post.publishedAt)}
+                {formatDate(post.publishedAt, locale)}
               </span>
               {post.authorName && (
                 <>
@@ -233,7 +237,7 @@ export default function BlogPostPage() {
                 onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(112,235,179,0.14)'; e.currentTarget.style.color = 'rgba(188,201,195,0.64)' }}
               >
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-                Tous les articles
+                {bp.allArticles}
               </button>
 
               <a
@@ -242,7 +246,7 @@ export default function BlogPostPage() {
                 onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.08)')}
                 onMouseLeave={e => (e.currentTarget.style.filter = '')}
               >
-                Nous contacter
+                {bp.contact}
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>

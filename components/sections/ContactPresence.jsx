@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import Reveal from '@/components/Reveal'
 import { C } from '@/lib/tokens'
-import { SERVICES } from '@/lib/data/services'
+import { useLang } from '@/lib/i18n/LanguageContext'
+import { getLocalizedServices } from '@/lib/data/serviceCatalog'
 
 /* ─── Social data ─────────────────────────────────────────────────── */
 const SOCIALS = [
@@ -54,7 +55,7 @@ const REGIONS = [
 ]
 
 /* ─── Social card ─────────────────────────────────────────────────── */
-function SocialCard({ s, delay }) {
+function SocialCard({ s, delay, ct, idx }) {
   const [hov, setHov] = useState(false)
   const isInsta = s.name === 'Instagram'
   const iconBg = isInsta ? s.brandGradient : s.brand
@@ -119,7 +120,7 @@ function SocialCard({ s, delay }) {
               fontSize: '0.54rem', color: C.inkLight, marginTop: 3,
               letterSpacing: '0.06em', textTransform: 'uppercase',
             }}>
-              abonnés
+              {ct.followersLabel}
             </div>
           </div>
         </div>
@@ -133,13 +134,13 @@ function SocialCard({ s, delay }) {
             fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
             fontSize: '0.76rem', color: C.inkLight, lineHeight: 1.72, margin: 0,
           }}>
-            {s.desc}
+            {ct.social[idx].desc}
           </p>
         </div>
 
         {/* Topic chips */}
         <div style={{ padding: '0 24px 18px', display: 'flex', flexWrap: 'wrap', gap: 5 }}>
-          {s.topics.map(t => (
+          {ct.social[idx].topics.map(t => (
             <span key={t} style={{
               fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
               fontSize: '0.53rem', fontWeight: 700, letterSpacing: '0.06em',
@@ -169,7 +170,7 @@ function SocialCard({ s, delay }) {
             onMouseEnter={e => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.transform = 'translateY(-1px)' }}
             onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = '' }}
           >
-            {s.cta} sur {s.name}
+            {ct.social[idx].cta}
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
               <polyline points="15 3 21 3 21 9"/>
@@ -241,7 +242,7 @@ function RegionCard({ r }) {
 }
 
 /* ─── Contact form ────────────────────────────────────────────────── */
-function ContactForm() {
+function ContactForm({ ct, services }) {
   const [f, setF]       = useState({ first: '', email: '', phone: '', service: '', msg: '' })
   const [err, setErr]   = useState({})
   const [sent, setSent] = useState(false)
@@ -251,9 +252,9 @@ function ContactForm() {
 
   const validate = () => {
     const e = {}
-    if (!f.first.trim())                           e.first = 'Requis'
-    if (!f.email.trim() || !f.email.includes('@'))  e.email = 'Email invalide'
-    if (!f.msg.trim())                              e.msg   = 'Requis'
+    if (!f.first.trim())                           e.first = ct.errors.first
+    if (!f.email.trim() || !f.email.includes('@'))  e.email = ct.errors.email
+    if (!f.msg.trim())                              e.msg   = ct.errors.msg
     return e
   }
 
@@ -276,80 +277,102 @@ function ContactForm() {
           <polyline points="20 6 9 17 4 12"/>
         </svg>
       </div>
-      <div style={{ fontFamily: "'Avenir Next',sans-serif", fontWeight: 700, fontSize: '1.1rem', color: C.ink, marginBottom: 8 }}>Message envoyé</div>
-      <p style={{ fontSize: '0.78rem', color: C.inkLight, lineHeight: 1.7, marginBottom: 24 }}>Réponse garantie sous 24h ouvrées.</p>
+      <div style={{ fontFamily: "'Avenir Next',sans-serif", fontWeight: 700, fontSize: '1.1rem', color: C.ink, marginBottom: 8 }}>{ct.fields.sentTitle}</div>
+      <p style={{ fontSize: '0.78rem', color: C.inkLight, lineHeight: 1.7, marginBottom: 24 }}>{ct.fields.sentDesc}</p>
       <button className="cta-btn-outline" onClick={() => { setSent(false); setF({ first:'',email:'',phone:'',service:'',msg:'' }) }}>
-        Nouveau message
+        {ct.fields.newMsg}
       </button>
     </div>
   )
 
   const inp = k => ({
     width: '100%', boxSizing: 'border-box',
-    background: 'rgba(255,255,255,0.038)',
-    border: `1.5px solid ${err[k] ? 'rgba(240,80,80,0.6)' : 'rgba(255,255,255,0.1)'}`,
+    background: 'transparent',
+    border: `1.5px solid ${err[k] ? '#f05050' : '#22f4bd'}`,
+    boxShadow: err[k] ? '0 0 14px rgba(240,80,80,0.3)' : '0 0 10px rgba(34,244,189,0.22)',
     color: C.ink,
     fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
-    fontSize: '0.84rem', padding: '12px 14px',
-    outline: 'none', transition: 'border-color 0.2s', borderRadius: 4,
+    fontSize: '0.84rem', padding: '12px 16px',
+    outline: 'none', transition: 'border-color 0.2s, box-shadow 0.2s', borderRadius: 10,
   })
 
-  const Lbl = ({ k, t }) => (
+  const Lbl = ({ k, label }) => (
     <label style={{
-      display: 'block', marginBottom: 6,
+      display: 'block', marginBottom: 7,
       fontSize: '0.53rem', fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase',
-      color: err[k] ? 'rgba(240,80,80,0.8)' : 'rgba(34,244,189,0.58)',
-    }}>{t}</label>
+      color: err[k] ? '#f05050' : '#5bcabc',
+    }}>{label}</label>
   )
 
-  const foc = e => { e.target.style.borderColor = 'rgba(34,244,189,0.5)' }
-  const blr = (e, k) => { e.target.style.borderColor = err[k] ? 'rgba(240,80,80,0.6)' : 'rgba(255,255,255,0.1)' }
+  const foc = e => {
+    e.target.style.borderColor = '#22f4bd'
+    e.target.style.boxShadow = '0 0 22px rgba(34,244,189,0.35)'
+  }
+  const blr = (e, k) => {
+    e.target.style.borderColor = err[k] ? '#f05050' : '#22f4bd'
+    e.target.style.boxShadow = err[k] ? '0 0 14px rgba(240,80,80,0.3)' : '0 0 14px rgba(34,244,189,0.3)'
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
         <div>
-          <Lbl k="first" t="Prénom *" />
-          <input style={inp('first')} placeholder="Omar" value={f.first}
+          <Lbl k="first" label={ct.fields.first} />
+          <input style={inp('first')} placeholder={ct.fields.firstPh} value={f.first}
             onChange={e => set('first', e.target.value)} onFocus={foc} onBlur={e => blr(e,'first')} />
           {err.first && <span style={{ fontSize: '0.6rem', color: '#e06060', display:'block', marginTop:3 }}>{err.first}</span>}
         </div>
         <div>
-          <Lbl k="email" t="Email *" />
-          <input type="email" style={inp('email')} placeholder="omar@entreprise.ma" value={f.email}
+          <Lbl k="email" label={ct.fields.email} />
+          <input type="email" style={inp('email')} placeholder={ct.fields.emailPh} value={f.email}
             onChange={e => set('email', e.target.value)} onFocus={foc} onBlur={e => blr(e,'email')} />
           {err.email && <span style={{ fontSize: '0.6rem', color: '#e06060', display:'block', marginTop:3 }}>{err.email}</span>}
         </div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-        <div>
-          <Lbl k="phone" t="Téléphone" />
-          <input type="tel" style={inp('phone')} placeholder="+212 6XX XXX XXX" value={f.phone}
-            onChange={e => set('phone', e.target.value)} onFocus={foc} onBlur={e => blr(e,'phone')} />
-        </div>
-        <div>
-          <Lbl k="service" t="Service" />
-          <select style={{ ...inp('service'), appearance: 'none', cursor: 'pointer', color: f.service ? C.ink : C.inkLight }}
-            value={f.service} onChange={e => set('service', e.target.value)}
-            onFocus={foc} onBlur={e => blr(e,'service')}>
-            <option value="">Choisir un service</option>
-            {SERVICES.map(s => <option key={s.id} value={s.id}>{s.title}</option>)}
-          </select>
-        </div>
+      <div>
+        <Lbl k="service" label={ct.fields.service} />
+        <select style={{ ...inp('service'), appearance: 'none', cursor: 'pointer', color: f.service ? C.ink : C.inkLight }}
+          value={f.service} onChange={e => set('service', e.target.value)}
+          onFocus={foc} onBlur={e => blr(e,'service')}>
+          <option value="">{ct.fields.servicePh}</option>
+          {services.map((service) => <option key={service.id} value={service.id}>{service.title}</option>)}
+        </select>
       </div>
       <div>
-        <Lbl k="msg" t="Message *" />
-        <textarea style={{ ...inp('msg'), resize: 'vertical', minHeight: 110 }}
-          placeholder="Décrivez votre projet…"
+        <Lbl k="phone" label={ct.fields.phone} />
+        <input type="tel" style={inp('phone')} placeholder={ct.fields.phonePh} value={f.phone}
+          onChange={e => set('phone', e.target.value)} onFocus={foc} onBlur={e => blr(e,'phone')} />
+      </div>
+      <div>
+        <Lbl k="msg" label={ct.fields.msg} />
+        <textarea style={{ ...inp('msg'), resize: 'vertical', minHeight: 140 }}
+          placeholder={ct.fields.msgPh}
           value={f.msg} onChange={e => set('msg', e.target.value)}
           onFocus={foc} onBlur={e => blr(e,'msg')} />
         {err.msg && <span style={{ fontSize: '0.6rem', color: '#e06060', display:'block', marginTop:3 }}>{err.msg}</span>}
       </div>
-      <button className="cta-btn"
-        style={{ justifyContent: 'center', opacity: loading ? 0.7 : 1, marginTop: 2 }}
-        onClick={submit} disabled={loading}>
-        {loading ? 'Envoi…' : 'Envoyer le message'}
-        {!loading && <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>}
+      <button
+        onClick={submit} disabled={loading}
+        style={{
+          width: '100%', marginTop: 6,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+          padding: '15px 24px',
+          background: loading ? 'rgba(91,202,188,0.55)' : '#5bcabc',
+          border: '1.5px solid #5bcabc',
+          borderRadius: 15,
+          color: '#030a08',
+          fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
+          fontWeight: 800, fontSize: '0.78rem',
+          letterSpacing: '0.18em', textTransform: 'uppercase',
+          cursor: loading ? 'not-allowed' : 'pointer',
+          transition: 'background 0.2s, box-shadow 0.2s, transform 0.15s',
+          boxShadow: '0 0 24px rgba(91,202,188,0.25)',
+        }}
+        onMouseEnter={e => { if (!loading) { e.currentTarget.style.background = '#22f4bd'; e.currentTarget.style.boxShadow = '0 0 36px rgba(34,244,189,0.4)'; e.currentTarget.style.transform = 'translateY(-1px)' } }}
+        onMouseLeave={e => { e.currentTarget.style.background = loading ? 'rgba(91,202,188,0.55)' : '#5bcabc'; e.currentTarget.style.boxShadow = '0 0 24px rgba(91,202,188,0.25)'; e.currentTarget.style.transform = '' }}
+      >
+        {loading ? ct.fields.sending : ct.fields.send}
+        {!loading && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>}
       </button>
     </div>
   )
@@ -357,29 +380,22 @@ function ContactForm() {
 
 /* ─── Main section ────────────────────────────────────────────────── */
 export default function ContactPresence() {
+  const { t, lang } = useLang()
+  const ct = t.contact
+  const services = getLocalizedServices(t.services.items)
+  const regions = REGIONS.map((region, index) => ({ ...region, ...(ct.regions[index] || {}) }))
   return (
-    <section id="contact" style={{ background: '#050908', position: 'relative', overflow: 'hidden' }}>
+    <section id="contact" style={{ background: '#000', position: 'relative', overflow: 'hidden' }}>
 
-      {/* Grid texture */}
+      {/* Single clean ambient glow — professional, not distracting */}
       <div style={{
-        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
-        backgroundImage: `linear-gradient(rgba(34,244,189,0.018) 1px,transparent 1px),linear-gradient(90deg,rgba(34,244,189,0.018) 1px,transparent 1px)`,
-        backgroundSize: '64px 64px',
-      }} />
-      <div style={{
-        position: 'absolute', top: '-10%', right: '-5%',
-        width: 640, height: 640,
-        background: 'radial-gradient(ellipse,rgba(34,244,189,0.04) 0%,transparent 65%)',
-        pointerEvents: 'none', zIndex: 0,
-      }} />
-      <div style={{
-        position: 'absolute', bottom: '5%', left: '-8%',
-        width: 500, height: 500,
-        background: 'radial-gradient(ellipse,rgba(34,244,189,0.035) 0%,transparent 65%)',
+        position: 'absolute', top: '20%', right: '-8%',
+        width: 800, height: 800,
+        background: 'radial-gradient(ellipse,rgba(34,244,189,0.06) 0%,transparent 65%)',
         pointerEvents: 'none', zIndex: 0,
       }} />
 
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '108px 32px 120px', position: 'relative', zIndex: 1 }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '108px 32px 0', position: 'relative', zIndex: 1 }}>
 
         {/* ══════════════ BLOCK 1: COMMUNAUTÉ ══════════════ */}
         <Reveal>
@@ -395,7 +411,7 @@ export default function ContactPresence() {
                   fontSize: '0.67rem', fontWeight: 800, letterSpacing: '0.24em',
                   textTransform: 'uppercase', color: C.teal,
                 }}>
-                  Communauté
+                  {ct.communityEyebrow}
                 </span>
               </div>
               <h2 style={{ margin: 0, lineHeight: 0.94 }}>
@@ -405,7 +421,7 @@ export default function ContactPresence() {
                   fontWeight: 400, fontSize: 'clamp(2.8rem,5.5vw,5rem)',
                   color: C.ink,
                 }}>
-                  Rejoignez
+                  {ct.communityTitle1}
                 </span>
                 <span style={{
                   display: 'block',
@@ -414,7 +430,7 @@ export default function ContactPresence() {
                   background: 'linear-gradient(110deg,#22f4bd 0%,#5bcabc 100%)',
                   WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                 }}>
-                  la conversation
+                  {ct.communityTitle2}
                 </span>
               </h2>
             </div>
@@ -424,219 +440,221 @@ export default function ContactPresence() {
               color: 'rgba(216,223,219,0.42)', margin: 0,
               textAlign: 'right', maxWidth: 300,
             }}>
-              Conseils data, coulisses projets et actualités BI, chaque semaine sur nos réseaux.
+              {ct.communityDesc}
             </p>
           </div>
         </Reveal>
 
         {/* Social cards */}
         <div id="social-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20, marginBottom: 96 }}>
-          {SOCIALS.map((s, i) => <SocialCard key={s.name} s={s} delay={i * 70} />)}
+          {SOCIALS.map((s, i) => <SocialCard key={s.name} s={s} delay={i * 70} ct={ct} idx={i} />)}
         </div>
 
         {/* ══ LED divider ══ */}
-        <div style={{ position: 'relative', height: 1, marginBottom: 96, zIndex: 1 }}>
+        <div style={{ position: 'relative', height: 1, marginBottom: 0, zIndex: 1 }}>
           <div style={{ position: 'absolute', top: -24, left: 0, right: 0, height: 48, background: 'radial-gradient(ellipse at 50% 50%,rgba(34,244,189,0.09) 0%,transparent 70%)' }} />
           <div style={{ position: 'absolute', top: 0, left: '5%', right: '5%', height: 1.5, background: 'linear-gradient(90deg,transparent 0%,rgba(34,244,189,0.35) 15%,rgba(34,244,189,0.9) 50%,rgba(34,244,189,0.35) 85%,transparent 100%)', borderRadius: 99 }} />
         </div>
 
-        {/* ══════════════ BLOCK 2: PRÉSENCE + CONTACT ══════════════ */}
-        <Reveal>
-          <div style={{
-            display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
-            flexWrap: 'wrap', gap: 24, marginBottom: 52,
+        {/* ══════════════ BLOCK 2: HERO BANNER ══════════════ */}
+      </div>
+
+      {/* Full-width image banner */}
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        height: 480,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+      }}>
+        {/* Background image — no filter on the div, use overlay for darkening */}
+        <img
+          src="/contact background.png"
+          alt=""
+          aria-hidden
+          style={{
+            position: 'absolute', inset: 0,
+            width: '100%', height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center center',
+          }}
+        />
+        {/* Thin vignette only on edges so image shows full */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(180deg, rgba(5,9,8,0.4) 0%, transparent 20%, transparent 80%, rgba(5,9,8,0.4) 100%)',
+          pointerEvents: 'none',
+        }} />
+        {/* Bottom LED line */}
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: 2,
+          background: 'linear-gradient(90deg, transparent 0%, rgba(34,244,189,0.5) 30%, rgba(34,244,189,1) 50%, rgba(34,244,189,0.5) 70%, transparent 100%)',
+        }} />
+        {/* Top LED line */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, height: 2,
+          background: 'linear-gradient(90deg, transparent 0%, rgba(34,244,189,0.3) 30%, rgba(34,244,189,0.7) 50%, rgba(34,244,189,0.3) 70%, transparent 100%)',
+        }} />
+
+        {/* Content */}
+        <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', padding: '0 32px' }}>
+          <h2 style={{
+            margin: '0 0 16px',
+            fontFamily: "'Artonex Trial','Avenir Next','Century Gothic',sans-serif",
+            fontWeight: 400,
+            fontSize: 'clamp(1.6rem,3vw,2.8rem)',
+            letterSpacing: '0.1em',
+            lineHeight: 1,
+            whiteSpace: 'nowrap',
+            textTransform: 'uppercase',
           }}>
-            <div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-                <div style={{ width: 24, height: 1.5, background: C.teal }} />
-                <span style={{
-                  fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
-                  fontSize: '0.67rem', fontWeight: 800, letterSpacing: '0.24em',
-                  textTransform: 'uppercase', color: C.teal,
-                }}>
-                  Contact et Présence
-                </span>
-              </div>
-              <h2 style={{ margin: 0, lineHeight: 0.94 }}>
-                <span style={{
-                  display: 'block',
-                  fontFamily: "'Artonex Trial','Avenir Next','Avenir','Century Gothic',sans-serif",
-                  fontWeight: 400, fontSize: 'clamp(2.8rem,5.5vw,5rem)',
-                  color: C.ink,
-                }}>
-                  Travaillons
-                </span>
-                <span style={{
-                  display: 'block',
-                  fontFamily: "'Artonex Trial','Avenir Next','Avenir','Century Gothic',sans-serif",
-                  fontWeight: 400, fontSize: 'clamp(2.8rem,5.5vw,5rem)',
-                  background: 'linear-gradient(110deg,#22f4bd 0%,#5bcabc 100%)',
-                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-                }}>
-                  ensemble
-                </span>
-              </h2>
+            <span style={{ color: '#eef4f1' }}>{ct.presenceTitle1}</span>
+            {' '}
+            <span style={{ color: '#22f4bd', textShadow: '0 0 24px rgba(34,244,189,0.6)' }}>{ct.presenceTitle2}</span>
+          </h2>
+          <p style={{
+            fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
+            fontSize: '0.9rem', lineHeight: 1.85,
+            color: 'rgba(238,244,241,0.72)', margin: '0 auto',
+            maxWidth: 460,
+          }}>
+            {ct.presenceDescLine1}<br />{ct.presenceDescLine2}
+          </p>
+        </div>
+      </div>
+
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '96px 32px 120px', position: 'relative', zIndex: 1 }}>
+        {/* Présence + Contact grid */}
+        <Reveal>
+        <div id="cp-main" style={{ display: 'grid', gridTemplateColumns: '1fr 580px', gap: 64, alignItems: 'center' }}>
+
+          {/* LEFT — Heading + contact info */}
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+
+            {/* Eyebrow */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
+              <div style={{ width: 24, height: 1.5, background: C.teal }} />
+              <span style={{
+                fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
+                fontSize: '0.67rem', fontWeight: 800, letterSpacing: '0.24em',
+                textTransform: 'uppercase', color: C.teal,
+              }}>
+                {ct.formEyebrow}
+              </span>
             </div>
+
+            {/* Heading */}
+            <h2 style={{
+              fontFamily: "'Artonex Trial','Avenir Next','Century Gothic',sans-serif",
+              fontWeight: 400, fontSize: lang === 'en' ? 'clamp(1.6rem,2.8vw,2.6rem)' : 'clamp(2rem,3.4vw,3.2rem)',
+              lineHeight: 1.05, margin: '0 0 16px',
+              textTransform: 'uppercase', letterSpacing: '0.04em',
+            }}>
+              <span style={{ display: 'block', color: C.ink }}>{ct.formTitle}</span>
+              <span style={{ display: 'block', color: '#5bcabc' }}>{ct.formTitleSpan}</span>
+            </h2>
+
+            {/* Subtitle */}
             <p style={{
               fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
-              fontSize: '0.9rem', lineHeight: 1.9,
-              color: 'rgba(216,223,219,0.42)', margin: 0,
-              textAlign: 'right', maxWidth: 300,
+              fontSize: '0.88rem', color: C.inkLight, lineHeight: 1.7, margin: '0 0 48px',
             }}>
-              Implantés au Maroc, en Europe et bientôt en Afrique. Diagnostic gratuit, réponse sous 24h.
+              {ct.formSubtitle}
             </p>
-          </div>
-        </Reveal>
 
-        {/* Présence + Contact grid */}
-        <div id="cp-main" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, alignItems: 'stretch' }}>
-
-          {/* LEFT — Présence */}
-          <Reveal style={{ height: '100%' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, height: '100%' }}>
-
-              {/* Map + Maroc card */}
-              <div style={{
-                borderRadius: 14, border: `1px solid rgba(34,244,189,0.22)`,
-                overflow: 'hidden', background: 'rgba(34,244,189,0.025)',
-                boxShadow: '0 0 48px rgba(34,244,189,0.06)',
-              }}>
-                <div style={{ height: 200, position: 'relative', overflow: 'hidden' }}>
-                  <iframe
-                    title="Data Scale Business Casablanca"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.8541!2d-7.6326!3d33.5989!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda7cd4e5b8c9a7b%3A0x1!2sLa%20Marina%2C%20Casablanca!5e0!3m2!1sfr!2sma!4v1"
-                    width="100%" height="100%"
-                    style={{ border: 0, display: 'block', filter: 'grayscale(100%) invert(1) hue-rotate(155deg) brightness(0.78) contrast(0.9)' }}
-                    allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-                  />
-                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 80, background: 'linear-gradient(transparent,rgba(5,9,8,0.95))', pointerEvents: 'none' }} />
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg,#22f4bd,rgba(34,244,189,0.3))' }} />
-                  <div style={{
-                    position: 'absolute', bottom: 13, left: 14,
-                    display: 'flex', alignItems: 'center', gap: 7,
-                    background: 'rgba(5,9,8,0.88)', border: '1px solid rgba(34,244,189,0.25)',
-                    backdropFilter: 'blur(6px)', padding: '5px 12px', borderRadius: 6,
-                  }}>
-                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: C.teal, animation: 'pulse 2s infinite' }} />
-                    <span style={{ fontFamily: "'Avenir Next',sans-serif", fontSize: '0.65rem', fontWeight: 600, color: C.ink }}>Casablanca, Maroc</span>
-                  </div>
-                </div>
-                <div style={{ padding: '18px 22px 20px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                    <span style={{
-                      fontFamily: "'Artonex Trial','Avenir Next','Avenir','Century Gothic',sans-serif",
-                      fontWeight: 400, fontSize: '1.9rem', lineHeight: 1, color: C.ink,
-                    }}>
-                      Maroc
-                    </span>
-                    <span style={{
-                      fontFamily: "'Avenir Next',sans-serif", fontSize: '0.48rem', fontWeight: 800,
-                      letterSpacing: '0.14em', textTransform: 'uppercase',
-                      color: C.teal, background: 'rgba(34,244,189,0.1)',
-                      border: '1px solid rgba(34,244,189,0.25)', padding: '3px 8px',
-                    }}>
-                      Siège Social
-                    </span>
-                  </div>
-                  <p style={{ fontFamily: "'Avenir Next',sans-serif", fontSize: '0.72rem', color: C.inkLight, lineHeight: 1.65, margin: '0 0 12px' }}>
-                    La Marina, Casablanca · Immeuble Oceanes 3, Bureau 3 RDC
-                  </p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    {[
-                      { text: '+212 671 370 001', href: 'tel:+212671370001' },
-                      { text: 'info@datascalebusiness.io', href: 'mailto:info@datascalebusiness.io' },
-                    ].map(lk => (
-                      <a key={lk.href} href={lk.href} style={{
-                        fontFamily: "'Avenir Next',sans-serif", fontSize: '0.72rem',
-                        color: C.inkLight, textDecoration: 'none', transition: 'color 0.2s',
-                      }}
-                        onMouseEnter={e => e.currentTarget.style.color = C.teal}
-                        onMouseLeave={e => e.currentTarget.style.color = C.inkLight}
-                      >
-                        {lk.text}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Europe + Afrique */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-                {REGIONS.filter(r => r.id !== 'maroc').map((r, i) => (
-                  <Reveal key={r.label} delay={i * 60}>
-                    <RegionCard r={r} />
-                  </Reveal>
-                ))}
-              </div>
-
-              {/* Website */}
-              <a href="https://www.datascalebusiness.io" target="_blank" rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 7, alignSelf: 'flex-start',
-                  fontFamily: "'Avenir Next',sans-serif", fontWeight: 600, fontSize: '0.8rem',
-                  color: C.teal, textDecoration: 'none', transition: 'opacity 0.2s',
-                  padding: '2px 0',
-                }}
-                onMouseEnter={e => e.currentTarget.style.opacity = '0.65'}
-                onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-              >
-                datascalebusiness.io
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
-                  <polyline points="15 3 21 3 21 9"/>
-                  <line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-              </a>
-            </div>
-          </Reveal>
-
-          {/* RIGHT — Contact form */}
-          <Reveal delay={70} style={{ height: '100%' }}>
-            <div style={{
-              borderRadius: 16,
-              border: '1px solid rgba(255,255,255,0.08)',
-              background: 'rgba(255,255,255,0.022)',
-              overflow: 'hidden',
-              boxShadow: '0 32px 80px rgba(0,0,0,0.45)',
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              boxSizing: 'border-box',
-            }}>
-              <div style={{
-                padding: '32px 36px 26px',
-                borderBottom: '1px solid rgba(255,255,255,0.07)',
-                position: 'relative',
-                background: 'linear-gradient(160deg,rgba(34,244,189,0.04) 0%,transparent 55%)',
-              }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg,#22f4bd,rgba(34,244,189,0.15))' }} />
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-                  <div style={{ width: 16, height: 1.5, background: C.teal }} />
-                  <span style={{
-                    fontFamily: "'Avenir Next',sans-serif", fontSize: '0.6rem', fontWeight: 800,
-                    letterSpacing: '0.22em', textTransform: 'uppercase', color: C.teal,
-                  }}>
-                    Nous écrire
-                  </span>
-                </div>
-                <h3 style={{
-                  fontFamily: "'Artonex Trial','Avenir Next','Avenir','Century Gothic',sans-serif",
-                  fontWeight: 400, fontSize: 'clamp(1.7rem,2.5vw,2.3rem)',
-                  lineHeight: 1.0, color: C.ink, margin: '0 0 10px',
+            {/* Info rows */}
+            {[
+              {
+                label: ct.addrLabel,
+                value: ct.marocAddr,
+                href: null,
+                icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+              },
+              {
+                label: ct.emailLabel,
+                value: 'info@datascalebusiness.io',
+                href: 'mailto:info@datascalebusiness.io',
+                icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
+              },
+              {
+                label: ct.phoneLabel,
+                value: '+212 671 370 001',
+                href: 'tel:+212671370001',
+                icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>,
+              },
+              {
+                label: ct.webLabel,
+                value: 'datascalebusiness.io',
+                href: 'https://www.datascalebusiness.io',
+                icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>,
+              },
+            ].map((row) => (
+              <div key={row.label} style={{ display: 'flex', alignItems: 'flex-start', gap: 18, marginBottom: 28 }}>
+                <div style={{
+                  width: 40, height: 40, borderRadius: 10, flexShrink: 0,
+                  background: 'rgba(34,244,189,0.08)',
+                  border: '1px solid rgba(34,244,189,0.18)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: C.teal,
                 }}>
-                  Parlons de votre projet
-                </h3>
-                <p style={{ fontFamily: "'Avenir Next',sans-serif", fontSize: '0.76rem', color: C.inkLight, lineHeight: 1.6, margin: 0 }}>
-                  Diagnostic stratégique gratuit · Réponse sous 24h ouvrées
-                </p>
+                  {row.icon}
+                </div>
+                <div>
+                  <div style={{
+                    fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
+                    fontSize: '0.62rem', fontWeight: 800, letterSpacing: '0.14em',
+                    textTransform: 'uppercase', color: C.teal, marginBottom: 4,
+                  }}>
+                    {row.label}
+                  </div>
+                  {row.href ? (
+                    <a href={row.href} target={row.href.startsWith('http') ? '_blank' : undefined}
+                      rel={row.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      style={{
+                        fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
+                        fontSize: '0.88rem', color: C.inkLight,
+                        textDecoration: 'none', transition: 'color 0.2s',
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.color = C.ink}
+                      onMouseLeave={e => e.currentTarget.style.color = C.inkLight}
+                    >
+                      {row.value}
+                    </a>
+                  ) : (
+                    <span style={{
+                      fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
+                      fontSize: '0.88rem', color: C.inkLight,
+                    }}>
+                      {row.value}
+                    </span>
+                  )}
+                </div>
               </div>
-              <div style={{ padding: '30px 36px 36px', flex: 1 }}>
-                <ContactForm />
+            ))}
+          </div>
+
+          {/* RIGHT — Form card */}
+          <Reveal delay={70}>
+            <div style={{
+              borderRadius: 20,
+              border: '1.5px solid #22f4bd',
+              background: 'transparent',
+              overflow: 'hidden',
+              boxShadow: '0 0 40px rgba(34,244,189,0.3)',
+              position: 'relative',
+              minHeight: 500,
+              display: 'flex', flexDirection: 'column', justifyContent: 'center',
+            }}>
+              <div style={{ padding: '56px 44px 64px' }}>
+                <ContactForm ct={ct} services={services} />
               </div>
             </div>
           </Reveal>
 
         </div>
+        </Reveal>
       </div>
 
       <style>{`

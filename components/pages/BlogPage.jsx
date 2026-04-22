@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { client } from '@/lib/sanity/client'
 import { SiteFooter, SiteHeader } from '@/components/site/SiteChrome'
 import { C } from '@/lib/tokens'
+import { useLang } from '@/lib/i18n/LanguageContext'
 
 const QUERY = `*[_type == "post"] | order(publishedAt desc) {
   _id, title, slug, publishedAt,
@@ -14,47 +15,22 @@ const QUERY = `*[_type == "post"] | order(publishedAt desc) {
   "imageUrl": mainImage.asset->url
 }`
 
-const PLACEHOLDER_POSTS = [
-  {
-    _id: '1',
-    title: 'Comment structurer une vision BI avant de choisir l\'outil',
-    category: 'Business Intelligence',
-    publishedAt: '2025-03-01',
-    excerpt: 'Avant le dashboard, il faut un système de lecture. Voici comment cadrer KPI, sources et niveaux de décision.',
-    authorName: 'Data Scale Business',
-  },
-  {
-    _id: '2',
-    title: 'Les erreurs de gouvernance qui ralentissent la valeur data',
-    category: 'Conseil Data',
-    publishedAt: '2025-02-15',
-    excerpt: 'Les entreprises perdent rarement sur les outils. Elles perdent sur la structure, la responsabilité et le rythme.',
-    authorName: 'Data Scale Business',
-  },
-  {
-    _id: '3',
-    title: 'Comment relier marketing et données sans casser l\'exécution',
-    category: 'Marketing Digital',
-    publishedAt: '2025-02-01',
-    excerpt: 'Une approche opérationnelle pour faire remonter la donnée utile jusqu\'aux arbitrages marketing du quotidien.',
-    authorName: 'Data Scale Business',
-  },
-]
-
-const CATEGORIES = ['Tous', 'Business Intelligence', 'Conseil Data', 'Marketing Digital', 'Data Engineering']
-
 const FB = "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif"
 const FD = "'Artonex Trial', 'Avenir Next', 'Century Gothic', sans-serif"
 const SHELL = { maxWidth: 1200, margin: '0 auto', padding: '0 28px' }
 
-function formatDate(d) {
+function formatDate(d, locale) {
   if (!d) return ''
-  return new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
+  return new Date(d).toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' })
 }
 
 export default function BlogPage() {
-  const [posts, setPosts] = useState(PLACEHOLDER_POSTS)
-  const [active, setActive] = useState('Tous')
+  const { t, lang } = useLang()
+  const bp = t.blog_page
+  const b = t.blog
+  const locale = lang === 'fr' ? 'fr-FR' : 'en-US'
+  const [posts, setPosts] = useState(bp.fallbackPosts)
+  const [active, setActive] = useState(bp.all)
   const router = useRouter()
 
   useEffect(() => {
@@ -63,8 +39,8 @@ export default function BlogPage() {
   }, [])
 
   const filtered = useMemo(
-    () => (active === 'Tous' ? posts : posts.filter((p) => p.category === active)),
-    [active, posts]
+    () => (active === bp.all ? posts : posts.filter((p) => p.category === active)),
+    [active, posts, bp.all]
   )
 
   const [featured, ...rest] = filtered
@@ -95,20 +71,19 @@ export default function BlogPage() {
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 26 }}>
                 <div style={{ width: 24, height: 1.5, background: C.teal, flexShrink: 0 }} />
                 <span style={{ fontFamily: FB, fontSize: '0.66rem', fontWeight: 800, letterSpacing: '0.24em', textTransform: 'uppercase', color: C.teal }}>
-                  Insights &amp; Expertise
+                  {b.eyebrow}
                 </span>
               </div>
 
               <h1 style={{ fontFamily: FD, fontWeight: 800, fontSize: 'clamp(3rem,7.5vw,6.4rem)', color: '#d8dfdb', lineHeight: 0.92, letterSpacing: '-0.03em', margin: '0 0 26px' }}>
-                Insights<br />
-                <span style={{ color: C.tealLight }}>Data</span>
+                {bp.title1}<br />
+                <span style={{ color: C.tealLight }}>{bp.title2}</span>
               </h1>
 
               <div style={{ width: 44, height: 2, background: `linear-gradient(90deg,${C.teal},${C.tealDark})`, marginBottom: 22 }} />
 
               <p style={{ fontFamily: FB, fontSize: '0.97rem', color: 'rgba(188,201,195,0.66)', lineHeight: 1.78, margin: 0, maxWidth: 520 }}>
-                Moins de bruit, plus de structure. Des articles qui aident à décider,
-                cadrer et activer la donnée dans votre organisation.
+                {b.desc}
               </p>
             </div>
           </div>
@@ -118,7 +93,7 @@ export default function BlogPage() {
         <section style={{ padding: '36px 0 48px', borderBottom: '1px solid rgba(34,244,189,0.07)' }}>
           <div style={SHELL}>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              {CATEGORIES.map((cat) => {
+              {[bp.all, ...bp.categories].map((cat) => {
                 const on = active === cat
                 return (
                   <button
@@ -160,10 +135,10 @@ export default function BlogPage() {
                 onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(112,235,179,0.14)'; e.currentTarget.style.color = 'rgba(188,201,195,0.66)' }}
               >
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-                Retour au site
+                {bp.returnSite}
               </button>
               <span style={{ fontFamily: FB, fontSize: '0.64rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(180,195,188,0.38)' }}>
-                {filtered.length} article{filtered.length !== 1 ? 's' : ''}
+                {filtered.length} {filtered.length === 1 ? bp.articleCountOne : bp.articleCountOther}
               </span>
             </div>
 
@@ -181,10 +156,10 @@ export default function BlogPage() {
                 <div style={{ padding: '48px 48px 40px', display: 'flex', flexDirection: 'column' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 22 }}>
                     <span style={{ fontFamily: FB, fontSize: '0.56rem', fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.teal, background: 'rgba(34,244,189,0.08)', border: '1px solid rgba(34,244,189,0.18)', padding: '3px 10px' }}>
-                      {featured.category || 'Data'}
+                      {featured.category || bp.defaultCategory}
                     </span>
                     <span style={{ fontFamily: FB, fontSize: '0.6rem', color: 'rgba(180,195,188,0.42)' }}>
-                      {formatDate(featured.publishedAt)}
+                      {formatDate(featured.publishedAt, locale)}
                     </span>
                   </div>
                   <h2 style={{ fontFamily: FB, fontWeight: 800, fontSize: 'clamp(1.9rem,3.4vw,3rem)', lineHeight: 1.0, letterSpacing: '-0.04em', color: '#d8dfdb', margin: '0 0 18px', flex: 1 }}>
@@ -194,7 +169,7 @@ export default function BlogPage() {
                     {featured.excerpt}
                   </p>
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontFamily: FB, fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: C.teal }}>
-                    Lire l&apos;article
+                    {bp.readArticle}
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </span>
                 </div>
@@ -228,9 +203,9 @@ export default function BlogPage() {
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                     <span style={{ fontFamily: FB, fontSize: '0.55rem', fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.teal, background: 'rgba(34,244,189,0.07)', border: '1px solid rgba(34,244,189,0.15)', padding: '3px 9px' }}>
-                      {post.category || 'Data'}
+                      {post.category || bp.defaultCategory}
                     </span>
-                    <span style={{ fontFamily: FB, fontSize: '0.59rem', color: 'rgba(180,195,188,0.38)' }}>{formatDate(post.publishedAt)}</span>
+                    <span style={{ fontFamily: FB, fontSize: '0.59rem', color: 'rgba(180,195,188,0.38)' }}>{formatDate(post.publishedAt, locale)}</span>
                   </div>
 
                   <h3 style={{ fontFamily: FB, fontWeight: 700, fontSize: 'clamp(1.1rem,2.2vw,1.5rem)', lineHeight: 1.08, letterSpacing: '-0.03em', color: '#d8dfdb', margin: '0 0 12px' }}>
@@ -244,7 +219,7 @@ export default function BlogPage() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 14, borderTop: '1px solid rgba(112,235,179,0.08)', marginTop: 'auto' }}>
                     <span style={{ fontFamily: FB, fontSize: '0.6rem', color: 'rgba(180,195,188,0.36)', letterSpacing: '0.06em' }}>{post.authorName}</span>
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontFamily: FB, fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(180,195,188,0.44)' }}>
-                      Lire
+                      {bp.readMore}
                       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </span>
                   </div>

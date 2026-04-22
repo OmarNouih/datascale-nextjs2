@@ -15,11 +15,14 @@ import ContactPresence from '@/components/sections/ContactPresence'
 import Footer from '@/components/sections/Footer'
 
 import SectionDivider from '@/components/SectionDivider'
-import { SERVICES } from '@/lib/data/services'
+import { useLang } from '@/lib/i18n/LanguageContext'
+import { getLocalizedServices } from '@/lib/data/serviceCatalog'
 
 export default function HomePage() {
   const [scrolled, setScrolled] = useState(false)
   const [modal, setModal] = useState(null)
+  const { t } = useLang()
+  const services = getLocalizedServices(t.services.items)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -27,7 +30,7 @@ export default function HomePage() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const activeService = SERVICES.find((service) => service.id === modal)
+  const activeService = services.find((service) => service.id === modal)
 
   return (
     <>

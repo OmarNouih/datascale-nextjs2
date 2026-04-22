@@ -1,4 +1,5 @@
 import { Manrope, Space_Grotesk } from 'next/font/google'
+import { LanguageProvider } from '@/lib/i18n/LanguageContext'
 
 import './globals.css'
 
@@ -20,13 +21,13 @@ export const metadata = {
     template: '%s',
   },
   description:
-    "Data Scale Business conçoit des systèmes de performance qui relient donnée, attention et exécution pour les entreprises au Maroc et en Afrique.",
+    'Data Scale Business designs performance systems that connect data, market attention and execution for companies in Morocco and Africa.',
   keywords: [
     'Data Scale Business',
-    'Business Intelligence Maroc',
+    'Business Intelligence Morocco',
     'Data Engineering Casablanca',
-    'Marketing data-driven Maroc',
-    'Transformation digitale Maroc',
+    'Data-driven marketing Morocco',
+    'Digital transformation Morocco',
     'Performance systems',
   ],
   metadataBase: new URL('https://datascalebusiness.io'),
@@ -36,10 +37,10 @@ export const metadata = {
   openGraph: {
     title: 'Data Scale Business | Performance systems from data to action',
     description:
-      'Stratégie data, analyse, BI et activation marketing réunies dans un seul système de performance.',
+      'Data strategy, analytics, BI and marketing activation united in one performance system.',
     url: 'https://datascalebusiness.io',
     siteName: 'Data Scale Business',
-    locale: 'fr_MA',
+    locale: 'en_US',
     type: 'website',
     images: [
       {
@@ -54,7 +55,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Data Scale Business | Performance systems from data to action',
     description:
-      'Stratégie data, analyse, BI et activation marketing réunies dans un seul système de performance.',
+      'Data strategy, analytics, BI and marketing activation united in one performance system.',
     images: ['/og-image.png'],
   },
   icons: {
@@ -73,7 +74,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="fr">
+    <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -91,7 +92,7 @@ export default function RootLayout({ children }) {
               url: 'https://datascalebusiness.io',
               logo: 'https://datascalebusiness.io/logo.png',
               description:
-                'Business Intelligence, data engineering, analytics et activation marketing pour les entreprises au Maroc et en Afrique.',
+                'Business Intelligence, data engineering, analytics and marketing activation for companies in Morocco and Africa.',
               address: {
                 '@type': 'PostalAddress',
                 addressLocality: 'Casablanca',
@@ -122,7 +123,9 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body className={`${sans.variable} ${display.variable}`}>{children}</body>
+      <body className={`${sans.variable} ${display.variable}`}>
+        <LanguageProvider>{children}</LanguageProvider>
+      </body>
     </html>
   )
 }

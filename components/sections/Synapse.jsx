@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Reveal from '@/components/Reveal'
 import { C } from '@/lib/tokens'
 import { navTo } from '@/lib/utils/nav'
+import { useLang } from '@/lib/i18n/LanguageContext'
 
 const FB = "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif"
 const FD = "'Artonex Trial', 'Avenir Next', 'Century Gothic', sans-serif"
@@ -37,12 +38,6 @@ const FEATURES = [
   },
 ]
 
-const CHAT_MSGS = [
-  { from: 'user', text: 'Bonjour, je cherche un appartement 3 pièces à Casablanca' },
-  { from: 'reva', text: 'Bonjour! Je suis Reva 👋 Nous avons plusieurs biens correspondant à vos critères. Quel est votre budget approximatif?' },
-  { from: 'user', text: 'Entre 1.5M et 2M DH' },
-  { from: 'reva', text: "Parfait. J'ai 4 biens disponibles dans cette fourchette. Souhaitez-vous planifier une visite? J'ai des créneaux dès demain matin." },
-]
 
 function FeatureCard({ f }) {
   const [hov, setHov] = useState(false)
@@ -54,7 +49,7 @@ function FeatureCard({ f }) {
         display: 'flex', alignItems: 'center', gap: 18,
         padding: '18px 20px',
         background: hov ? C.teal : '#040807',
-        border: `2px solid rgba(34,244,189,0.45)`,
+        border: `1.5px solid ${C.teal}`,
         borderRadius: 20,
         boxShadow: hov ? 'none' : '0 0 18px rgba(34,244,189,0.12), inset 0 0 24px rgba(34,244,189,0.04)',
         transition: 'background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease',
@@ -84,6 +79,8 @@ function FeatureCard({ f }) {
 }
 
 export default function Synapse() {
+  const { t } = useLang()
+  const s = t.synapse
   return (
     <section id="synapse" style={{ background: '#040807', position: 'relative', overflow: 'hidden' }}>
 
@@ -105,7 +102,7 @@ export default function Synapse() {
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 36 }}>
               <div style={{ width: 7, height: 7, borderRadius: '50%', background: C.teal, boxShadow: `0 0 8px ${C.teal}` }} />
               <span style={{ fontFamily: FB, fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.26em', textTransform: 'uppercase', color: C.teal }}>
-                Produit Exclusif · By Data Scale Business
+                {s.eyebrow}
               </span>
             </div>
 
@@ -118,7 +115,7 @@ export default function Synapse() {
 
             {/* Tagline */}
             <div style={{ fontFamily: FD, fontSize: 'clamp(0.9rem,1.8vw,1.25rem)', fontWeight: 400, letterSpacing: '0.28em', color: C.tealLight, textTransform: 'uppercase' }}>
-              Intelligence Immobiliere
+              {s.tagline}
             </div>
           </div>
         </Reveal>
@@ -130,21 +127,17 @@ export default function Synapse() {
             {/* Connecting line */}
             <div style={{ position: 'absolute', top: 7, left: 'calc(16.67% + 40px)', right: 'calc(16.67% + 40px)', height: 2, background: `linear-gradient(90deg, ${C.teal}, rgba(34,244,189,0.4), ${C.teal})`, opacity: 0.5 }} />
 
-            {STATS.map((s, i) => (
+            {STATS.map((stat, i) => (
               <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', paddingTop: 32 }}>
-                {/* Dot */}
                 <div style={{ position: 'absolute', top: 0, width: 16, height: 16, borderRadius: '50%', background: C.teal, boxShadow: `0 0 12px ${C.teal}` }} />
-                {/* Value */}
                 <div style={{ fontFamily: FB, fontWeight: 900, fontSize: 'clamp(1.5rem,2.6vw,2rem)', color: C.teal, lineHeight: 1, letterSpacing: '-0.02em', marginBottom: 6 }}>
-                  {s.val}
+                  {stat.val}
                 </div>
-                {/* Label */}
                 <div style={{ fontFamily: FB, fontSize: '0.6rem', fontWeight: 700, color: '#fff', letterSpacing: '0.1em', marginBottom: 3 }}>
-                  {s.label}
+                  {s.stats[i].label}
                 </div>
-                {/* Sub */}
                 <div style={{ fontFamily: FB, fontSize: '0.56rem', color: 'rgba(216,223,219,0.35)' }}>
-                  {s.sub}
+                  {s.stats[i].sub}
                 </div>
               </div>
             ))}
@@ -155,10 +148,10 @@ export default function Synapse() {
         <Reveal delay={80}>
           <div style={{ textAlign: 'center', marginBottom: 64 }}>
             <div style={{ fontFamily: FD, fontWeight: 800, fontSize: 'clamp(1.6rem,3.4vw,2.8rem)', color: C.teal, lineHeight: 1, letterSpacing: '0.02em', textTransform: 'uppercase' }}>
-              Comment Reva
+              {s.heading1}
             </div>
             <div style={{ fontFamily: FD, fontWeight: 800, fontSize: 'clamp(1.6rem,3.4vw,2.8rem)', color: '#fff', lineHeight: 1.05, letterSpacing: '0.02em', textTransform: 'uppercase' }}>
-              Travaille Pour Vous <span style={{ fontFamily: FB, fontWeight: 800, color: C.teal }}>?</span>
+              {s.heading2} <span style={{ fontFamily: FB, fontWeight: 800, color: C.teal }}>?</span>
             </div>
           </div>
         </Reveal>
@@ -170,7 +163,7 @@ export default function Synapse() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {FEATURES.map((f, i) => (
               <Reveal key={i} delay={i * 50}>
-                <FeatureCard f={f} />
+                <FeatureCard f={{ icon: f.icon, title: s.features[i].title, desc: s.features[i].desc }} />
               </Reveal>
             ))}
 
@@ -185,7 +178,7 @@ export default function Synapse() {
                   onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.1)')}
                   onMouseLeave={e => (e.currentTarget.style.filter = '')}
                 >
-                  Découvrir CORVYA
+                  {s.cta1}
                 </a>
                 <button
                   onClick={() => navTo('contact')}
@@ -193,7 +186,7 @@ export default function Synapse() {
                   onMouseEnter={e => { e.currentTarget.style.background = C.teal; e.currentTarget.style.color = '#040807' }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = C.teal }}
                 >
-                  Nous contacter
+                  {s.cta2}
                 </button>
               </div>
             </Reveal>
@@ -201,7 +194,7 @@ export default function Synapse() {
 
           {/* RIGHT: Chat mockup */}
           <Reveal delay={100}>
-            <div style={{ background: '#040807', border: `2px solid rgba(34,244,189,0.45)`, borderRadius: 28, overflow: 'hidden', boxShadow: `0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(34,244,189,0.06)` }}>
+            <div style={{ background: '#040807', border: `1.5px solid ${C.teal}`, borderRadius: 28, overflow: 'hidden', boxShadow: `0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(34,244,189,0.06)` }}>
 
               {/* Chat header */}
               <div style={{ padding: '14px 18px', background: '#040807', borderBottom: '1px solid rgba(34,244,189,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -213,7 +206,7 @@ export default function Synapse() {
                     <div style={{ fontFamily: FB, fontWeight: 700, fontSize: '0.88rem', color: '#fff' }}>REVA · CORVYA</div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
                       <div style={{ width: 5, height: 5, borderRadius: '50%', background: C.teal, boxShadow: `0 0 6px ${C.teal}` }} />
-                      <span style={{ fontFamily: FB, fontSize: '0.6rem', color: C.tealLight }}>En ligne · Répond en moins de 5s</span>
+                      <span style={{ fontFamily: FB, fontSize: '0.6rem', color: C.tealLight }}>{s.chat.status}</span>
                     </div>
                   </div>
                 </div>
@@ -229,7 +222,7 @@ export default function Synapse() {
 
               {/* Messages */}
               <div style={{ padding: '20px 18px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {CHAT_MSGS.map((msg, i) => (
+                {s.chat.msgs.map((msg, i) => (
                   <div key={i} style={{ display: 'flex', justifyContent: msg.from === 'user' ? 'flex-end' : 'flex-start' }}>
                     <div style={{
                       maxWidth: '80%', padding: '10px 14px',
@@ -246,7 +239,7 @@ export default function Synapse() {
 
                 {/* Quick reply chips */}
                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 4 }}>
-                  {['Oui, cette semaine', 'Voir les biens', 'Rappeler plus tard'].map((opt, i) => (
+                  {s.chat.chips.map((opt, i) => (
                     <span key={i} style={{ padding: '5px 12px', border: `1px solid rgba(34,244,189,0.3)`, borderRadius: 999, fontSize: '0.67rem', fontFamily: FB, color: C.tealLight, cursor: 'default' }}>
                       {opt}
                     </span>
@@ -257,7 +250,7 @@ export default function Synapse() {
               {/* Input bar */}
               <div style={{ padding: '12px 18px', borderTop: '1px solid rgba(34,244,189,0.1)', background: '#040807', display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div style={{ flex: 1, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 8, padding: '9px 14px' }}>
-                  <span style={{ fontFamily: FB, fontSize: '0.72rem', color: 'rgba(255,255,255,0.2)' }}>Écrire un message...</span>
+                  <span style={{ fontFamily: FB, fontSize: '0.72rem', color: 'rgba(255,255,255,0.2)' }}>{s.chat.placeholder}</span>
                 </div>
                 <div style={{ width: 36, height: 36, borderRadius: '50%', background: C.teal, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#040807" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>

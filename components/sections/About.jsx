@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Reveal from '@/components/Reveal'
 import { navTo } from '@/lib/utils/nav'
+import { useLang } from '@/lib/i18n/LanguageContext'
 
 const CARDS = [
   {
@@ -314,6 +315,8 @@ function PipelineCol({ layer, isLast }) {
 }
 
 export default function About() {
+  const { t } = useLang()
+  const a = t.about
   return (
     <section
       id="about"
@@ -360,7 +363,7 @@ export default function About() {
                   fontSize: '0.68rem', fontWeight: 800,
                   letterSpacing: '0.24em', textTransform: 'uppercase', color: '#0d8a6d',
                 }}>
-                  Notre ADN
+                  {a.eyebrow}
                 </span>
               </div>
               <h2 style={{
@@ -370,13 +373,13 @@ export default function About() {
                 fontSize: 'clamp(2.6rem, 5vw, 4.4rem)',
                 lineHeight: 1, letterSpacing: '0.01em',
               }}>
-                <span style={{ display: 'block', marginBottom: '0.18em', color: '#0a1512' }}>Trois Forces</span>
+                <span style={{ display: 'block', marginBottom: '0.18em', color: '#0a1512' }}>{a.title1}</span>
                 <span style={{
                   display: 'block',
                   background: 'linear-gradient(110deg, #0d8a6d 0%, #17b894 100%)',
                   WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                 }}>
-                  Une Vision
+                  {a.title2}
                 </span>
               </h2>
             </div>
@@ -387,17 +390,17 @@ export default function About() {
                 fontSize: '0.9rem', lineHeight: 1.9,
                 color: 'rgba(10,21,18,0.52)', margin: 0, textAlign: 'right',
               }}>
-                Expertise terrain. Résultats mesurables. Une culture data construite avec vous, pas pour vous.
+                {a.desc}
               </p>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                 <button className="cta-btn" onClick={() => navTo('contact')}>
-                  Travailler avec nous
+                  {a.cta1}
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
                   </svg>
                 </button>
                 <button className="cta-btn-outline" style={{ fontSize: '0.7rem', padding: '0 18px', minHeight: '40px' }} onClick={() => navTo('realisations')}>
-                  Nos réalisations
+                  {a.cta2}
                 </button>
               </div>
             </div>
@@ -411,7 +414,7 @@ export default function About() {
         }}>
           {CARDS.map((card, i) => (
             <Reveal key={card.dna} delay={i * 90} style={{ height: '100%' }}>
-              <PillarCard card={card} />
+              <PillarCard card={{ ...card, dna: a.cards[i].dna, dnaDesc: a.cards[i].dnaDesc, title: a.cards[i].title, desc: a.cards[i].desc }} />
             </Reveal>
           ))}
         </div>
@@ -436,7 +439,7 @@ export default function About() {
                     fontSize: '0.65rem', fontWeight: 800,
                     letterSpacing: '0.22em', textTransform: 'uppercase', color: '#0d8a6d',
                   }}>
-                    Stack Technique
+                    {a.stackEyebrow}
                   </span>
                 </div>
                 <h3 style={{
@@ -446,8 +449,8 @@ export default function About() {
                   fontSize: 'clamp(1.9rem, 3.2vw, 3rem)',
                   lineHeight: 1.05, letterSpacing: '0.01em',
                 }}>
-                  <span style={{ color: '#0a1512' }}>Notre </span>
-                  <span style={{ color: '#0d8a6d' }}>Architecture Data</span>
+                  <span style={{ color: '#0a1512' }}>{a.stackTitle1}</span>
+                  <span style={{ color: '#0d8a6d' }}>{a.stackTitle2}</span>
                 </h3>
               </div>
 
@@ -457,7 +460,7 @@ export default function About() {
                 color: 'rgba(10,21,18,0.48)', margin: 0,
                 textAlign: 'right', maxWidth: 320,
               }}>
-                Cinq couches interdépendantes pour transformer la donnée brute en actif stratégique, de la collecte au tableau de bord.
+                {a.stackDesc}
               </p>
             </div>
 
@@ -469,7 +472,7 @@ export default function About() {
                 letterSpacing: '0.16em', textTransform: 'uppercase',
                 color: 'rgba(10,21,18,0.25)', whiteSpace: 'nowrap',
               }}>
-                Flux de données
+                {a.flowLabel}
               </span>
               <div style={{ flex: 1, height: 1, background: 'rgba(10,21,18,0.1)' }} />
               <span style={{
@@ -486,7 +489,7 @@ export default function About() {
               {LAYERS.map((layer, i) => (
                 <PipelineCol
                   key={layer.num}
-                  layer={layer}
+                  layer={{ ...layer, desc: a.layers[i].desc }}
                   isLast={i === LAYERS.length - 1}
                 />
               ))}

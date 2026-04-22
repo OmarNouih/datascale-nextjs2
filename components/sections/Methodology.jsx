@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import Reveal from '@/components/Reveal'
-import { STEPS } from '@/lib/data/services'
 import { C } from '@/lib/tokens'
+import { useLang } from '@/lib/i18n/LanguageContext'
 
 const FB = "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif"
 const FD = "'Artonex Trial', 'Avenir Next', 'Century Gothic', sans-serif"
@@ -92,6 +92,8 @@ function StepCard({ step, index }) {
 }
 
 export default function Methodology() {
+  const { t } = useLang()
+  const m = t.methodology
   return (
     <section
       id="methodology"
@@ -114,21 +116,21 @@ export default function Methodology() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
               <div style={{ width: 24, height: 1.5, background: C.teal, flexShrink: 0 }} />
               <span style={{ fontFamily: FB, fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.24em', textTransform: 'uppercase', color: C.teal }}>
-                Notre approche
+                {m.eyebrow}
               </span>
             </div>
 
             <h2 style={{ margin: '0 0 4px', fontFamily: FD, fontWeight: 800, fontSize: 'clamp(2rem,3.8vw,3.2rem)', lineHeight: 1.05, letterSpacing: '0.01em', color: '#d8dfdb', textTransform: 'uppercase' }}>
-              Methodologie
+              {m.title1}
             </h2>
             <div style={{ fontFamily: FD, fontWeight: 800, fontSize: 'clamp(2rem,3.8vw,3.2rem)', lineHeight: 1.05, letterSpacing: '0.01em', color: C.teal, textTransform: 'uppercase', marginBottom: 28 }}>
-              Processus
+              {m.title2}
             </div>
 
             <div style={{ width: 200, height: 1.5, background: 'rgba(255,255,255,0.18)', marginBottom: 36 }} />
 
             <p style={{ fontFamily: FB, fontSize: '0.92rem', lineHeight: 1.85, color: '#d8dfdb', margin: 0, maxWidth: 420 }}>
-              Un processus éprouvé pour transformer vos données en avantage compétitif, de l&apos;audit au déploiement.
+              {m.desc}
             </p>
           </div>
         </Reveal>
@@ -138,13 +140,13 @@ export default function Methodology() {
           <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
             {/* Left col — higher */}
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <StepCard step={STEPS[0]} index={0} />
-              <StepCard step={STEPS[2]} index={2} />
+              <StepCard step={m.steps[0]} index={0} />
+              <StepCard step={m.steps[2]} index={2} />
             </div>
             {/* Right col — offset down */}
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16, marginTop: 48 }}>
-              <StepCard step={STEPS[1]} index={1} />
-              <StepCard step={STEPS[3]} index={3} />
+              <StepCard step={m.steps[1]} index={1} />
+              <StepCard step={m.steps[3]} index={3} />
             </div>
           </div>
         </Reveal>

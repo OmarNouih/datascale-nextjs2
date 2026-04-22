@@ -4,15 +4,19 @@ import { useEffect, useRef, useState } from 'react'
 import Reveal from '@/components/Reveal'
 import { C } from '@/lib/tokens'
 import { navTo } from '@/lib/utils/nav'
+import { useLang } from '@/lib/i18n/LanguageContext'
 
-const STATS = [
-  { value: '18', sup: '+', unit: 'ans', label: "D'expérience" },
-  { value: '4',    sup: '',  unit: '',    label: 'Continents' },
-  { value: '100%', sup: '',  unit: '',    label: 'Capture de Leads' },
-  { value: '3',    sup: '',  unit: '',    label: 'Piliers de Croissance' },
+const STAT_VALS = [
+  { value: '18', sup: '+', unit: { fr: 'ans', en: 'yrs' } },
+  { value: '4',    sup: '',  unit: '' },
+  { value: '100%', sup: '',  unit: '' },
+  { value: '3',    sup: '',  unit: '' },
 ]
 
 export default function Hero() {
+  const { t, lang } = useLang()
+  const h = t.hero
+
   const handleNav = (id) => {
     if (window.location.pathname !== '/') { window.location.href = `/#${id}`; return }
     navTo(id)
@@ -70,7 +74,7 @@ export default function Hero() {
               fontSize: '0.7rem', fontWeight: 700,
               letterSpacing: '0.22em', textTransform: 'uppercase',
               color: 'rgba(188,220,205,0.7)',
-            }}>Data. AI. BI.</span>
+            }}>{h.kicker}</span>
           </div>
         </Reveal>
 
@@ -85,10 +89,10 @@ export default function Hero() {
             letterSpacing: '0.01em',
           }}>
             <span id="hero-line1" style={{ display: 'block', whiteSpace: 'nowrap', marginBottom: '0.18em' }}>
-              <span style={{ color: '#22f4bd', textShadow: '0 0 40px rgba(34,244,189,0.28)' }}>SCALEZ </span>
-              <span style={{ color: '#eef4f1' }}>VOTRE</span>
+              <span style={{ color: '#22f4bd', textShadow: '0 0 40px rgba(34,244,189,0.28)' }}>{h.line1a}</span>
+              <span style={{ color: '#eef4f1' }}>{h.line1b}</span>
             </span>
-            <span style={{ display: 'block', color: '#eef4f1' }}>BUSINESS</span>
+            <span style={{ display: 'block', color: '#eef4f1' }}>{h.line2}</span>
           </h1>
         </Reveal>
 
@@ -100,9 +104,7 @@ export default function Hero() {
             fontSize: '0.94rem', fontWeight: 700, lineHeight: 1.76,
             color: '#eef4f1',
           }}>
-            Spécialistes en Business Intelligence, Data Engineering et IA, nous
-            accompagnons les organisations dans la valorisation de leurs données pour
-            piloter la performance et accélérer la prise de décision.
+            {h.body}
           </p>
         </Reveal>
 
@@ -124,7 +126,7 @@ export default function Hero() {
               onMouseEnter={(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.transform = 'translateY(-2px)' }}
               onMouseLeave={(e) => { e.currentTarget.style.background = '#eef4f1'; e.currentTarget.style.transform = 'translateY(0)' }}
             >
-              Nos Services
+              {h.btn1}
             </button>
             {/* solid teal pill */}
             <button
@@ -142,7 +144,7 @@ export default function Hero() {
               onMouseEnter={(e) => { e.currentTarget.style.background = '#3fffc8'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(34,244,189,0.42)' }}
               onMouseLeave={(e) => { e.currentTarget.style.background = '#22f4bd'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 22px rgba(34,244,189,0.28)' }}
             >
-              Démarrer un projet
+              {h.btn2}
             </button>
           </div>
         </Reveal>
@@ -153,8 +155,8 @@ export default function Hero() {
             display: 'flex', alignItems: 'stretch', flexWrap: 'wrap',
             borderTop: '1px solid rgba(34,244,189,0.1)', paddingTop: 24,
           }}>
-            {STATS.map((s, i) => (
-              <div key={s.label} style={{
+            {STAT_VALS.map((s, i) => (
+              <div key={i} style={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center',
                 textAlign: 'center',
                 paddingRight: 28, paddingLeft: i === 0 ? 0 : 28,
@@ -167,14 +169,14 @@ export default function Hero() {
                 }}>
                   {s.value}
                   {s.sup && <span style={{ fontSize: '0.58em', color: '#22f4bd', marginLeft: 1 }}>{s.sup}</span>}
-                  {s.unit && <span style={{ fontSize: '0.4em', fontWeight: 700, color: '#22f4bd', letterSpacing: '0.1em', textTransform: 'uppercase', marginLeft: 3 }}>{s.unit}</span>}
+                  {s.unit && <span style={{ fontSize: '0.4em', fontWeight: 700, color: '#22f4bd', letterSpacing: '0.1em', textTransform: 'uppercase', marginLeft: 3 }}>{typeof s.unit === 'object' ? s.unit[lang] : s.unit}</span>}
                 </div>
                 <div style={{
                   fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
                   fontSize: '0.54rem', fontWeight: 700,
                   letterSpacing: '0.05em', textTransform: 'uppercase',
                   color: '#22f4bd', marginTop: 8, whiteSpace: 'nowrap',
-                }}>{s.label}</div>
+                }}>{h.stats[i].label}</div>
               </div>
             ))}
           </div>

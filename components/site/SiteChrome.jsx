@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { NAV_LINKS } from '@/lib/data/services'
 import { C } from '@/lib/tokens'
+import { useLang } from '@/lib/i18n/LanguageContext'
 
 /* ─── shared nav handler (works from any page) ─── */
 function useNav() {
@@ -43,6 +43,18 @@ function useNav() {
 ══════════════════════════════════════════════ */
 export function SiteHeader() {
   const { open, setOpen, go } = useNav()
+  const { t } = useLang()
+  const nav = t.nav
+  const st = t.site
+  const NAV_LINKS = [
+    { label: nav.home,         href: 'home'         },
+    { label: nav.services,     href: 'services'     },
+    { label: nav.blog,         href: 'blog'         },
+    { label: nav.synapse,      href: 'synapse'      },
+    { label: nav.realisations, href: 'realisations' },
+    { label: nav.about,        href: 'about'        },
+    { label: nav.contact,      href: 'contact'      },
+  ]
 
   return (
     <>
@@ -127,7 +139,7 @@ export function SiteHeader() {
               e.currentTarget.style.background = 'transparent'
               e.currentTarget.style.borderColor = 'rgba(34,244,189,0.55)'
             }}>
-              Contact
+              {nav.contact}
             </button>
           </div>
 
@@ -139,7 +151,7 @@ export function SiteHeader() {
               color: '#22f4bd', background: 'transparent',
               border: '1.5px solid rgba(34,244,189,0.5)',
               borderRadius: 999, padding: '8px 16px', cursor: 'pointer',
-            }}>Contact</button>
+            }}>{nav.contact}</button>
 
             <button
               className="hamburger-btn"
@@ -246,13 +258,13 @@ export function SiteHeader() {
             style={{ width: '100%', justifyContent: 'center' }}
             onClick={() => go('contact')}
           >
-            Démarrer votre projet
+            {st.start}
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </button>
           <div style={{ fontSize: '0.68rem', fontFamily: "'Manrope',sans-serif", color: 'rgba(255,255,255,0.22)', textAlign: 'center', marginTop: 14 }}>
-            Casablanca, Maroc · 2023
+            {st.address} · 2026
           </div>
         </div>
       </div>
@@ -264,6 +276,8 @@ export function SiteHeader() {
    SiteFooter
 ══════════════════════════════════════════════ */
 export function SiteFooter() {
+  const { t } = useLang()
+  const st = t.site
   return (
     <footer style={{ padding: '0 0 72px', background: '#060f0d' }}>
       <div style={{ width: 'min(1220px, calc(100vw - 48px))', margin: '0 auto' }}>
@@ -287,15 +301,14 @@ export function SiteFooter() {
               />
             </Link>
             <p style={{ color: 'rgba(175,191,184,0.78)', lineHeight: 1.7, maxWidth: '34rem', margin: 0 }}>
-              Des systèmes de performance conçus pour relier la donnée, l&apos;attention
-              du marché et l&apos;exécution opérationnelle.
+              {st.footerDesc}
             </p>
           </div>
 
           {/* Meta */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,minmax(0,1fr))', gap: 24 }}>
             <div style={{ display: 'grid', alignContent: 'start', gap: 10 }}>
-              <span style={{ color: '#22f4bd', fontSize: '0.74rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Contact</span>
+              <span style={{ color: '#22f4bd', fontSize: '0.74rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}>{st.contactLabel}</span>
               <a href="mailto:contact@datascalebusiness.io" style={{ color: 'rgba(203,215,209,0.88)', textDecoration: 'none', lineHeight: 1.7 }}>
                 contact@datascalebusiness.io
               </a>
@@ -304,10 +317,10 @@ export function SiteFooter() {
               </a>
             </div>
             <div style={{ display: 'grid', alignContent: 'start', gap: 10 }}>
-              <span style={{ color: '#22f4bd', fontSize: '0.74rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Base</span>
-              <span style={{ color: 'rgba(175,191,184,0.78)', lineHeight: 1.7 }}>Casablanca, Maroc</span>
+              <span style={{ color: '#22f4bd', fontSize: '0.74rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}>{st.baseLabel}</span>
+              <span style={{ color: 'rgba(175,191,184,0.78)', lineHeight: 1.7 }}>{st.address}</span>
               <a href="/privacy-policy" style={{ color: 'rgba(203,215,209,0.88)', textDecoration: 'none', lineHeight: 1.7 }}>
-                Politique de confidentialité
+                {st.privacy}
               </a>
             </div>
           </div>

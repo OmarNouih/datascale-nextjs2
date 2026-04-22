@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { client } from '@/lib/sanity/client'
+
 import Reveal from '@/components/Reveal'
+import { useLang } from '@/lib/i18n/LanguageContext'
+import { client } from '@/lib/sanity/client'
 
 const QUERY = `*[_type == "post"] | order(publishedAt desc)[0..2] {
   _id, title, slug,
@@ -46,7 +48,7 @@ function formatDate(d) {
   return new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
 }
 
-function Card({ post, index, onClick }) {
+function Card({ post, index, onClick, readMoreCard }) {
   const [hov, setHov] = useState(false)
 
   return (
@@ -77,7 +79,6 @@ function Card({ post, index, onClick }) {
         overflow: 'hidden',
       }}
     >
-      {/* Number */}
       <div style={{
         fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
         fontSize: '2.2rem',
@@ -91,7 +92,6 @@ function Card({ post, index, onClick }) {
         {String(index + 1).padStart(2, '0')}.
       </div>
 
-      {/* Title — always 3 lines height */}
       <h3 style={{
         fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
         fontWeight: 700,
@@ -110,7 +110,6 @@ function Card({ post, index, onClick }) {
         {post.title}
       </h3>
 
-      {/* Excerpt — 2 lines */}
       <p style={{
         fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
         fontSize: '0.82rem',
@@ -126,7 +125,6 @@ function Card({ post, index, onClick }) {
         {post.excerpt}
       </p>
 
-      {/* Always in DOM — space reserved, visibility toggled to prevent layout shift */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         gap: 6, marginBottom: 14,
@@ -135,13 +133,12 @@ function Card({ post, index, onClick }) {
         color: '#040e0a',
         visibility: hov ? 'visible' : 'hidden',
       }}>
-        Lire plus
+        {readMoreCard}
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
           <path d="M5 12h14M12 5l7 7-7 7" />
         </svg>
       </div>
 
-      {/* Footer */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -179,6 +176,8 @@ function Card({ post, index, onClick }) {
 export default function Blog() {
   const [posts, setPosts] = useState(PLACEHOLDER_POSTS)
   const router = useRouter()
+  const { t } = useLang()
+  const b = t.blog
 
   useEffect(() => {
     client.fetch(QUERY).then((d) => { if (d?.length) setPosts(d) }).catch(() => {})
@@ -199,7 +198,6 @@ export default function Blog() {
         overflow: 'hidden',
       }}
     >
-      {/* subtle corner decoration */}
       <div style={{
         position: 'absolute',
         top: -160, left: -160,
@@ -208,7 +206,6 @@ export default function Blog() {
         transform: 'rotate(45deg)',
         pointerEvents: 'none',
       }} />
-      {/* ambient glow top-right */}
       <div style={{
         position: 'absolute',
         top: -80, right: -80,
@@ -218,8 +215,6 @@ export default function Blog() {
       }} />
 
       <div style={{ maxWidth: 1240, margin: '0 auto', position: 'relative' }}>
-
-        {/* Header */}
         <Reveal>
           <div style={{
             display: 'flex',
@@ -237,7 +232,7 @@ export default function Blog() {
                   letterSpacing: '0.24em', textTransform: 'uppercase',
                   color: '#22f4bd',
                 }}>
-                  Insights & Expertise
+                  {b.eyebrow}
                 </span>
               </div>
               <h2 style={{
@@ -249,7 +244,7 @@ export default function Blog() {
                 letterSpacing: '0.01em',
                 color: '#d8dfdb',
               }}>
-                <span style={{ display: 'block', marginBottom: '0.22em' }}>Le Blog</span>
+                <span style={{ display: 'block', marginBottom: '0.22em' }}>{b.title}</span>
                 <span style={{
                   display: 'block',
                   background: 'linear-gradient(110deg, #22f4bd 0%, #5bcabc 100%)',
@@ -269,14 +264,14 @@ export default function Blog() {
                 color: 'rgba(188,201,195,0.56)',
                 margin: 0, textAlign: 'right', maxWidth: 320,
               }}>
-                Conseils data, cas clients et tendances BI pour les décideurs marocains et africains.
+                {b.sectionDesc}
               </p>
               <button
                 className="cta-btn-outline"
                 style={{ fontSize: '0.7rem', padding: '0 18px', minHeight: '40px' }}
                 onClick={() => router.push('/blog')}
               >
-                Tous les articles
+                {b.allArticles}
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
@@ -285,7 +280,6 @@ export default function Blog() {
           </div>
         </Reveal>
 
-        {/* 3 equal cards */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -295,7 +289,7 @@ export default function Blog() {
         }}>
           {posts.slice(0, 3).map((post, i) => (
             <Reveal key={post._id} delay={i * 80}>
-              <Card post={post} index={i} onClick={() => goTo(post)} />
+              <Card post={post} index={i} onClick={() => goTo(post)} readMoreCard={b.readMoreCard} />
             </Reveal>
           ))}
         </div>

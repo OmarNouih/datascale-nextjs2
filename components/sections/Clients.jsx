@@ -3,58 +3,7 @@
 import { useState } from 'react'
 import Reveal from '@/components/Reveal'
 import { navTo } from '@/lib/utils/nav'
-
-const CLIENTS = [
-  {
-    num: '01', name: 'Marjane Holding', sector: 'Grande Distribution',
-    logo: '/logos/17.png',
-    desc: "Mise en place d'une plateforme CRM analytique, d'un système de Business Intelligence, d'un Datalake et d'une architecture Big Data pour une prise de décision éclairée.",
-    tags: ['CRM Analytique', 'BI', 'Datalake', 'Big Data'],
-    result: '+40% visibilité client',
-  },
-  {
-    num: '02', name: "Label'Vie", sector: 'Retail & Distribution',
-    logo: '/logos/18.png',
-    desc: "Développement d'un projet de Data Marketing et Marketing Digital complet, intégrant CRM analytique et BI pour optimiser les campagnes et l'engagement client.",
-    tags: ['Data Marketing', 'CRM', 'BI', 'Marketing Digital'],
-    result: 'Engagement x3',
-  },
-  {
-    num: '03', name: 'Chaabane Immobilier', sector: 'Immobilier',
-    logo: '/logos/21.png',
-    desc: "Pilotage 360° des KPIs immobiliers : tableaux de bord temps réel, suivi des programmes, taux d'absorption et performance commerciale.",
-    tags: ['KPIs Immobilier', 'BI', 'Pilotage 360°', 'Dashboard'],
-    result: 'Pilotage temps réel',
-  },
-  {
-    num: '04', name: 'Greentek Media', sector: 'Retail Media',
-    logo: '/logos/22.png',
-    desc: "Stratégie de Marketing du Retail Media avec intégration data, ciblage audience et optimisation des campagnes publicitaires digitales.",
-    tags: ['Retail Media', 'Marketing Digital', 'Data', 'Audience'],
-    result: 'ROI campagnes optimisé',
-  },
-  {
-    num: '05', name: 'LeBonCoin', sector: 'Marketplace',
-    logo: '/logos/23.png',
-    desc: "Mise en place d'une gouvernance data robuste pour sécuriser et structurer les actifs data à l'échelle de la plateforme.",
-    tags: ['Data Gouvernance', 'Data Management', 'Stratégie Data'],
-    result: 'Gouvernance unifiée',
-  },
-  {
-    num: '06', name: 'Super Auto Distribution', sector: 'Automobile',
-    logo: '/logos/25.png',
-    desc: "Déploiement d'une stratégie Marketing & CRM complète pour optimiser la relation client, le suivi des leads et les performances commerciales.",
-    tags: ['Marketing', 'CRM', 'Leads', 'Performance'],
-    result: 'CRM opérationnel',
-  },
-  {
-    num: '07', name: 'Tanger Med Engineering', sector: 'Infrastructure & Logistique',
-    logo: '/logos/19.png',
-    desc: "Définition d'une stratégie de data management et de gouvernance data robuste, avec accompagnement dans la sélection des solutions techniques.",
-    tags: ['Data Management', 'Gouvernance', 'Stratégie Data'],
-    result: 'Gouvernance data unifiée',
-  },
-]
+import { useLang } from '@/lib/i18n/LanguageContext'
 
 function ClientCard({ cl }) {
   const [hov, setHov] = useState(false)
@@ -226,7 +175,7 @@ function ClientCard({ cl }) {
   )
 }
 
-function CtaCard() {
+function CtaCard({ rls }) {
   const [hov, setHov] = useState(false)
   return (
     <div
@@ -285,7 +234,7 @@ function CtaCard() {
             fontSize: '0.68rem', fontWeight: 800,
             letterSpacing: '0.24em', textTransform: 'uppercase', color: '#22f4bd',
           }}>
-            Prochain projet
+            {rls.ctaEyebrow}
           </span>
         </div>
         <div style={{
@@ -294,14 +243,14 @@ function CtaCard() {
           fontSize: 'clamp(1.5rem, 2.6vw, 2.2rem)',
           color: '#d8dfdb', lineHeight: 1.2, marginBottom: 14,
         }}>
-          Votre entreprise,<br />la prochaine ?
+          {rls.ctaTitle}<br />{rls.ctaTitle2}
         </div>
         <p style={{
           fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
           fontSize: '0.84rem', color: 'rgba(188,201,195,0.46)',
           lineHeight: 1.76, margin: 0, maxWidth: 360,
         }}>
-          Diagnostic gratuit. Résultats mesurables dès les 90 premiers jours.
+          {rls.ctaDesc}
         </p>
       </div>
 
@@ -335,7 +284,7 @@ function CtaCard() {
             e.currentTarget.style.boxShadow = '0 4px 24px rgba(34,244,189,0.32)'
           }}
         >
-          Démarrer un projet
+          {rls.ctaBtn}
         </button>
         <span style={{
           fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
@@ -343,7 +292,7 @@ function CtaCard() {
           color: 'rgba(34,244,189,0.4)',
           letterSpacing: '0.1em', textTransform: 'uppercase',
         }}>
-          Réponse sous 24h
+          {rls.ctaReply}
         </span>
       </div>
     </div>
@@ -351,6 +300,10 @@ function CtaCard() {
 }
 
 export default function Clients() {
+  const { t } = useLang()
+  const rls = t.realisations
+  const clients = rls.clients
+
   return (
     <section
       id="realisations"
@@ -409,7 +362,7 @@ export default function Clients() {
                   letterSpacing: '0.24em', textTransform: 'uppercase',
                   color: '#22f4bd',
                 }}>
-                  Références clients
+                  {rls.clientsEyebrow}
                 </span>
               </div>
               <h2 style={{
@@ -421,7 +374,7 @@ export default function Clients() {
                 letterSpacing: '0.01em',
                 color: '#d8dfdb',
               }}>
-                <span style={{ display: 'block', marginBottom: '0.2em' }}>Ils nous ont</span>
+                <span style={{ display: 'block', marginBottom: '0.2em' }}>{rls.clientsTitle1}</span>
                 <span style={{
                   display: 'block',
                   background: 'linear-gradient(110deg, #22f4bd 0%, #5bcabc 100%)',
@@ -429,7 +382,7 @@ export default function Clients() {
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
                 }}>
-                  fait confiance
+                  {rls.clientsTitle2}
                 </span>
               </h2>
             </div>
@@ -441,14 +394,14 @@ export default function Clients() {
                 color: 'rgba(188,201,195,0.56)',
                 margin: 0, textAlign: 'right', maxWidth: 300,
               }}>
-                Leaders de la distribution, l'immobilier, l'automobile et la logistique au Maroc et en Afrique.
+                {rls.clientsDesc}
               </p>
               <button
                 className="cta-btn-outline"
                 style={{ fontSize: '0.7rem', padding: '0 18px', minHeight: '40px' }}
                 onClick={() => navTo('contact')}
               >
-                Démarrer votre projet
+                {rls.clientsBtn}
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
@@ -464,15 +417,15 @@ export default function Clients() {
           gap: 20,
           alignItems: 'start',
         }}>
-          {CLIENTS.map((cl, i) => (
+          {clients.map((cl, i) => (
             <Reveal key={cl.name} delay={i * 75} style={{ height: '100%' }}>
               <ClientCard cl={cl} />
             </Reveal>
           ))}
 
           {/* CTA — spans last 2 columns */}
-          <Reveal delay={CLIENTS.length * 75} style={{ gridColumn: 'span 2', height: '100%' }}>
-            <CtaCard />
+          <Reveal delay={clients.length * 75} style={{ gridColumn: 'span 2', height: '100%' }}>
+            <CtaCard rls={rls} />
           </Reveal>
         </div>
       </div>
