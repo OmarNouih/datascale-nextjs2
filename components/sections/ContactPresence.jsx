@@ -6,42 +6,27 @@ import { C } from '@/lib/tokens'
 import { useLang } from '@/lib/i18n/LanguageContext'
 import { getLocalizedServices } from '@/lib/data/serviceCatalog'
 
+
 /* ─── Social data ─────────────────────────────────────────────────── */
 const SOCIALS = [
   {
-    name: 'LinkedIn',
-    handle: '@datascalebusiness',
+    name: 'LinkedIn', handle: '@datascalebusiness',
     url: 'https://www.linkedin.com/company/datascalebusiness/posts/?feedView=all',
-    followers: '500+',
-    desc: 'Conseils BI, cas clients et actualités data, chaque semaine sur LinkedIn.',
-    cta: 'Suivre',
-    brand: '#0a66c2',
-    accent: 'rgba(10,102,194,',
+    followers: '500+', brand: '#0a66c2', accent: 'rgba(10,102,194,',
     topics: ['Business Intelligence', 'Data Engineering', 'Cash Flow'],
     icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>,
   },
   {
-    name: 'Instagram',
-    handle: '@datascalebusinessmorocco',
+    name: 'Instagram', handle: '@datascalebusinessmorocco',
     url: 'https://www.instagram.com/datascalebusinessmorocco/',
-    followers: '1k+',
-    desc: 'Visuels data, coulisses projets et inspiration business, au quotidien.',
-    cta: 'Suivre',
-    brand: '#e1306c',
-    brandGradient: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)',
-    accent: 'rgba(225,48,108,',
+    followers: '1k+', brand: '#e1306c', brandGradient: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)', accent: 'rgba(225,48,108,',
     topics: ['Dashboards Live', 'Coulisses Projets', 'Tips Data'],
     icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>,
   },
   {
-    name: 'Facebook',
-    handle: 'datascalebusinessmorocco',
+    name: 'Facebook', handle: 'datascalebusinessmorocco',
     url: 'https://web.facebook.com/datascalebusinessmorocco',
-    followers: '800+',
-    desc: 'Actualités, événements et contenus exclusifs pour notre communauté marocaine.',
-    cta: 'Suivre',
-    brand: '#1877f2',
-    accent: 'rgba(24,119,242,',
+    followers: '800+', brand: '#1877f2', accent: 'rgba(24,119,242,',
     topics: ['Actualités DSB', 'Événements Maroc', 'Cas Clients'],
     icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>,
   },
@@ -49,9 +34,9 @@ const SOCIALS = [
 
 /* ─── Presence data ───────────────────────────────────────────────── */
 const REGIONS = [
-  { flag: '🇲🇦', label: 'Maroc',  badge: 'Siège',    color: C.teal,    status: 'active' },
-  { flag: '🇪🇺', label: 'Europe', badge: 'Actif',    color: '#4da6ff', status: 'active', flags: ['🇮🇪','🇺🇸','🇨🇦'] },
-  { flag: '🌍',  label: 'Afrique', badge: "L'avenir", color: '#f5b942', status: 'future' },
+  { flag: '🇲🇦', label: 'Maroc',   badge: 'Siège',     color: C.teal,    status: 'active' },
+  { flag: '🇪🇺', label: 'Europe',  badge: 'Actif',     color: '#4da6ff', status: 'active', flags: ['🇮🇪','🇺🇸','🇨🇦'] },
+  { flag: '🌍',  label: 'Afrique', badge: "L'avenir",  color: '#f5b942', status: 'future' },
 ]
 
 /* ─── Social card ─────────────────────────────────────────────────── */
@@ -59,123 +44,43 @@ function SocialCard({ s, delay, ct, idx }) {
   const [hov, setHov] = useState(false)
   const isInsta = s.name === 'Instagram'
   const iconBg = isInsta ? s.brandGradient : s.brand
-
   return (
     <Reveal delay={delay}>
-      <div
-        onMouseEnter={() => setHov(true)}
-        onMouseLeave={() => setHov(false)}
-        style={{
-          borderRadius: 14,
-          border: `1px solid ${hov ? s.accent + '0.4)' : 'rgba(255,255,255,0.07)'}`,
-          background: hov ? s.accent + '0.06)' : 'rgba(255,255,255,0.025)',
-          overflow: 'hidden',
-          display: 'flex', flexDirection: 'column',
-          height: '100%',
-          transition: 'all 0.28s cubic-bezier(0.4,0,0.2,1)',
-          transform: hov ? 'translateY(-5px)' : 'translateY(0)',
-          boxShadow: hov ? `0 16px 48px ${s.accent}0.14)` : '0 2px 16px rgba(0,0,0,0.3)',
-        }}
-      >
-        {/* Top accent strip */}
+      <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{
+        borderRadius: 14,
+        border: `1px solid ${hov ? s.accent + '0.4)' : 'rgba(255,255,255,0.07)'}`,
+        background: hov ? s.accent + '0.06)' : 'rgba(255,255,255,0.025)',
+        overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%',
+        transition: 'all 0.28s cubic-bezier(0.4,0,0.2,1)',
+        transform: hov ? 'translateY(-5px)' : 'translateY(0)',
+        boxShadow: hov ? `0 16px 48px ${s.accent}0.14)` : '0 2px 16px rgba(0,0,0,0.3)',
+      }}>
         <div style={{ height: 2, background: iconBg, flexShrink: 0 }} />
-
-        {/* Header row */}
         <div style={{ padding: '22px 24px 18px', display: 'flex', alignItems: 'center', gap: 14 }}>
-          <div style={{
-            width: 48, height: 48, borderRadius: 12,
-            background: iconBg,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0, color: '#fff',
-            boxShadow: `0 4px 16px ${isInsta ? 'rgba(225,48,108,0.35)' : s.accent + '0.35)'}`,
-          }}>
-            {s.icon}
-          </div>
+          <div style={{ width: 48, height: 48, borderRadius: 12, background: iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#fff', boxShadow: `0 4px 16px ${isInsta ? 'rgba(225,48,108,0.35)' : s.accent + '0.35)'}` }}>{s.icon}</div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{
-              fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
-              fontWeight: 700, fontSize: '0.98rem', color: C.ink,
-            }}>
-              {s.name}
-            </div>
-            <div style={{
-              fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
-              fontSize: '0.68rem', color: C.inkLight, marginTop: 2,
-              overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-            }}>
-              {s.handle}
-            </div>
+            <div style={{ fontFamily: "'Avenir Next',sans-serif", fontWeight: 700, fontSize: '0.98rem', color: C.ink }}>{s.name}</div>
+            <div style={{ fontFamily: "'Avenir Next',sans-serif", fontSize: '0.68rem', color: C.inkLight, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.handle}</div>
           </div>
-          {/* Follower count */}
           <div style={{ textAlign: 'right', flexShrink: 0 }}>
-            <div style={{
-              fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
-              fontWeight: 800, fontSize: '1.15rem', lineHeight: 1,
-              color: isInsta ? s.brand : s.brand,
-            }}>
-              {s.followers}
-            </div>
-            <div style={{
-              fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
-              fontSize: '0.54rem', color: C.inkLight, marginTop: 3,
-              letterSpacing: '0.06em', textTransform: 'uppercase',
-            }}>
-              {ct.followersLabel}
-            </div>
+            <div style={{ fontFamily: "'Avenir Next',sans-serif", fontWeight: 800, fontSize: '1.15rem', lineHeight: 1, color: s.brand }}>{s.followers}</div>
+            <div style={{ fontFamily: "'Avenir Next',sans-serif", fontSize: '0.54rem', color: C.inkLight, marginTop: 3, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{ct.followersLabel}</div>
           </div>
         </div>
-
-        {/* Separator */}
         <div style={{ height: 1, margin: '0 24px', background: 'rgba(255,255,255,0.06)' }} />
-
-        {/* Description */}
         <div style={{ padding: '16px 24px', flex: 1 }}>
-          <p style={{
-            fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
-            fontSize: '0.76rem', color: C.inkLight, lineHeight: 1.72, margin: 0,
-          }}>
-            {ct.social[idx].desc}
-          </p>
+          <p style={{ fontFamily: "'Avenir Next',sans-serif", fontSize: '0.76rem', color: C.inkLight, lineHeight: 1.72, margin: 0 }}>{ct.social[idx].desc}</p>
         </div>
-
-        {/* Topic chips */}
         <div style={{ padding: '0 24px 18px', display: 'flex', flexWrap: 'wrap', gap: 5 }}>
           {ct.social[idx].topics.map(t => (
-            <span key={t} style={{
-              fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
-              fontSize: '0.53rem', fontWeight: 700, letterSpacing: '0.06em',
-              textTransform: 'uppercase',
-              color: isInsta ? s.brand : s.brand,
-              background: s.accent + '0.1)',
-              border: `1px solid ${s.accent}0.22)`,
-              padding: '2px 8px', borderRadius: 3,
-            }}>
-              {t}
-            </span>
+            <span key={t} style={{ fontFamily: "'Avenir Next',sans-serif", fontSize: '0.53rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: s.brand, background: s.accent + '0.1)', border: `1px solid ${s.accent}0.22)`, padding: '2px 8px', borderRadius: 3 }}>{t}</span>
           ))}
         </div>
-
-        {/* CTA */}
         <div style={{ padding: '0 24px 24px' }}>
-          <a
-            href={s.url} target="_blank" rel="noopener noreferrer"
-            style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
-              background: iconBg, color: '#fff',
-              fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
-              fontWeight: 700, fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase',
-              padding: '11px 16px', borderRadius: 8,
-              textDecoration: 'none', transition: 'opacity 0.2s, transform 0.15s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-            onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = '' }}
-          >
+          <a href={s.url} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, background: iconBg, color: '#fff', fontFamily: "'Avenir Next',sans-serif", fontWeight: 700, fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', padding: '11px 16px', borderRadius: 8, textDecoration: 'none', transition: 'opacity 0.2s' }}
+            onMouseEnter={e => { e.currentTarget.style.opacity = '0.85' }} onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}>
             {ct.social[idx].cta}
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
-              <polyline points="15 3 21 3 21 9"/>
-              <line x1="10" y1="14" x2="21" y2="3"/>
-            </svg>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </a>
         </div>
       </div>
@@ -395,111 +300,45 @@ export default function ContactPresence() {
         pointerEvents: 'none', zIndex: 0,
       }} />
 
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '108px 32px 0', position: 'relative', zIndex: 1 }}>
-
-        {/* ══════════════ BLOCK 1: COMMUNAUTÉ ══════════════ */}
-        <Reveal>
-          <div style={{
-            display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
-            flexWrap: 'wrap', gap: 24, marginBottom: 52,
-          }}>
-            <div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-                <div style={{ width: 24, height: 1.5, background: C.teal }} />
-                <span style={{
-                  fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
-                  fontSize: '0.67rem', fontWeight: 800, letterSpacing: '0.24em',
-                  textTransform: 'uppercase', color: C.teal,
-                }}>
-                  {ct.communityEyebrow}
-                </span>
-              </div>
-              <h2 style={{ margin: 0, lineHeight: 0.94 }}>
-                <span style={{
-                  display: 'block',
-                  fontFamily: "'Artonex Trial','Avenir Next','Avenir','Century Gothic',sans-serif",
-                  fontWeight: 400, fontSize: 'clamp(2.8rem,5.5vw,5rem)',
-                  color: C.ink,
-                }}>
-                  {ct.communityTitle1}
-                </span>
-                <span style={{
-                  display: 'block',
-                  fontFamily: "'Artonex Trial','Avenir Next','Avenir','Century Gothic',sans-serif",
-                  fontWeight: 400, fontSize: 'clamp(2.8rem,5.5vw,5rem)',
-                  background: 'linear-gradient(110deg,#22f4bd 0%,#5bcabc 100%)',
-                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-                }}>
-                  {ct.communityTitle2}
-                </span>
-              </h2>
-            </div>
-            <p style={{
-              fontFamily: "'Avenir Next','Avenir','Century Gothic',sans-serif",
-              fontSize: '0.9rem', lineHeight: 1.9,
-              color: 'rgba(216,223,219,0.42)', margin: 0,
-              textAlign: 'right', maxWidth: 300,
-            }}>
-              {ct.communityDesc}
-            </p>
+      {/* ── Social section — hidden, can be re-enabled later ── */}
+      <div style={{ display: 'none' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '108px 32px 0', position: 'relative', zIndex: 1 }}>
+          <div id="social-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20, marginBottom: 96 }}>
+            {SOCIALS.map((s, i) => <SocialCard key={s.name} s={s} delay={i * 70} ct={ct} idx={i} />)}
           </div>
-        </Reveal>
-
-        {/* Social cards */}
-        <div id="social-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20, marginBottom: 96 }}>
-          {SOCIALS.map((s, i) => <SocialCard key={s.name} s={s} delay={i * 70} ct={ct} idx={i} />)}
+          <div style={{ position: 'relative', height: 1, marginBottom: 0, zIndex: 1 }}>
+            <div style={{ position: 'absolute', top: -24, left: 0, right: 0, height: 48, background: 'radial-gradient(ellipse at 50% 50%,rgba(34,244,189,0.09) 0%,transparent 70%)' }} />
+            <div style={{ position: 'absolute', top: 0, left: '5%', right: '5%', height: 1.5, background: 'linear-gradient(90deg,transparent 0%,rgba(34,244,189,0.35) 15%,rgba(34,244,189,0.9) 50%,rgba(34,244,189,0.35) 85%,transparent 100%)', borderRadius: 99 }} />
+          </div>
         </div>
-
-        {/* ══ LED divider ══ */}
-        <div style={{ position: 'relative', height: 1, marginBottom: 0, zIndex: 1 }}>
-          <div style={{ position: 'absolute', top: -24, left: 0, right: 0, height: 48, background: 'radial-gradient(ellipse at 50% 50%,rgba(34,244,189,0.09) 0%,transparent 70%)' }} />
-          <div style={{ position: 'absolute', top: 0, left: '5%', right: '5%', height: 1.5, background: 'linear-gradient(90deg,transparent 0%,rgba(34,244,189,0.35) 15%,rgba(34,244,189,0.9) 50%,rgba(34,244,189,0.35) 85%,transparent 100%)', borderRadius: 99 }} />
-        </div>
-
-        {/* ══════════════ BLOCK 2: HERO BANNER ══════════════ */}
       </div>
 
-      {/* Full-width image banner */}
-      <div style={{
-        position: 'relative',
-        width: '100%',
-        height: 480,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-      }}>
-        {/* Background image — no filter on the div, use overlay for darkening */}
+      {/* Full-width image banner — natural full size */}
+      <div style={{ position: 'relative', width: '100%', background: '#050908' }}>
+        {/* Top LED line */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, height: 2, zIndex: 3,
+          background: 'linear-gradient(90deg, transparent 0%, rgba(34,244,189,0.3) 30%, rgba(34,244,189,0.7) 50%, rgba(34,244,189,0.3) 70%, transparent 100%)',
+        }} />
+
+        {/* Image at natural full size */}
         <img
           src="/contact background.png"
           alt=""
           aria-hidden
-          style={{
-            position: 'absolute', inset: 0,
-            width: '100%', height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'center center',
-          }}
+          style={{ display: 'block', width: '100%', height: 'auto', position: 'relative', zIndex: 1 }}
         />
-        {/* Thin vignette only on edges so image shows full */}
+
+        {/* Bottom LED line + glow */}
         <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(180deg, rgba(5,9,8,0.4) 0%, transparent 20%, transparent 80%, rgba(5,9,8,0.4) 100%)',
-          pointerEvents: 'none',
-        }} />
-        {/* Bottom LED line */}
-        <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: 2,
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, zIndex: 3,
           background: 'linear-gradient(90deg, transparent 0%, rgba(34,244,189,0.5) 30%, rgba(34,244,189,1) 50%, rgba(34,244,189,0.5) 70%, transparent 100%)',
-        }} />
-        {/* Top LED line */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-          background: 'linear-gradient(90deg, transparent 0%, rgba(34,244,189,0.3) 30%, rgba(34,244,189,0.7) 50%, rgba(34,244,189,0.3) 70%, transparent 100%)',
+          boxShadow: '0 0 12px 2px rgba(34,244,189,0.6), 0 0 32px 6px rgba(34,244,189,0.25)',
         }} />
 
-        {/* Content */}
-        <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', padding: '0 32px' }}>
+        {/* Content — centered over image */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center', padding: '0 32px' }}>
           <h2 style={{
             margin: '0 0 16px',
             fontFamily: "'Artonex Trial','Avenir Next','Century Gothic',sans-serif",
@@ -522,6 +361,7 @@ export default function ContactPresence() {
           }}>
             {ct.presenceDescLine1}<br />{ct.presenceDescLine2}
           </p>
+        </div>
         </div>
       </div>
 

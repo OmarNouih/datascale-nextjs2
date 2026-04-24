@@ -12,6 +12,7 @@ import Clients from '@/components/sections/Clients'
 import Methodology from '@/components/sections/Methodology'
 import About from '@/components/sections/About'
 import ContactPresence from '@/components/sections/ContactPresence'
+import Social from '@/components/sections/Social'
 import Footer from '@/components/sections/Footer'
 
 import SectionDivider from '@/components/SectionDivider'
@@ -52,6 +53,7 @@ export default function HomePage() {
         <About />
         <SectionDivider />
         <ContactPresence />
+        <Social />
       </main>
       <Footer />
     </>

@@ -18,8 +18,8 @@ function ClientCard({ cl }) {
         flexDirection: 'column',
         padding: '22px 20px 20px',
         background: hov
-          ? 'linear-gradient(155deg, #0b2019 0%, #071612 100%)'
-          : 'linear-gradient(155deg, rgba(255,255,255,0.04) 0%, #080f0c 35%, #050907 100%)',
+          ? '#0e0e0e'
+          : '#090909',
         border: `1px solid ${hov ? 'rgba(34,244,189,0.34)' : 'rgba(255,255,255,0.08)'}`,
         borderRadius: 16,
         transform: hov ? 'translateY(-8px)' : 'translateY(0)',
@@ -38,10 +38,9 @@ function ClientCard({ cl }) {
       <div style={{
         position: 'absolute', top: 0, left: '10%',
         width: '80%', height: 2,
-        background: 'linear-gradient(90deg, transparent, rgba(34,244,189,0.65), transparent)',
+        background: hov ? 'linear-gradient(90deg, transparent, rgba(34,244,189,0.65), transparent)' : 'transparent',
         borderRadius: 99,
-        opacity: hov ? 1 : 0,
-        transition: 'opacity 0.32s',
+        transition: 'background 0.32s',
       }} />
 
       {/* Sector + index */}
@@ -187,9 +186,7 @@ function CtaCard({ rls }) {
         justifyContent: 'space-between',
         gap: 40,
         padding: '44px 52px',
-        background: hov
-          ? 'linear-gradient(130deg, #0b2219 0%, #061814 100%)'
-          : 'linear-gradient(130deg, #071710 0%, #050c09 100%)',
+        background: hov ? '#0e0e0e' : '#090909',
         border: `1px solid ${hov ? 'rgba(34,244,189,0.36)' : 'rgba(34,244,189,0.14)'}`,
         borderRadius: 16,
         position: 'relative',
@@ -206,9 +203,8 @@ function CtaCard({ rls }) {
       <div style={{
         position: 'absolute', top: 0, left: '5%',
         width: '90%', height: 2,
-        background: 'linear-gradient(90deg, transparent, #22f4bd, transparent)',
-        opacity: hov ? 1 : 0.28,
-        transition: 'opacity 0.32s',
+        background: hov ? 'linear-gradient(90deg, transparent, #22f4bd, transparent)' : 'linear-gradient(90deg, transparent, rgba(34,244,189,0.28), transparent)',
+        transition: 'background 0.32s',
       }} />
 
       {/* Decorative ghost number */}
@@ -274,12 +270,14 @@ function CtaCard({ rls }) {
             whiteSpace: 'nowrap',
           }}
           onMouseEnter={e => {
-            e.currentTarget.style.background = '#3fffc8'
+            e.currentTarget.style.background = '#ffffff'
+            e.currentTarget.style.color = '#040e0a'
             e.currentTarget.style.transform = 'translateY(-2px)'
-            e.currentTarget.style.boxShadow = '0 8px 36px rgba(34,244,189,0.44)'
+            e.currentTarget.style.boxShadow = '0 8px 36px rgba(255,255,255,0.18)'
           }}
           onMouseLeave={e => {
             e.currentTarget.style.background = '#22f4bd'
+            e.currentTarget.style.color = '#040e0a'
             e.currentTarget.style.transform = 'translateY(0)'
             e.currentTarget.style.boxShadow = '0 4px 24px rgba(34,244,189,0.32)'
           }}
@@ -309,37 +307,11 @@ export default function Clients() {
       id="realisations"
       style={{
         padding: '120px 28px 130px',
-        background: 'linear-gradient(180deg, #060d0b 0%, #050908 100%)',
-        borderTop: 'none',
+        background: '#050908',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      {/* Grid texture */}
-      <div style={{
-        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
-        backgroundImage: `
-          linear-gradient(rgba(34,244,189,0.022) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(34,244,189,0.022) 1px, transparent 1px)
-        `,
-        backgroundSize: '60px 60px',
-      }} />
-
-      {/* Ambient glow top-right */}
-      <div style={{
-        position: 'absolute', top: -120, right: -100,
-        width: 600, height: 500,
-        background: 'radial-gradient(ellipse, rgba(34,244,189,0.055) 0%, transparent 65%)',
-        pointerEvents: 'none', zIndex: 0,
-      }} />
-
-      {/* Ambient glow bottom-left */}
-      <div style={{
-        position: 'absolute', bottom: -80, left: -80,
-        width: 400, height: 350,
-        background: 'radial-gradient(ellipse, rgba(34,244,189,0.038) 0%, transparent 65%)',
-        pointerEvents: 'none', zIndex: 0,
-      }} />
 
       <div style={{ maxWidth: 1240, margin: '0 auto', position: 'relative', zIndex: 1 }}>
 

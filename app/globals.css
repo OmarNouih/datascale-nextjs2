@@ -89,11 +89,10 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  min-height: 38px;
-  padding: 0 18px;
+  min-height: 44px;
+  padding: 0 24px;
   border: none;
-  border-radius: 0;
-  clip-path: polygon(8px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 8px);
+  border-radius: 999px;
   background: linear-gradient(135deg, #22f4bd 0%, #70ebb3 100%);
   color: #07110e;
   cursor: pointer;
@@ -102,10 +101,10 @@ button {
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  filter: drop-shadow(0 8px 22px rgba(34, 244, 189, 0.22));
+  box-shadow: 0 0 20px rgba(34, 244, 189, 0.22);
   transition:
     transform 180ms ease,
-    filter 180ms ease,
+    box-shadow 180ms ease,
     background-color 180ms ease,
     color 180ms ease;
 }
@@ -113,7 +112,7 @@ button {
 .cta-btn:hover,
 .cta-btn:focus-visible {
   transform: translateY(-2px);
-  filter: drop-shadow(0 12px 30px rgba(34, 244, 189, 0.34));
+  box-shadow: 0 0 32px rgba(34, 244, 189, 0.42);
 }
 
 .cta-btn-gold {
@@ -125,11 +124,10 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  min-height: 38px;
-  padding: 0 18px;
-  border-radius: 0;
-  clip-path: polygon(8px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 8px);
-  border: 1px solid rgba(112, 235, 179, 0.22);
+  min-height: 44px;
+  padding: 0 24px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(112, 235, 179, 0.35);
   background: transparent;
   color: #d8dfdb;
   cursor: pointer;
