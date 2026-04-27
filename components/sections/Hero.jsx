@@ -1,16 +1,14 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
 import Reveal from '@/components/Reveal'
-import { C } from '@/lib/tokens'
 import { navTo } from '@/lib/utils/nav'
 import { useLang } from '@/lib/i18n/LanguageContext'
 
 const STAT_VALS = [
   { value: '18', sup: '+', unit: { fr: 'ans', en: 'yrs' } },
-  { value: '4',    sup: '',  unit: '' },
-  { value: '100%', sup: '',  unit: '' },
-  { value: '3',    sup: '',  unit: '' },
+  { value: '4', sup: '', unit: '' },
+  { value: '100%', sup: '', unit: '' },
+  { value: '3', sup: '', unit: '' },
 ]
 
 export default function Hero() {
@@ -36,7 +34,6 @@ export default function Hero() {
         overflow: 'hidden',
       }}
     >
-      {/* subtle grid overlay */}
       <div style={{
         position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
         backgroundImage: `
@@ -46,7 +43,6 @@ export default function Hero() {
         backgroundSize: '80px 80px',
       }} />
 
-      {/* left ambient glow */}
       <div style={{
         position: 'absolute', top: '15%', left: '-8%',
         width: '50%', height: '70%',
@@ -54,16 +50,13 @@ export default function Hero() {
         pointerEvents: 'none', zIndex: 0,
       }} />
 
-      {/* ══ LEFT — text ══ */}
       <div id="home-left" style={{
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
         padding: 'clamp(80px,10vw,110px) 40px 60px clamp(28px,6vw,96px)',
         position: 'relative', zIndex: 1,
       }}>
-
-        {/* kicker */}
         <Reveal>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 24 }}>
+          <div id="hero-kicker" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 24 }}>
             <span style={{
               width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
               background: '#22f4bd', boxShadow: '0 0 8px rgba(34,244,189,0.8)',
@@ -78,7 +71,6 @@ export default function Hero() {
           </div>
         </Reveal>
 
-        {/* headline — exactly 2 lines like reference */}
         <Reveal delay={60}>
           <h1 id="hero-h1" style={{
             margin: '0 0 24px',
@@ -96,7 +88,6 @@ export default function Hero() {
           </h1>
         </Reveal>
 
-        {/* body */}
         <Reveal delay={120}>
           <p id="hero-body" style={{
             margin: '0 0 32px', maxWidth: '80%',
@@ -108,10 +99,8 @@ export default function Hero() {
           </p>
         </Reveal>
 
-        {/* pill buttons */}
         <Reveal delay={180}>
           <div id="hero-btns" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 52 }}>
-            {/* white pill */}
             <button
               onClick={() => handleNav('services')}
               style={{
@@ -128,7 +117,6 @@ export default function Hero() {
             >
               {h.btn1}
             </button>
-            {/* solid teal pill */}
             <button
               onClick={() => handleNav('contact')}
               style={{
@@ -149,7 +137,6 @@ export default function Hero() {
           </div>
         </Reveal>
 
-        {/* stats */}
         <Reveal delay={240}>
           <div id="hero-stats" style={{
             display: 'flex', alignItems: 'stretch', flexWrap: 'wrap',
@@ -183,7 +170,6 @@ export default function Hero() {
         </Reveal>
       </div>
 
-      {/* bottom LED glow */}
       <div style={{
         position: 'absolute', bottom: 0, left: '50%',
         transform: 'translateX(-50%)',
@@ -199,12 +185,10 @@ export default function Hero() {
         pointerEvents: 'none', zIndex: 1,
       }} />
 
-      {/* ══ RIGHT — image shows through overlay ══ */}
       <div style={{
         position: 'relative',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
-        {/* right-side ambient glow for depth */}
         <div style={{
           position: 'absolute', top: '20%', right: '-10%',
           width: '70%', height: '60%',
@@ -214,96 +198,127 @@ export default function Hero() {
       </div>
 
       <style>{`
-        /* ─── tablet 860px and below ─── */
         @media (max-width: 860px) {
           #home {
             grid-template-columns: 1fr !important;
             min-height: 100svh !important;
+            background-position: 62% center !important;
+          }
+          #home::before {
+            content: '' !important;
+            position: absolute !important;
+            inset: 0 !important;
+            pointer-events: none !important;
+            z-index: 0 !important;
+            background:
+              linear-gradient(180deg, rgba(5,9,8,0.42) 0%, rgba(5,9,8,0.16) 34%, rgba(5,9,8,0.74) 100%),
+              linear-gradient(90deg, rgba(5,9,8,0.86) 0%, rgba(5,9,8,0.58) 48%, rgba(5,9,8,0.18) 100%) !important;
           }
           #home > div:last-child {
             display: none !important;
           }
           #home-left {
-            padding: 96px 32px 56px 32px !important;
-            justify-content: center !important;
+            padding: 104px 32px 48px 32px !important;
+            justify-content: flex-end !important;
+            min-height: 100svh !important;
+          }
+          #hero-body {
+            max-width: 620px !important;
           }
         }
 
-        /* ─── mobile 560px and below ─── */
         @media (max-width: 560px) {
+          #home {
+            background-position: 66% center !important;
+          }
           #home-left {
-            padding: 88px 20px 48px 20px !important;
+            padding: 96px 20px 34px 20px !important;
           }
-
-          /* shrink h1 so SCALEZ VOTRE stays on one line */
           #hero-h1 {
-            font-size: 7.8vw !important;
-            margin-bottom: 16px !important;
+            font-size: 2.42rem !important;
+            line-height: 0.92 !important;
+            margin-bottom: 18px !important;
+            text-shadow: 0 18px 50px rgba(0,0,0,0.45) !important;
           }
-
-          /* keep first line nowrap — SCALEZ VOTRE together */
           #hero-line1 {
             white-space: nowrap !important;
-            margin-bottom: 0.12em !important;
+            margin-bottom: 0.1em !important;
           }
-
-          /* body text */
           #hero-body {
-            font-size: 0.82rem !important;
-            line-height: 1.65 !important;
+            font-size: 0.86rem !important;
+            line-height: 1.72 !important;
+            font-weight: 600 !important;
             max-width: 100% !important;
-            margin-bottom: 24px !important;
+            margin-bottom: 26px !important;
+            color: rgba(238,244,241,0.9) !important;
           }
-
-          /* buttons — side by side, equal width */
           #hero-btns {
             flex-direction: row !important;
-            margin-bottom: 32px !important;
+            margin-bottom: 34px !important;
             gap: 10px !important;
           }
           #hero-btns button {
             flex: 1 !important;
-            padding: 11px 12px !important;
+            min-height: 44px !important;
+            padding: 11px 10px !important;
             font-size: 0.62rem !important;
             text-align: center !important;
             justify-content: center !important;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.2) !important;
           }
-
-          /* stats — tight 2×2 grid */
           #hero-stats {
             display: grid !important;
             grid-template-columns: 1fr 1fr !important;
-            gap: 20px 0 !important;
-            padding-top: 20px !important;
+            gap: 0 !important;
+            padding-top: 18px !important;
+            border-top-color: rgba(34,244,189,0.18) !important;
           }
           #hero-stats > div {
             border-left: none !important;
-            padding: 0 !important;
+            padding: 16px 10px !important;
             align-items: center !important;
+            min-height: 84px !important;
           }
-          /* right column items get a left divider */
+          #hero-stats > div:nth-child(1),
+          #hero-stats > div:nth-child(2) {
+            border-bottom: 1px solid rgba(34,244,189,0.12) !important;
+          }
           #hero-stats > div:nth-child(even) {
             border-left: 1px solid rgba(34,244,189,0.14) !important;
-            padding-left: 0 !important;
           }
-
-          /* kicker smaller */
+          #hero-stats > div > div:first-child {
+            font-size: 1.55rem !important;
+          }
+          #hero-stats > div > div:last-child {
+            white-space: normal !important;
+            max-width: 120px !important;
+            line-height: 1.35 !important;
+          }
           #hero-kicker span:last-child {
-            font-size: 0.6rem !important;
+            font-size: 0.62rem !important;
             letter-spacing: 0.18em !important;
           }
         }
 
-        /* ─── very small phones ─── */
-        @media (max-width: 380px) {
+        @media (max-width: 420px) {
           #hero-h1 {
-            font-size: 7.2vw !important;
+            font-size: 2.1rem !important;
           }
           #hero-btns {
             flex-direction: column !important;
           }
           #hero-btns button {
             width: 100% !important;
+          }
+        }
+
+        @media (max-width: 360px) {
+          #home-left {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
+          #hero-h1 {
+            font-size: 1.92rem !important;
           }
         }
       `}</style>

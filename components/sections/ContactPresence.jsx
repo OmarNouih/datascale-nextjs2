@@ -324,8 +324,7 @@ export default function ContactPresence() {
         {/* Image at natural full size */}
         <img
           src="/contact background.png"
-          alt=""
-          aria-hidden
+          alt="Data Scale Business contact banner showing a global business presence"
           style={{ display: 'block', width: '100%', height: 'auto', position: 'relative', zIndex: 1 }}
         />
 

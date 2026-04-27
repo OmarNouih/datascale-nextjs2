@@ -70,6 +70,7 @@ export function SiteHeader() {
         }}
       >
         <div
+          className="navbar-shell"
           style={{
             maxWidth: 1240,
             margin: '0 auto',
@@ -82,6 +83,7 @@ export function SiteHeader() {
         >
           {/* Logo */}
           <div
+            className="nav-logo"
             onClick={() => go('home')}
             style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}
           >
@@ -145,7 +147,7 @@ export function SiteHeader() {
 
           {/* Mobile right side */}
           <div className="mobile-nav" style={{ display: 'none', alignItems: 'center', gap: 10 }}>
-            <button onClick={() => go('contact')} style={{
+            <button className="mobile-contact-inline" onClick={() => go('contact')} style={{
               fontFamily: "'Manrope', sans-serif", fontSize: '0.67rem', fontWeight: 700,
               letterSpacing: '0.1em', textTransform: 'uppercase',
               color: '#22f4bd', background: 'transparent',

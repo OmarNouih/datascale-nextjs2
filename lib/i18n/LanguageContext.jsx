@@ -6,7 +6,7 @@ import { translations } from './translations'
 const LanguageContext = createContext(null)
 
 export function LanguageProvider({ children }) {
-  const [lang, setLang] = useState('fr')
+  const [lang, setLang] = useState('en')
 
   useEffect(() => {
     const saved = localStorage.getItem('dsb-lang')

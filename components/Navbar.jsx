@@ -10,7 +10,7 @@ const NAV_HREFS = ['home', 'services', 'blog', 'synapse', 'realisations', 'about
 
 function LangToggle({ lang, toggle }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(112,235,179,0.18)', borderRadius: 999, padding: '3px 4px', gap: 2, flexShrink: 0 }}>
+    <div className="lang-toggle" style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(112,235,179,0.18)', borderRadius: 999, padding: '3px 4px', gap: 2, flexShrink: 0 }}>
       {['fr', 'en'].map((l) => (
         <button
           key={l}
@@ -94,14 +94,14 @@ export default function Navbar({ scrolled }) {
         borderBottom: scrolled ? '1px solid rgba(112,235,179,0.08)' : '1px solid transparent',
         transition: 'all 0.4s ease',
       }}>
-        <div style={{
+        <div className="navbar-shell" style={{
           maxWidth: 1400, margin: '0 auto', padding: '0 32px',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           height: h, transition: 'height 0.4s ease',
         }}>
 
           {/* Logo */}
-          <div onClick={() => handleNav('home')} style={{ cursor: 'pointer', flexShrink: 0 }}>
+          <div className="nav-logo" onClick={() => handleNav('home')} style={{ cursor: 'pointer', flexShrink: 0 }}>
             <Logo size={28} />
           </div>
 
@@ -167,7 +167,7 @@ export default function Navbar({ scrolled }) {
           {/* ── Mobile right ── */}
           <div className="mobile-nav" style={{ display: 'none', alignItems: 'center', gap: 8 }}>
             <LangToggle lang={lang} toggle={toggle} />
-            <button onClick={() => handleNav('contact')} style={{
+            <button className="mobile-contact-inline" onClick={() => handleNav('contact')} style={{
               fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
               fontSize: '0.67rem', fontWeight: 700,
               letterSpacing: '0.1em', textTransform: 'uppercase',
