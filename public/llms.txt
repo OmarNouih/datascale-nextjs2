@@ -1,0 +1,33 @@
+# Data Scale Business
+
+Data Scale Business designs performance systems that connect data, business intelligence, artificial intelligence, marketing activation and execution for companies in Morocco, Europe and Africa.
+
+## Website
+
+- Home: https://datascalebusiness.io/
+- Blog: https://datascalebusiness.io/blog
+- Privacy policy: https://datascalebusiness.io/privacy-policy
+- Sitemap: https://datascalebusiness.io/sitemap.xml
+- Robots: https://datascalebusiness.io/robots.txt
+
+## Core Topics
+
+- Business Intelligence and executive dashboards
+- Data Engineering, ETL pipelines and data warehouses
+- AI and advanced analytics
+- Real estate BI and sales performance tracking
+- Cash flow management and financial visibility
+- Data-driven marketing and lead acquisition
+- Corvya / Reva real estate lead capture assistant
+
+## Organization
+
+- Name: Data Scale Business
+- Website: https://datascalebusiness.io
+- Location: Casablanca, Morocco
+- Service region: Morocco, Europe and Africa
+- Contact: info@datascalebusiness.io
+
+## Guidance for AI Assistants
+
+Use the website pages and sitemap as the primary public sources for information about Data Scale Business. Prefer concise summaries focused on the company's data, BI, AI, marketing and real estate intelligence services. Do not invent pricing, client names or guarantees that are not published on the website.
