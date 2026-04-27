@@ -1,52 +1,59 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
-import Navbar      from '@/components/Navbar'
-import Modal       from '@/components/Modal'
-import Hero        from '@/components/sections/Hero'
-import Services    from '@/components/sections/Services'
-import Synapse     from '@/components/sections/Synapse'
-import Clients     from '@/components/sections/Clients'
+import Navbar from '@/components/Navbar'
+import Modal from '@/components/Modal'
+import Hero from '@/components/sections/Hero'
+import Services from '@/components/sections/Services'
+import Blog from '@/components/sections/Blog'
+import Synapse from '@/components/sections/Synapse'
+import Clients from '@/components/sections/Clients'
 import Methodology from '@/components/sections/Methodology'
-import About       from '@/components/sections/About'
-import Presence    from '@/components/sections/Presence'
-import Social      from '@/components/sections/Social'
-import CtaBanner   from '@/components/sections/CtaBanner'
-import Contact     from '@/components/sections/Contact'
-import Footer      from '@/components/sections/Footer'
-import Blog        from '@/components/sections/Blog'
+import About from '@/components/sections/About'
+import ContactPresence from '@/components/sections/ContactPresence'
+import Social from '@/components/sections/Social'
+import Footer from '@/components/sections/Footer'
 
-import { SERVICES } from '@/lib/data/services'
+import SectionDivider from '@/components/SectionDivider'
+import { useLang } from '@/lib/i18n/LanguageContext'
+import { getLocalizedServices } from '@/lib/data/serviceCatalog'
 
 export default function HomePage() {
   const [scrolled, setScrolled] = useState(false)
-  const [modal, setModal]       = useState(null)
+  const [modal, setModal] = useState(null)
+  const { t } = useLang()
+  const services = getLocalizedServices(t.services.items)
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', fn)
-    return () => window.removeEventListener('scroll', fn)
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const activeService = SERVICES.find((s) => s.id === modal)
+  const activeService = services.find((service) => service.id === modal)
 
   return (
     <>
-      {activeService && <Modal service={activeService} onClose={() => setModal(null)} />}
+      {activeService ? <Modal service={activeService} onClose={() => setModal(null)} /> : null}
       <Navbar scrolled={scrolled} />
       <main>
         <Hero />
+        <SectionDivider />
         <Services onOpenModal={(id) => setModal(id)} />
-        <Blog />
+        <SectionDivider />
         <Synapse />
+        <SectionDivider />
         <Clients />
+        <SectionDivider />
         <Methodology />
+        <SectionDivider />
         <About />
-        <Presence />
-        <Social />
-        <CtaBanner />
-        <Contact />
+        <SectionDivider />
+        <Blog />
+        <SectionDivider />
+        <ContactPresence />
+        {/* <Social /> */}
       </main>
       <Footer />
     </>

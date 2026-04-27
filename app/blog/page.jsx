@@ -1,14 +1,14 @@
 import BlogPage from '@/components/pages/BlogPage'
 
 export const metadata = {
-  title: 'Blog — Insights BI & Data',
-  description: 'Conseils data, cas clients et tendances Business Intelligence pour les décideurs marocains et africains.',
+  title: 'Blog · BI & Data Insights',
+  description: 'Data advice, client cases and Business Intelligence trends for decision-makers in Morocco and Africa.',
   alternates: { canonical: '/blog' },
   openGraph: {
     title: 'Blog Data Scale Business',
-    description: 'Insights BI, Data Engineering et IA pour entreprises au Maroc.',
+    description: 'BI, Data Engineering and AI insights for companies in Morocco.',
     url: 'https://datascalebusiness.io/blog',
-  }
+  },
 }
 
 export default function BlogRoute() {

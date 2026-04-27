@@ -1,12 +1,17 @@
 import { useEffect } from 'react';
 import { C } from '@/lib/tokens';
 import { navTo } from '@/lib/utils/nav';
+import { useLang } from '@/lib/i18n/LanguageContext';
 
 export default function Modal({ service, onClose }) {
+  const { t } = useLang();
+  const sv = t.services;
+
   useEffect(() => {
     const fn = (e) => e.key === 'Escape' && onClose();
     document.addEventListener('keydown', fn);
     document.body.style.overflow = 'hidden';
+
     return () => {
       document.removeEventListener('keydown', fn);
       document.body.style.overflow = '';
@@ -17,7 +22,9 @@ export default function Modal({ service, onClose }) {
     <div
       onClick={onClose}
       style={{
-        position: 'fixed', inset: 0, zIndex: 999,
+        position: 'fixed',
+        inset: 0,
+        zIndex: 999,
         background: 'rgba(13,26,23,0.72)',
         backdropFilter: 'blur(8px)',
         display: 'flex',
@@ -42,55 +49,85 @@ export default function Modal({ service, onClose }) {
       >
         <button
           onClick={onClose}
-          aria-label="Fermer"
+          aria-label={sv.modalCloseLabel}
           style={{
-            position: 'absolute', top: 14, right: 16,
-            background: 'none', border: 'none',
-            color: C.inkLight, cursor: 'pointer',
-            fontSize: 20, lineHeight: 1, padding: 4,
+            position: 'absolute',
+            top: 14,
+            right: 16,
+            background: 'none',
+            border: 'none',
+            color: C.inkLight,
+            cursor: 'pointer',
+            fontSize: 20,
+            lineHeight: 1,
+            padding: 4,
           }}
-        >✕</button>
+        >
+          ×
+        </button>
 
         {service.badge && (
-          <div style={{
-            display: 'inline-block',
-            fontSize: '0.66rem', fontWeight: 700,
-            letterSpacing: '0.12em', textTransform: 'uppercase',
-            color: service.badgeColor,
-            border: `1.5px solid ${service.badgeColor}`,
-            padding: '3px 10px', marginBottom: 16,
-          }}>
+          <div
+            style={{
+              display: 'inline-block',
+              fontSize: '0.66rem',
+              fontWeight: 700,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: service.badgeColor,
+              border: `1.5px solid ${service.badgeColor}`,
+              padding: '3px 10px',
+              marginBottom: 16,
+            }}
+          >
             {service.badge}
           </div>
         )}
 
         <div style={{ color: C.teal, marginBottom: 14 }}>{service.icon}</div>
 
-        <div style={{
-          fontFamily: "'Playfair Display', serif",
-          fontWeight: 700, fontSize: '1.55rem',
-          color: C.ink, marginBottom: 5,
-        }}>
+        <div
+          style={{
+            fontFamily: "'Raleway', sans-serif",
+            fontWeight: 700,
+            fontSize: '1.55rem',
+            color: C.ink,
+            marginBottom: 5,
+          }}
+        >
           {service.title}
         </div>
 
-        <div style={{
-          fontSize: '0.78rem', color: C.gold,
-          letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 18,
-        }}>
+        <div
+          style={{
+            fontSize: '0.78rem',
+            color: C.gold,
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            marginBottom: 18,
+          }}
+        >
           {service.subtitle}
         </div>
 
-        <div style={{
-          width: 40, height: 2.5,
-          background: `linear-gradient(90deg,${C.teal},${C.gold})`,
-          marginBottom: 22,
-        }} />
+        <div
+          style={{
+            width: 40,
+            height: 2.5,
+            background: `linear-gradient(90deg,${C.teal},${C.gold})`,
+            marginBottom: 22,
+          }}
+        />
 
-        <p style={{
-          fontFamily: "'Cormorant Garamond', serif",
-          fontSize: '1.1rem', color: C.inkMid, lineHeight: 1.82, marginBottom: 14,
-        }}>
+        <p
+          style={{
+            fontFamily: "'Manrope', sans-serif",
+            fontSize: '1.1rem',
+            color: C.inkMid,
+            lineHeight: 1.82,
+            marginBottom: 14,
+          }}
+        >
           {service.desc}
         </p>
 
@@ -99,19 +136,24 @@ export default function Modal({ service, onClose }) {
         </p>
 
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 32 }}>
-          {service.tags.map((t) => (
-            <span key={t} className="tag">{t}</span>
+          {service.tags.map((tag) => (
+            <span key={tag} className="tag">
+              {tag}
+            </span>
           ))}
         </div>
 
         <button
           className="cta-btn"
           style={{ width: '100%', justifyContent: 'center' }}
-          onClick={() => { onClose(); navTo('contact'); }}
+          onClick={() => {
+            onClose();
+            navTo('contact');
+          }}
         >
-          Discutons de votre projet
+          {sv.modalCta}
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
+            <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </button>
       </div>

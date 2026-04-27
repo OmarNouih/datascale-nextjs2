@@ -1,0 +1,254 @@
+.shell {
+  width: min(1220px, calc(100vw - 48px));
+  margin: 0 auto;
+}
+
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 30;
+  padding: 20px 0;
+  background: linear-gradient(180deg, rgba(6, 11, 10, 0.94), rgba(6, 11, 10, 0.54));
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(112, 235, 179, 0.08);
+}
+
+.headerBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.logoLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.logoMark {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  line-height: 0.82;
+}
+
+.glyph {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.08em;
+}
+
+.glyphMint {
+  color: #22f4bd;
+}
+
+.glyphMist {
+  color: #d8dfdb;
+}
+
+.logoType {
+  display: grid;
+  align-content: center;
+}
+
+.logoTop,
+.logoBottom {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  color: #2de2b1;
+}
+
+.logoTag {
+  margin-top: 8px;
+  color: rgba(208, 220, 214, 0.86);
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.headerLogo .glyph {
+  font-size: clamp(2rem, 3vw, 2.7rem);
+}
+
+.headerLogo .logoTop,
+.headerLogo .logoBottom {
+  font-size: clamp(0.8rem, 1vw, 1rem);
+}
+
+.heroLogo .glyph {
+  font-size: clamp(4rem, 10vw, 8rem);
+}
+
+.heroLogo .logoTop,
+.heroLogo .logoBottom {
+  font-size: clamp(1.4rem, 3.6vw, 3.5rem);
+}
+
+.heroLogo .logoType {
+  gap: 2px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.navLink,
+.headerCta,
+.footerLink {
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.navLink {
+  color: rgba(203, 215, 209, 0.78);
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.navLink:hover,
+.navLink:focus-visible,
+.footerLink:hover,
+.footerLink:focus-visible {
+  color: #dfe8e3;
+}
+
+.headerCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #22f4bd 0%, #70ebb3 100%);
+  color: #05100d;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 18px 40px rgba(34, 244, 189, 0.16);
+}
+
+.headerCta:hover,
+.headerCta:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 24px 44px rgba(34, 244, 189, 0.24);
+}
+
+.footer {
+  padding: 0 0 72px;
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+  gap: 36px;
+  padding-top: 48px;
+  border-top: 1px solid rgba(34, 244, 189, 0.22);
+}
+
+.footerBrand {
+  display: grid;
+  gap: 18px;
+}
+
+.footerLogo {
+  justify-self: start;
+}
+
+.footerText,
+.footerCopy {
+  color: rgba(175, 191, 184, 0.78);
+  line-height: 1.7;
+}
+
+.footerText {
+  max-width: 34rem;
+}
+
+.footerMeta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.footerColumn {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+
+.footerLabel {
+  color: #22f4bd;
+  font-size: 0.74rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.footerLink {
+  color: rgba(203, 215, 209, 0.88);
+  text-decoration: none;
+  line-height: 1.7;
+}
+
+.footerCopy {
+  display: block;
+}
+
+@media (max-width: 1080px) {
+  .nav {
+    display: none;
+  }
+}
+
+@media (max-width: 820px) {
+  .shell {
+    width: min(calc(100vw - 32px), 1220px);
+  }
+
+  .header {
+    padding: 16px 0;
+  }
+
+  .footerGrid,
+  .footerMeta {
+    grid-template-columns: 1fr;
+  }
+
+  .heroLogo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .heroLogo .logoTag {
+    letter-spacing: 0.12em;
+  }
+}
+
+@media (max-width: 560px) {
+  .headerBar {
+    gap: 12px;
+  }
+
+  .headerLogo .logoType {
+    display: none;
+  }
+
+  .headerCta {
+    min-height: 40px;
+    padding: 0 16px;
+  }
+}

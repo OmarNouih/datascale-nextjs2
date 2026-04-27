@@ -1,21 +1,20 @@
 'use client'
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation'; // ← was useNavigate from react-router-dom
-import { client } from '@/lib/sanity/client';
-import Reveal from '@/components/Reveal';
-import { C } from '@/lib/tokens';
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
-const QUERY = `*[_type == "post"] | order(publishedAt asc)[-3..-1] {
-  _id,
-  title,
-  slug,
-  publishedAt,
-  "excerpt": pt::text(body)[0...200],
+import Reveal from '@/components/Reveal'
+import { useLang } from '@/lib/i18n/LanguageContext'
+import { client } from '@/lib/sanity/client'
+
+const QUERY = `*[_type == "post"] | order(publishedAt desc)[0..2] {
+  _id, title, slug,
+  "publishedAt": coalesce(publishedAt, _updatedAt, _createdAt),
+  "excerpt": coalesce(excerpt, pt::text(body)[0...200]),
   "category": categories[0]->title,
   "authorName": author->name,
   "imageUrl": mainImage.asset->url
-}`;
+}`
 
 const PLACEHOLDER_POSTS = [
   {
@@ -39,120 +38,266 @@ const PLACEHOLDER_POSTS = [
     title: "Immobilier au Maroc : comment l'IA capture vos leads 24h/24",
     category: 'Synapse Real Estate',
     publishedAt: '2025-02-01',
-    excerpt: "Reva AI et Synapse Real Estate transforment la conversion de leads immobiliers au Maroc grâce à l'IA conversationnelle.",
+    excerpt: "Reva AI et Synapse Real Estate transforment la conversion de leads immobiliers grâce à l'IA conversationnelle.",
     authorName: 'Data Scale Business',
   },
-];
+]
 
-const CAT_COLORS = {
-  'Business Intelligence': C.teal,
-  'Conseil Data':          C.gold,
-  'Synapse Real Estate':   '#7c5cbf',
-  'Marketing Digital':     '#2196f3',
-};
+function formatDate(d) {
+  if (!d) return ''
+  return new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
+}
 
-function formatDate(dateStr) {
-  if (!dateStr) return '';
-  return new Date(dateStr).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+function Card({ post, index, onClick, readMoreCard }) {
+  const [hov, setHov] = useState(false)
+
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onClick}
+      onKeyDown={(e) => e.key === 'Enter' && onClick()}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        cursor: 'pointer',
+        minHeight: 260,
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '22px 20px 18px',
+        background: hov
+          ? '#22f4bd'
+          : 'linear-gradient(to right, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 25%, #0d0d0d 55%, #060606 100%)',
+        border: '1px solid rgba(255,255,255,0.15)',
+        borderRadius: 20,
+        transform: hov ? 'translateY(-12px)' : 'translateY(0)',
+        zIndex: hov ? 2 : 1,
+        transition: 'all 0.3s cubic-bezier(0.4,0,0.2,1)',
+        boxShadow: hov
+          ? '0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(34,244,189,0.4)'
+          : '0 2px 12px rgba(0,0,0,0.3)',
+        overflow: 'hidden',
+      }}
+    >
+      <div style={{
+        fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
+        fontSize: '2.2rem',
+        fontWeight: 700,
+        lineHeight: 1,
+        color: hov ? 'rgba(4,20,15,0.4)' : '#22f4bd',
+        marginBottom: 16,
+        transition: 'color 0.28s',
+        letterSpacing: '-0.02em',
+      }}>
+        {String(index + 1).padStart(2, '0')}.
+      </div>
+
+      <h3 style={{
+        fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
+        fontWeight: 700,
+        fontSize: '1.05rem',
+        lineHeight: 1.28,
+        color: hov ? '#040e0a' : '#d8dfdb',
+        margin: '0 0 12px',
+        letterSpacing: '-0.01em',
+        transition: 'color 0.28s',
+        display: '-webkit-box',
+        WebkitLineClamp: 3,
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden',
+        minHeight: 'calc(1.05rem * 1.28 * 3)',
+      }}>
+        {post.title}
+      </h3>
+
+      <p style={{
+        fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
+        fontSize: '0.82rem',
+        lineHeight: 1.65,
+        color: hov ? 'rgba(4,20,15,0.62)' : 'rgba(188,201,195,0.52)',
+        margin: '0 0 14px',
+        display: '-webkit-box',
+        WebkitLineClamp: 3,
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden',
+        transition: 'color 0.28s',
+      }}>
+        {post.excerpt}
+      </p>
+
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        gap: 6, marginBottom: 14,
+        fontSize: '0.67rem', fontWeight: 800,
+        letterSpacing: '0.14em', textTransform: 'uppercase',
+        color: '#040e0a',
+        visibility: hov ? 'visible' : 'hidden',
+      }}>
+        {readMoreCard}
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </div>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingTop: 14,
+        marginTop: 'auto',
+        borderTop: `1px solid ${hov ? 'rgba(4,20,15,0.15)' : 'rgba(112,235,179,0.09)'}`,
+        transition: 'border-color 0.28s',
+      }}>
+        <span style={{
+          fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
+          fontSize: '0.6rem',
+          fontWeight: 700,
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: hov ? '#040e0a' : '#22f4bd',
+          transition: 'color 0.28s',
+        }}>
+          {post.category || 'Data'}
+        </span>
+        <span style={{
+          fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
+          fontSize: '0.6rem',
+          fontWeight: 600,
+          color: hov ? 'rgba(4,20,15,0.6)' : '#eef4f1',
+          transition: 'color 0.28s',
+        }}>
+          {formatDate(post.publishedAt)}
+        </span>
+      </div>
+    </div>
+  )
 }
 
 export default function Blog() {
-  const [posts, setPosts] = useState(PLACEHOLDER_POSTS);
-  const router = useRouter(); // ← was useNavigate
+  const [posts, setPosts] = useState(PLACEHOLDER_POSTS)
+  const router = useRouter()
+  const { t } = useLang()
+  const b = t.blog
 
   useEffect(() => {
-    client.fetch(QUERY)
-      .then(data => { if (data?.length) setPosts(data); })
-      .catch(() => {});
-  }, []);
+    client.fetch(QUERY).then((d) => { if (d?.length) setPosts(d) }).catch(() => {})
+  }, [])
+
+  const goTo = (post) => {
+    if (post?.slug?.current) router.push(`/blog/${post.slug.current}`)
+    else router.push('/blog')
+  }
 
   return (
-    <section id="blog" style={{ padding: '90px 28px', background: C.offWhite }}>
-      <div style={{ maxWidth: 1240, margin: '0 auto' }}>
+    <section
+      id="blog"
+      style={{
+        padding: '120px 28px 90px',
+        background: 'linear-gradient(160deg, #060d0b 0%, #050908 55%, #040b09 100%)',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      <div style={{
+        position: 'absolute',
+        top: -160, left: -160,
+        width: 480, height: 480,
+        border: '1px solid rgba(34,244,189,0.04)',
+        transform: 'rotate(45deg)',
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute',
+        top: -80, right: -80,
+        width: 400, height: 400,
+        background: 'radial-gradient(ellipse, rgba(34,244,189,0.05) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
 
-        {/* Header */}
+      <div style={{ maxWidth: 1240, margin: '0 auto', position: 'relative' }}>
         <Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', alignItems: 'flex-end', gap: 32, marginBottom: 48 }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+            flexWrap: 'wrap',
+            gap: 24,
+            marginBottom: 56,
+          }}>
             <div>
-              <div className="sl">Insights & Expertise</div>
-              <h2 className="st">Le Blog Data Scale Business</h2>
-              <div className="dl" />
-              <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.06rem', color: C.inkMid, maxWidth: 480, lineHeight: 1.75, margin: 0 }}>
-                Conseils data, cas clients et tendances BI pour les décideurs marocains et africains.
-              </p>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
+                <div style={{ width: 24, height: 1.5, background: '#22f4bd' }} />
+                <span style={{
+                  fontSize: '0.68rem', fontWeight: 800,
+                  letterSpacing: '0.24em', textTransform: 'uppercase',
+                  color: '#22f4bd',
+                }}>
+                  {b.eyebrow}
+                </span>
+              </div>
+              <h2 style={{
+                margin: 0,
+                fontFamily: "'Artonex Trial', sans-serif",
+                fontWeight: 400,
+                fontSize: 'clamp(2.6rem, 5vw, 4.4rem)',
+                lineHeight: 1,
+                letterSpacing: '0.01em',
+                color: '#d8dfdb',
+              }}>
+                <span style={{ display: 'block', marginBottom: '0.22em' }}>{b.title}</span>
+                <span style={{
+                  display: 'block',
+                  background: 'linear-gradient(110deg, #22f4bd 0%, #5bcabc 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}>
+                  Data Scale
+                </span>
+              </h2>
             </div>
-            <button className="cta-btn-outline" onClick={() => router.push('/blog')}> {/* ← was navigate('/blog') */}
-              Tous les articles
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </button>
+
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>
+              <p style={{
+                fontFamily: "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif",
+                fontSize: '0.9rem', lineHeight: 2.0,
+                color: 'rgba(188,201,195,0.56)',
+                margin: 0, textAlign: 'right', maxWidth: 320,
+              }}>
+                {b.sectionDesc}
+              </p>
+              <button
+                className="cta-btn-outline"
+                style={{ fontSize: '0.7rem', padding: '0 18px', minHeight: '40px' }}
+                onClick={() => router.push('/blog')}
+              >
+                {b.allArticles}
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
           </div>
         </Reveal>
 
-        {/* Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20 }} className="grid-3">
-          {posts.map((post, i) => {
-            const catColor = CAT_COLORS[post.category] || C.teal;
-            return (
-              <Reveal key={post._id} delay={i * 70}>
-                <div
-                  style={{ background: C.white, border: `1.5px solid ${C.border}`, display: 'flex', flexDirection: 'column', height: '100%', transition: 'transform 0.25s, box-shadow 0.25s, border-color 0.25s', overflow: 'hidden', cursor: 'pointer' }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 12px 36px rgba(0,0,0,0.07)'; e.currentTarget.style.borderColor = catColor + '44'; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.borderColor = C.border; }}
-                  onClick={() => router.push('/blog')} // ← was navigate('/blog')
-                >
-                  <div style={{ height: 3, background: catColor, flexShrink: 0 }} />
-
-                  {post.imageUrl ? (
-                    <img src={post.imageUrl} alt={post.title} style={{ width: '100%', height: 160, objectFit: 'cover' }} />
-                  ) : (
-                    <div style={{ height: 130, background: `${catColor}07`, display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: `1px solid ${C.border}` }}>
-                      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke={catColor} strokeWidth="1.5" opacity="0.35">
-                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="16" y1="13" x2="8" y2="13"/>
-                        <line x1="16" y1="17" x2="8" y2="17"/>
-                      </svg>
-                    </div>
-                  )}
-
-                  <div style={{ padding: '18px', display: 'flex', flexDirection: 'column', flex: 1, gap: 9 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: catColor, background: `${catColor}10`, border: `1px solid ${catColor}25`, padding: '2px 7px' }}>
-                        {post.category || 'Data'}
-                      </span>
-                      <span style={{ fontSize: '0.6rem', color: C.inkLight }}>{formatDate(post.publishedAt)}</span>
-                    </div>
-                    <h3 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: '0.98rem', color: C.ink, lineHeight: 1.4, margin: 0 }}>{post.title}</h3>
-                    <p style={{ fontSize: '0.77rem', color: C.inkLight, lineHeight: 1.7, margin: 0, flex: 1 }}>{post.excerpt}</p>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10, borderTop: `1px solid ${C.border}`, marginTop: 'auto' }}>
-                      <span style={{ fontSize: '0.66rem', color: C.inkLight, fontWeight: 600 }}>{post.authorName}</span>
-                      <span style={{ fontSize: '0.66rem', fontWeight: 700, color: catColor, display: 'flex', alignItems: 'center', gap: 4 }}>
-                        Lire
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-            );
-          })}
+        <div id="blog-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 24,
+          alignItems: 'start',
+          paddingBottom: 20,
+        }}>
+          {posts.slice(0, 3).map((post, i) => (
+            <Reveal key={post._id} delay={i * 80}>
+              <Card post={post} index={i} onClick={() => goTo(post)} readMoreCard={b.readMoreCard} />
+            </Reveal>
+          ))}
         </div>
-
-        {/* SEO keywords */}
-        <Reveal delay={200}>
-          <div style={{ marginTop: 32, padding: '16px 24px', background: C.white, border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.inkLight, flexShrink: 0 }}>Thématiques</span>
-            {['Business Intelligence Maroc', 'Data Engineering Casablanca', 'CRM Analytique', 'Transformation Digitale', 'Power BI Maroc', 'Gouvernance Data Afrique', 'IA Immobilier'].map(tag => (
-              <span key={tag} style={{ fontSize: '0.62rem', fontWeight: 600, color: C.teal, background: C.tealBg, border: `1px solid ${C.tealBorder}`, padding: '3px 9px' }}>
-                {tag}
-              </span>
-            ))}
-          </div>
-        </Reveal>
-
       </div>
+      <style>{`
+        @media (max-width: 900px) { #blog-grid { grid-template-columns: 1fr 1fr !important; } }
+        @media (max-width: 560px) { #blog-grid { grid-template-columns: 1fr !important; } }
+      `}</style>
     </section>
-  );
+  )
 }
