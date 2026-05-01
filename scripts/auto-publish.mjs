@@ -88,36 +88,40 @@ Choisis un sujet INÉDIT dans une catégorie DIFFÉRENTE de "${lastCategory}".
 Rédige l'article complet selon les règles. Réponds uniquement en JSON valide.`
 
 console.log('Calling Claude API to generate article...')
-const aiRes = await fetch('https://api.anthropic.com/v1/messages', {
-  method: 'POST',
-  headers: {
-    'x-api-key': AI_KEY,
-    'anthropic-version': '2023-06-01',
-    'content-type': 'application/json',
-  },
-  body: JSON.stringify({
-    model: 'claude-sonnet-4-5',
-    max_tokens: 4096,
-    system: systemPrompt,
-    messages: [{ role: 'user', content: userPrompt }],
-  }),
-})
-
-if (!aiRes.ok) {
-  const err = await aiRes.text()
-  console.error('Claude API error:', err)
-  process.exit(1)
-}
-
-const aiData  = await aiRes.json()
-const rawText = aiData.content[0].text.trim()
-
 let article
 try {
+  const aiRes = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': AI_KEY,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 4096,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: userPrompt }],
+    }),
+  })
+
+  console.log('Claude API status:', aiRes.status)
+
+  if (!aiRes.ok) {
+    const err = await aiRes.text()
+    console.error('Claude API error body:', err)
+    process.exit(1)
+  }
+
+  const aiData  = await aiRes.json()
+  const rawText = aiData.content[0].text.trim()
+  console.log('Claude response received, parsing JSON...')
+
   const jsonMatch = rawText.match(/\{[\s\S]*\}/)
   article = JSON.parse(jsonMatch?.[0] || rawText)
-} catch {
-  console.error('Failed to parse Claude response:', rawText.slice(0, 500))
+} catch (e) {
+  console.error('Claude API call failed:', e.message)
+  console.error(e.stack)
   process.exit(1)
 }
 
