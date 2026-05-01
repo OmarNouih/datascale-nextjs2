@@ -36,9 +36,9 @@ const PLACEHOLDER_POSTS = [
   {
     _id: '3',
     title: "Immobilier au Maroc : comment l'IA capture vos leads 24h/24",
-    category: 'Synapse Real Estate',
+    category: 'Corvya Real Estate',
     publishedAt: '2025-02-01',
-    excerpt: "Reva AI et Synapse Real Estate transforment la conversion de leads immobiliers grâce à l'IA conversationnelle.",
+    excerpt: "Reva AI et Corvya Real Estate transforment la conversion de leads immobiliers grâce à l'IA conversationnelle.",
     authorName: 'Data Scale Business',
   },
 ]

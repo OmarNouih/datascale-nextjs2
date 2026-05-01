@@ -24,7 +24,7 @@ const MINT = '#22f4bd'
 const CAT_COLOR = {
   'Business Intelligence': '#22f4bd',
   'Conseil Data':          '#70ebb3',
-  'Synapse Real Estate':   '#5bcabc',
+  'Corvya Real Estate':    '#5bcabc',
   'Marketing Digital':     '#21f0a8',
   'Data Engineering':      '#4de8c2',
 }

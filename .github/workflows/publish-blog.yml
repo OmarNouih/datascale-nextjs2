@@ -1,0 +1,40 @@
+name: Auto Publish Blog Article
+
+on:
+  schedule:
+    - cron: '3 7 * * 1'   # Lundi 08h03 Casablanca (UTC+1)
+    - cron: '7 7 * * 4'   # Jeudi  08h07 Casablanca (UTC+1)
+  workflow_dispatch:        # Bouton manuel dans GitHub UI
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # Pour mettre à jour CLAUDE.md
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Generate & publish article
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/auto-publish.mjs
+
+      - name: Commit CLAUDE.md update
+        run: |
+          git config user.name "DSB Blog Bot"
+          git config user.email "bot@datascalebusiness.io"
+          git add CLAUDE.md
+          git diff --staged --quiet || git commit -m "blog: add published article slug [skip ci]"
+          git push

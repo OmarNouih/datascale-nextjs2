@@ -33,7 +33,7 @@ const CARDS = [
   {
     dna: 'Partenariat',
     dnaDesc: "On ne vend pas une prestation. On co-construit une transformation durable avec vous.",
-    title: 'Synapse Real Estate',
+    title: 'Corvya Real Estate',
     desc: 'Reva, notre IA immobilière, capte et qualifie vos leads entrants en continu, sans interruption.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
