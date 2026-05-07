@@ -34,3 +34,10 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+i'll not push it in https://datascalebusiness.io !
+i'll test using netify : this url : https://glittering-stardust-0aac78.netlify.app/ witch is lied to github i'll sent u
+and push the site in main in other github to test : https://github.com/OmarNouih/datascale-nextjs2 not the main one here in the project!
+
++ what u think about SEO ?

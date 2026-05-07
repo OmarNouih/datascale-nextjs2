@@ -1,11 +1,18 @@
-import { client } from '@/lib/sanity/client'
-
-const siteUrl = 'https://datascalebusiness.io'
+import { SITE_URL as siteUrl } from '@/lib/seo'
 
 export default async function sitemap() {
-  const posts = await client.fetch(
-    `*[_type == "post"] { "slug": slug.current, publishedAt }`
-  )
+  let posts = []
+  try {
+    const base = siteUrl
+    const res = await fetch(
+      `${base}/api/posts?where[status][equals]=published&limit=500&depth=0`,
+      { next: { revalidate: 3600 } }
+    )
+    if (res.ok) {
+      const data = await res.json()
+      posts = data.docs || []
+    }
+  } catch {}
 
   const blogUrls = posts.map(post => ({
     url: `${siteUrl}/blog/${post.slug}`,
@@ -15,24 +22,9 @@ export default async function sitemap() {
   }))
 
   return [
-    {
-      url: siteUrl,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: `${siteUrl}/blog`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.9,
-    },
-    {
-      url: `${siteUrl}/privacy-policy`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
+    { url: siteUrl, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
+    { url: `${siteUrl}/blog`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
+    { url: `${siteUrl}/privacy-policy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
     ...blogUrls,
   ]
 }

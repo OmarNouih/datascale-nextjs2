@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://datascalebusiness.io/sitemap.xml

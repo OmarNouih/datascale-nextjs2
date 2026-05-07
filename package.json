@@ -10,14 +10,24 @@
   },
   "dependencies": {
     "@netlify/plugin-nextjs": "^5.15.8",
+    "@payloadcms/db-postgres": "^3.84.1",
+    "@payloadcms/db-sqlite": "^3.84.1",
+    "@payloadcms/next": "^3.84.1",
+    "@payloadcms/richtext-lexical": "^3.84.1",
     "@sanity/client": "^7.16.0",
     "@sanity/image-url": "^2.0.3",
-    "next": "16.1.6",
+    "graphql": "^16.13.2",
+    "next": "^16.2.4",
+    "payload": "^3.84.1",
+    "payload-cloudinary": "^2.3.0",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/node": "^25.6.2",
+    "@types/react": "^19.2.14",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4"

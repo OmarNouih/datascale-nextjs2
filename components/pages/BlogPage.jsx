@@ -2,18 +2,9 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { client } from '@/lib/sanity/client'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/sections/Footer'
 import { useLang } from '@/lib/i18n/LanguageContext'
-
-const QUERY = `*[_type == "post"] | order(publishedAt desc, _createdAt desc) {
-  _id, title, slug, publishedAt,
-  "excerpt": coalesce(excerpt, pt::text(body)[0...200]),
-  "category": categories[0]->title,
-  "authorName": author->name,
-  "imageUrl": mainImage.asset->url
-}`
 
 /* Artonex Trial = pure alpha uppercase ONLY (no numbers, no punctuation) */
 const FA = "'Avenir Next', 'Avenir', 'Century Gothic', sans-serif"
@@ -126,8 +117,8 @@ function FeaturedCard({ post, locale, bp, onGo }) {
 
       {/* Right — image */}
       <div style={{ position: 'relative', overflow: 'hidden', background: '#030604' }}>
-        {post.imageUrl
-          ? <img src={post.imageUrl} alt={post.title}
+        {(post.mainImage?.cloudinary?.secure_url || post.mainImage?.url)
+          ? <img src={post.mainImage.cloudinary?.secure_url || post.mainImage.url} alt={post.title}
               style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0, display: 'block', transform: hov ? 'scale(1.05)' : 'scale(1)', transition: 'transform 0.7s ease' }} />
           : <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', background: '#030604' }}>
               <div style={{ width: 1, height: '60%', background: `linear-gradient(to bottom, transparent, ${color}33, transparent)` }} />
@@ -172,8 +163,8 @@ function PostCard({ post, idx, locale, bp, onGo }) {
 
       {/* Image */}
       <div style={{ height: 190, overflow: 'hidden', flexShrink: 0, position: 'relative', background: '#030604' }}>
-        {post.imageUrl
-          ? <img src={post.imageUrl} alt={post.title}
+        {(post.mainImage?.cloudinary?.secure_url || post.mainImage?.url)
+          ? <img src={post.mainImage.cloudinary?.secure_url || post.mainImage.url} alt={post.title}
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transform: hov ? 'scale(1.06)' : 'scale(1)', transition: 'transform 0.5s ease' }} />
           : <div style={{ width: '100%', height: '100%', display: 'grid', placeItems: 'center', background: '#030604' }}>
               <div style={{ width: 1, height: '50%', background: `linear-gradient(to bottom, transparent, ${color}22, transparent)` }} />
@@ -221,29 +212,32 @@ function PostCard({ post, idx, locale, bp, onGo }) {
   )
 }
 
-export default function BlogPage() {
+export default function BlogPage({ initialPosts = [] }) {
   const { t, lang } = useLang()
   const bp = t.blog_page
   const b = t.blog
   const locale = lang === 'fr' ? 'fr-FR' : 'en-US'
 
-  const [posts, setPosts] = useState(bp.fallbackPosts)
+  const [posts, setPosts] = useState(initialPosts.length ? initialPosts : bp.fallbackPosts)
   const [active, setActive] = useState(null)
   const [scrolled, setScrolled] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    client.fetch(QUERY).then((d) => {
-      if (d?.length) {
-        const sorted = [...d].sort((a, b) => new Date(b.publishedAt || b._createdAt || 0) - new Date(a.publishedAt || a._createdAt || 0))
-        setPosts(sorted)
-      }
-    }).catch(() => {})
+    if (!initialPosts.length) {
+      fetch('/api/posts?where[status][equals]=published&sort=-publishedAt&limit=100&depth=1')
+        .then(r => r.json())
+        .then(data => {
+          const docs = data?.docs || []
+          if (docs.length) setPosts(docs)
+        })
+        .catch(() => {})
+    }
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [initialPosts.length])
 
   const filtered = useMemo(
     () => active === null ? posts : posts.filter((p) => p.category === active),
@@ -251,7 +245,7 @@ export default function BlogPage() {
   )
 
   const [featured, ...rest] = filtered
-  const goTo = (post) => { if (post?.slug?.current) router.push(`/blog/${post.slug.current}`) }
+  const goTo = (post) => { if (post?.slug) router.push(`/blog/${post.slug}`) }
   const TABS = [{ label: bp.all, value: null }, ...bp.categories.map((c) => ({ label: c, value: c }))]
 
   return (
@@ -379,7 +373,7 @@ export default function BlogPage() {
             {rest.length > 0 && (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 3 }} className="blog-grid">
                 {rest.map((post, i) => (
-                  <PostCard key={post._id} post={post} idx={i + 2} locale={locale} bp={bp} onGo={goTo} />
+                  <PostCard key={post.id ?? post._id ?? post.slug ?? i} post={post} idx={i + 2} locale={locale} bp={bp} onGo={goTo} />
                 ))}
               </div>
             )}
