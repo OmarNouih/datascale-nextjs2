@@ -36,10 +36,9 @@ export default buildConfig({
         api_secret: process.env.CLOUDINARY_API_SECRET,
       },
       collections: {
-        media: {
-          folder: 'datascalebusiness',
-        },
+        media: true,
       },
+      folder: 'datascalebusiness',
     }),
   ],
 })
