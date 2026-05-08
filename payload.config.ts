@@ -3,9 +3,9 @@ import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { cloudinaryStorage } from 'payload-cloudinary'
 import sharp from 'sharp'
-import { Posts } from './src/payload/collections/Posts.ts'
-import { Media } from './src/payload/collections/Media.ts'
-import { Users } from './src/payload/collections/Users.ts'
+import { Posts } from './src/payload/collections/Posts'
+import { Media } from './src/payload/collections/Media'
+import { Users } from './src/payload/collections/Users'
 
 export default buildConfig({
   admin: {
